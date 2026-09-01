@@ -15,7 +15,7 @@ public class CgiTransactionProcessor extends FiservTransactionProcessor{
     }
 
     @Override
-    public ApiClient createApiClient(EndpointAttributes endpointAttributes) {
+    public FiservApiClient createApiClient(EndpointAttributes endpointAttributes) {
         HttpClient httpClient = HttpClient.newBuilder()
                 .sslContext(createSslContext(endpointAttributes))
                 .connectTimeout(Duration.ofMillis(endpointAttributes.connTimeoutMs()))

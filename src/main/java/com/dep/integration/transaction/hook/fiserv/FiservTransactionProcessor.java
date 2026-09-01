@@ -11,7 +11,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.dep.integration.transaction.hook.fiserv.dto.common.Request;
 import com.dep.integration.transaction.hook.fiserv.dto.common.Response;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtl;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtlsResponse;
@@ -54,7 +53,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       this.isTestMode = isTestMode;
    }
 
-   protected ApiClient createApiClient(EndpointAttributes endpointAttributes) {
+   protected FiservApiClient createApiClient(EndpointAttributes endpointAttributes) {
       HttpClient httpClient = HttpClient.newBuilder()
           .connectTimeout(Duration.ofMillis(endpointAttributes.connTimeoutMs()))
           .build();
@@ -66,7 +65,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       );
    }
 
-   private Request deserializeRequest(String depRequestJson) {
+   private FiservRequest deserializeRequest(String depRequestJson) {
       try {
          return FISERV_OBJECT_MAPPER.readValue(depRequestJson, FiservRequest.class);
       } catch (JsonProcessingException e) {
@@ -211,9 +210,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
    @Override
    protected String process(String depRequestJson, EndpointAttributes endpointAttributes) {
-        Request depRequest =  deserializeRequest(depRequestJson);
+        FiservRequest depRequest =  deserializeRequest(depRequestJson);
 
-        ApiClient api = createApiClient(endpointAttributes);
+        FiservApiClient api = createApiClient(endpointAttributes);
 
         try {
             List<FiservTransaction> transactions = getFiservTransactions(api, depRequest);
@@ -240,8 +239,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
         }
     }
 
-    private List<FiservTransaction> getFiservTransactions(ApiClient api, Request depRequest) {
+    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) {
       return null; // TODO
+      // FiservResponse getTransactions
     }
 
     private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
@@ -252,7 +252,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          return null; // TODO
    }
 
-   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, Request depRequest) {
+   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
       return null; // TODO
    }
 }

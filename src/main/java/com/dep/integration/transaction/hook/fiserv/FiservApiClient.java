@@ -35,7 +35,7 @@ import jakarta.xml.bind.Unmarshaller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FiservApiClient implements ApiClient {
+public class FiservApiClient {
 
     private static final String JAXB2_CONTEXT_FACTORY_PROPERTY = "javax.xml.bind.JAXBContextFactory";
     private static final String JAXB2_GLASSFISH_JAXB_CONTEXT_FACTORY = "com.sun.xml.bind.v2.JAXBContextFactory";
@@ -111,51 +111,49 @@ public class FiservApiClient implements ApiClient {
         return requestBuilder.build();
     }
 
-    // @Override
-    // public MultiBillResponseDetail payBill(
-    //         String cbsPath, // not used
-    //         Request depRequest,
-    //         Object cbsRequest
-    // ) throws CbsApiException {
-    //     try {
-    //         String requestSoapXml = generateSoapXml(cbsRequest);
+    public FiservResponse getTransactions(
+            FiservRequest depRequest,
+            Object cbsRequest
+    ) throws CbsApiException {
+        try {
+            String requestSoapXml = generateSoapXml(cbsRequest);
 
-    //         HttpRequest httpRequest = generateHttpRequest(requestSoapXml, depRequest);
+            HttpRequest httpRequest = generateHttpRequest(requestSoapXml, depRequest);
 
-    //         String requestLogMessage = "Fiserv HttpRequest : " + httpRequest
-    //                 + " with headers: " + httpRequest.headers().map()
-    //                 + " with body: " + requestSoapXml;
-    //         logger.logInfo(requestLogMessage);
-    //         if (isTestMode) {
-    //             LOG.info(requestLogMessage);
-    //         }
+            String requestLogMessage = "Fiserv HttpRequest : " + httpRequest
+                    + " with headers: " + httpRequest.headers().map()
+                    + " with body: " + requestSoapXml;
+            logger.logInfo(requestLogMessage);
+            if (isTestMode) {
+                LOG.info(requestLogMessage);
+            }
 
-    //         HttpResponse<String> response =
-    //                 httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response =
+                    httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-    //         String responseLogMessage = "Fiserv HttpResponse : " + response + " with body: " + response.body();
-    //         logger.logInfo(responseLogMessage);
-    //         if (isTestMode) {
-    //             LOG.info(responseLogMessage);
-    //         }
+            String responseLogMessage = "Fiserv HttpResponse : " + response + " with body: " + response.body();
+            logger.logInfo(responseLogMessage);
+            if (isTestMode) {
+                LOG.info(responseLogMessage);
+            }
 
-    //         String responseBody = response.body();
-    //         if (response.statusCode() < 200 || response.statusCode() >= 300) {
-    //             throwCBS_FAULT(responseBody);
-    //         }
+            String responseBody = response.body();
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                throwCBS_FAULT(responseBody);
+            }
 
-    //         Envelope responseEnvelope = parseSoapEnvelope(responseBody);
-    //         return createMultiBillResponseDetail(responseEnvelope, responseBody);
+            Envelope responseEnvelope = parseSoapEnvelope(responseBody);
+            return createFiservResponse(responseEnvelope, responseBody);
 
-    //     } catch (IOException e) {
-    //         throw new RuntimeException("Unable to call Fiserv API", e);
-    //     } catch (InterruptedException e) {
-    //         Thread.currentThread().interrupt();
-    //         throw new RuntimeException("Interrupted while calling Fiserv API", e);
-    //     } catch (JAXBException e) {
-    //         throw new RuntimeException("Unable to parse Fiserv SOAP XML", e);
-    //     }
-    // }
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to call Fiserv API", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while calling Fiserv API", e);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Unable to parse Fiserv SOAP XML", e);
+        }
+    }
 
     private String generateSoapXml(Object cbsRequest) {
         try {
@@ -185,14 +183,15 @@ public class FiservApiClient implements ApiClient {
         return envelopeElement.getValue();
     }
 
-    // private MultiBillResponseDetail createMultiBillResponseDetail(Envelope responseEnvelope, String responseBody) throws CbsApiException{
-    //     if ( !Boolean.TRUE.equals(responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getUserAuthentication().isWasSuccessful())) {
-    //         throwCBS_ERROR_AUTH(responseBody);
-    //     }
+    private FiservResponse createFiservResponse(Envelope responseEnvelope, String responseBody) throws CbsApiException{
+        // if ( !Boolean.TRUE.equals(responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getUserAuthentication().isWasSuccessful())) {
+        //     throwCBS_ERROR_AUTH(responseBody);
+        // }
 
-    //     Object anyType = responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getExtensionResponses().getAnyType().get(0);
-    //     return createMultiBillResponseDetailFromAnyType(anyType, responseBody);
-    // }
+        // Object anyType = responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getExtensionResponses().getAnyType().get(0);
+        // return createMultiBillResponseDetailFromAnyType(anyType, responseBody);
+        return null; // TODO
+    }
 
     // private MultiBillResponseDetail createMultiBillResponseDetailFromAnyType(Object anyType, String responseBody) throws CbsApiException{
     //     Object value = unwrapJaxbElement(anyType);
