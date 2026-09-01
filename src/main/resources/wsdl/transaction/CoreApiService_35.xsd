@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayHistory" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayHistory">
+  <xs:complexType name="ArrayOfBillPayment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BillPayment" nillable="true" type="tns:BillPayment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBillPayment" nillable="true" type="tns:ArrayOfBillPayment"/>
+  <xs:complexType name="BillPayment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BillPayTransactionNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="IsCRATaxPayee" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="TransactionList" nillable="true" type="tns:ArrayOfTransaction"/>
+      <xs:element minOccurs="0" name="VendorAccountNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorID" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="VendorName" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BillPayment" nillable="true" type="tns:BillPayment"/>
+  <xs:complexType name="ArrayOfTransaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" nillable="true" type="tns:Transaction"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTransaction" nillable="true" type="tns:ArrayOfTransaction"/>
+  <xs:complexType name="Transaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllotmentNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="CurrentRtxnStatus" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="TraceNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="TransactionNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Transaction" nillable="true" type="tns:Transaction"/>
+</xs:schema>

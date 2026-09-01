@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.NOWMultiAccountBalanceInquiry.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.NOWMultiAccountBalanceInquiry.Response">
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount"/>
+  <xs:complexType name="Account">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific account for which an entity has a role.
+            </summary>
+            <remarks>This class is used by the <see cref="T:NOWMultiAccountBalanceInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The AccountNumber identifies the account for the information detail.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountStatusDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Description of the Current Account Status
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AvailableBalance" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Available balance for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CurrentAccountStatusCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The current account status of the account. 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CurrentBalance" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Current balance(Ledger) for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Error message for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ErrorStatusCd" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Error Number for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsNOWEnabled" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies if the account is enabled for the NOW Network.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsSuccess" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            SuccessYN for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Product" nillable="true" type="tns:Product">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             Wrapper element for the Product section.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account"/>
+  <xs:complexType name="Product">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific account to gather the details
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWBalanceAccountInquiryRequest" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountCurrencyCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The AccountCurrencyCode attribute identifies the account product currency code. Default is USD.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MajorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the major account type code for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the minor account type code for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Product" nillable="true" type="tns:Product"/>
+</xs:schema>

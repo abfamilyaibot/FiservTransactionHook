@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://www.opensolutions.com/CoreApi" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.opensolutions.com/CoreApi" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+  <xs:import schemaLocation="CoreApiService_1.xsd" namespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages"/>
+  <xs:import schemaLocation="CoreApiService_4.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+  <xs:import schemaLocation="CoreApiService_35.xsd" namespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayHistory"/>
+  <xs:complexType name="RequestBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ParentRequestNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestBase" nillable="true" type="tns:RequestBase"/>
+  <xs:complexType name="ResponseBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError"/>
+      <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RequestTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="WasSuccessful" nillable="true" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseBase" nillable="true" type="tns:ResponseBase"/>
+  <xs:complexType name="ArrayOfError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError"/>
+  <xs:complexType name="Error">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ErrorNumber" nillable="true" type="xs:int"/>
+      <xs:element minOccurs="0" name="OraErrorMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtxnExceptionMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtxnExceptionNumber" nillable="true" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Error" nillable="true" type="tns:Error"/>
+  <xs:complexType name="AccountTransactionHistoryRequest">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            This transaction returns transaction history information for the account and other criteria specified
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation><![CDATA[<summary>
+            Attribute identifies the account for which to return transaction history.
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="DebitCreditOnly" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            D = Returns debit amounts only, C = Returns credit amounts only. Default is Null (all returned).
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ExternalRtxnDescription" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Text to search in the External Transaction Description field. This criterion is logically OR-ed with IntRtxnDesc if it is not blank. 
+            If this is left blank, field is not searched. White spaces and letter case will be ignored when looking for a match, e.g., the criterion ‗TRANSFERto' 
+            will match 'Transfer To' in addition to other possibilities.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FromAmount" nillable="true" type="xs:double">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Minimum amount for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FromCheckNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Start check number for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FromDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Start date for which history should be returned. 
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="InternalRtxnDescription" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Text to search in the Internal Transaction Description field. This criterion is logically OR-ed with ExtRtxnDesc if it is not blank. 
+            If this is left blank, field is not searched. White spaces and letter case will be ignored when looking for a match, e.g., the criterion ‗TRANSFERto' 
+            will match 'Transfer To' in addition to other possibilities.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsCustomerView" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Providing the ability to display all transactions in the transaction history 
+            irrespective of customer view indicator on the RTXNTYP is set to Y or N for employees/teller . Default is Y.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsErrorCorrect" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Y = Returns error corrected transactions also, N = does not does not return EC transactions. Default is Y.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsIncludeBalanceDetail" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Provide ability to display balance details of transaction if value provided is Y.Default is N.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsRejected" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Y = Returns rejected transactions also, N = Returns only completed transactions. Default is Y.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsResultingBalance" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Attribute value of Y requests that resulting balance (running balance) is returned. Possible values Y, N. 
+            If a value of Y is specified, FromDate must be supplied and TransactionReferenceNbr must not be supplied. This flag is ignored if account is masterline. 
+            Default is N. Even when value of N is supplied, running balance is returned if FromDate and ThruDate are the ONLY criteria supplied; and SortBy 
+            is set to null or TIMEUNIQUEEXTN.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsReversed" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Y = Returns reversed transactions also, N = does not does not return reversed transactions. Default is Y.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="MaximumRows" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Attribute identifies the maximum number of rows to return.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="PreviousRunningBalance" nillable="true" type="xs:double">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            The balance to use as a starting value. This value would be provided in a continuation request.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="RtxnReportGroupCodes" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            List of RTXN Report Group Codes to retrieve separated by commas.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="RtxnTypeCodes" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            List of RTXN Type Codes to retrieve separated by commas, e.g., SPMT, PRCT.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="SearchDateOption" nillable="true" type="xs:int">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>		
+            Indicates the date to use to display balance details of transaction history in response. (1 = Activity Date, 2 = Post Date) Default is 2
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="SortBy" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Indicates which value to sort by. Options are: RTXNNBR, CHECKNBR, TIMEUNIQUEEXTN, RTXNTYPCD, POSTDATE, EFFDATE, TRANAMT, RTXNTYPDESC. 
+            Default is TIMEUNIQUEEXTN
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="SortOrder" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            The sort order. A = Ascending, D = Descending. Default is Ascending.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ThroughAmount" nillable="true" type="xs:double">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Maximum amount for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ThroughCheckNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            End check number for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ThroughDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            End date for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TimeUniqueExtension" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Attribute identifies the time unique extension from which to start the query.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TransactionReferenceNumber" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            AcctNbr-RtxnNbr The only other search criteria this tag can be combined with is the acctNbr attribute; the others will be ignored.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AccountTransactionHistoryRequest" nillable="true" type="tns:AccountTransactionHistoryRequest"/>
+  <xs:complexType name="AccountTransactionHistoryResponse">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            This transaction returns transaction history information for the account and other criteria specified.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountCurrencyCode" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Indicates the currency code for the account.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Attribute identifies the account for which to return transaction history.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Transactions" nillable="true" type="q98:ArrayOfRtxn" xmlns:q98="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Wrapper tag to identify multiple transactions.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AccountTransactionHistoryResponse" nillable="true" type="tns:AccountTransactionHistoryResponse"/>
+  <xs:complexType name="TransactionHistoryInquiryRequest">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            This transaction returns transaction history information for the account and other criteria specified
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:RequestBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation><![CDATA[<summary>
+            Attribute identifies the account for which to return transaction history.
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="FromDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Start date for which history should be returned. 
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="ThruDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            End date for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TransactionHistoryInquiryRequest" nillable="true" type="tns:TransactionHistoryInquiryRequest"/>
+  <xs:complexType name="TransactionHistoryInquiryResponse">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            This transaction returns transaction history information for the account and other criteria specified.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Identifies the account for which transaction history is returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="Transactions" nillable="true" type="q121:ArrayOfTransaction" xmlns:q121="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Wrapper tag to identify multiple transactions.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TransactionHistoryInquiryResponse" nillable="true" type="tns:TransactionHistoryInquiryResponse"/>
+  <xs:complexType name="ExtensionRequestBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ParentRequestNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExtensionRequestBase" nillable="true" type="tns:ExtensionRequestBase"/>
+  <xs:complexType name="BillPayHistoryRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ExtensionRequestBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" type="xs:long"/>
+          <xs:element minOccurs="0" name="BillPayTransactionNumbers" nillable="true" type="q326:ArrayOflong" xmlns:q326="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="FromDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="MaxRows" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="0" name="SequenceNumber" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="0" name="ThroughDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="TransactionNumbers" nillable="true" type="q327:ArrayOflong" xmlns:q327="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BillPayHistoryRequest" nillable="true" type="tns:BillPayHistoryRequest"/>
+  <xs:complexType name="ExtensionResponseBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfExtensionError"/>
+      <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RequestTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="WasSuccessful" nillable="true" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExtensionResponseBase" nillable="true" type="tns:ExtensionResponseBase"/>
+  <xs:complexType name="ArrayOfExtensionError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExtensionError" nillable="true" type="tns:ExtensionError"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExtensionError" nillable="true" type="tns:ArrayOfExtensionError"/>
+  <xs:complexType name="ExtensionError">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ErrorNumber" nillable="true" type="xs:int"/>
+      <xs:element minOccurs="0" name="OraErrorMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtxnExceptionMessage" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtxnExceptionNumber" nillable="true" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExtensionError" nillable="true" type="tns:ExtensionError"/>
+  <xs:complexType name="BillPayHistoryResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ExtensionResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" type="xs:long"/>
+          <xs:element minOccurs="0" name="BillPaymentList" nillable="true" type="q333:ArrayOfBillPayment" xmlns:q333="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayHistory"/>
+          <xs:element minOccurs="0" name="MoreIndicator" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BillPayHistoryResponse" nillable="true" type="tns:BillPayHistoryResponse"/>
+  <xs:element name="SubmitRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="input" nillable="true" type="tns:TransactionInput"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="TransactionInput">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+             The beginning wrapper tag for the entire set of transaction requests.
+             &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Input" nillable="true" type="tns:Input">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag that identifies the following data is used for Input into the Core API.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShouldCommitOrRollback" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates whether a commit should be issued upon the processing of each request.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TransactionInput" nillable="true" type="tns:TransactionInput"/>
+  <xs:complexType name="Input">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag that identifies the following data is used for Input into the Core API.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExtensionRequests" nillable="true" type="q336:ArrayOfanyType" xmlns:q336="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag to group all extension requests.
+            &lt;/summary>
+            &lt;remarks>These are the extension requests created by third parties and residing in separate assemblies.&lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Requests" nillable="true" type="tns:ArrayOfRequestBase">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag to group all of the requests that make up this single Core API request.
+            &lt;/summary>
+            &lt;remarks>These are the requests created by Open Solutions and distributed as part of the service.&lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserAuthentication" nillable="true" type="tns:UAInput">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag to group all of the authentication data required to complete the request.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Input" nillable="true" type="tns:Input"/>
+  <xs:complexType name="ArrayOfRequestBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestBase" nillable="true" type="tns:RequestBase"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestBase" nillable="true" type="tns:ArrayOfRequestBase"/>
+  <xs:complexType name="UAInput">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag to group all of the authentication data required to complete the request.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ApplID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AuthorizationType" type="xs:string"/>
+      <xs:element minOccurs="0" name="NetworkNodeName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UAInput" nillable="true" type="tns:UAInput"/>
+  <xs:element name="SubmitRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SubmitRequestResult" nillable="true" type="tns:TransactionOutput"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="TransactionOutput">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The beginning wrapper for the entire set of transaction responses.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Output" nillable="true" type="tns:Output">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag that identifies the following data that is used for Output from the Core API.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TransactionOutput" nillable="true" type="tns:TransactionOutput"/>
+  <xs:complexType name="Output">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag that identifies the following data that is used for Output from the Core API.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExtensionResponses" nillable="true" type="q339:ArrayOfanyType" xmlns:q339="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag groups all extension (i.e. non-native) responses making up this single Core API response.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Responses" nillable="true" type="tns:ArrayOfResponseBase">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag groups all responses making up this single Core API response.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserAuthentication" nillable="true" type="tns:UAOutput">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag that identifies if the request was successful and if not, a collection of one or more Errors.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Output" nillable="true" type="tns:Output"/>
+  <xs:complexType name="ArrayOfResponseBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResponseBase" nillable="true" type="tns:ResponseBase"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResponseBase" nillable="true" type="tns:ArrayOfResponseBase"/>
+  <xs:complexType name="UAOutput">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag that identifies if the request was successful and if not, a collection of one or more Errors.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            A collection of one or more authentication errors.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PersNbr" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Logged-in user's persnbr
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="WasSuccessful" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates if the request was successful.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UAOutput" nillable="true" type="tns:UAOutput"/>
+</xs:schema>

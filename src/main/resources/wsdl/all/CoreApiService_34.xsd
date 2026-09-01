@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayList" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayList">
+  <xs:complexType name="ArrayOfBillPayList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BillPayList" nillable="true" type="tns:BillPayList"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBillPayList" nillable="true" type="tns:ArrayOfBillPayList"/>
+  <xs:complexType name="BillPayList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AllotmentEffectiveDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="AllotmentNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AllotmentType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="BillPayTransactionNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="BillPaymentType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CallPeriodCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrencyCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="ExpiryDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="NextPaymentDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="ScheduleType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TraceNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="TransactionType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorAccountNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorName" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BillPayList" nillable="true" type="tns:BillPayList"/>
+</xs:schema>

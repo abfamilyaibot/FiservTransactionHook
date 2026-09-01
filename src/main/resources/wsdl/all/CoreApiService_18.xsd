@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountInterestDetailsInquiry.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountInterestDetailsInquiry.Response">
+  <xs:complexType name="ArrayOfBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Balance" nillable="true" type="tns:Balance"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBalance" nillable="true" type="tns:ArrayOfBalance"/>
+  <xs:complexType name="Balance">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Balance
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountInterestDetailsInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountInterestsHistory" nillable="true" type="tns:ArrayOfAccountInterestHistory">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            List to identify multiple Account Interest History being returned.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountRatesHistory" nillable="true" type="tns:ArrayOfAccountRateHistory">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            List to identify multiple Account Rate History being returned.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccruedInterest" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The amount of accured interest to date for Balances
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance category code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance type code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EarningsCalenderPeriodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Earnings Calendar Period for the account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestCycle" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the account cycle code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsRateChangeReCalculatedPayment" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates whether payment is recalculated when rate changes occur.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextEarningDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Next Earning Date
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextPaymentChangeDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Next date payment is due to change.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextRateChangeDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the date of the next rate change
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeLeadDays" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the number of days prior to the Rate Change Date that the rate change will occur.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Balance" nillable="true" type="tns:Balance"/>
+  <xs:complexType name="ArrayOfAccountInterestHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountInterestHistory" nillable="true" type="tns:AccountInterestHistory"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountInterestHistory" nillable="true" type="tns:ArrayOfAccountInterestHistory"/>
+  <xs:complexType name="AccountInterestHistory">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AmortTerm" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the amortization term
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalcBalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Interest Rate Calculation Balance Type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalcScheduleName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             Identifies the name of the calculation schedule for the rate
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalcScheduleNumber" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             Identifies the number of the calculation schedule for the rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CompoundCalenderPeriodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies period frequency code representing how often interest is compounded
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DaysMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Days Method Code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestBase" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Interest Base.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestHistoryEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The effective date of the Interest History Row 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestHistoryInactiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date the current interest parameter will no longer be in effect 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Interest Method Code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRateReCalculationMethod" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Determines how the new interest rate is established for rate changes
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAccountOverride" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies if the interest history row is from the Account Level or the product level
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsActive" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates whether or not an Interest parameter is currently active.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAdjustedTerm" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Used to adjust terms on rate changes instead of payment
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsCapitalizeInterest" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Determine if interest due should be capitalized for the account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsNegativeAmortizationAllowed" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Determines if negative amortization is allowed due to a rate change
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MarginFixed" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the fixed margin for the rate 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MarginPercentage" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Margin percent stored. 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumInterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum interest rate 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumRateChangeDown" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum amount that a rate can change down 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumRateChangeUp" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum amount that a rate can change up.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumInterestBalanceAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            For accounts with the minimum interest calculation balance type set to Average, 
+            the minimum average daily balance required to credit interest to the account must be specified.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumInterestCalcBalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Determine eligibility for interest credits.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumInterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum interest rate 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumRateChangeDown" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum amount that a rate can change down 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumRateChangeUp" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum amount that a rate can change up 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PaymentChangeCalenderPeriodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Represents the calendar frequency of payment changes 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PaymentChangeRoundMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Rounding method used for principal and interest payment changes
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeCalenderPeriodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change calendar period code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change method code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeRoundMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            RndMethCd identifies for a scheduled rate change, how the interest will be rounded
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the interest rate type associated with this account for the balance type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountInterestHistory" nillable="true" type="tns:AccountInterestHistory"/>
+  <xs:complexType name="ArrayOfAccountRateHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountRateHistory" nillable="true" type="tns:AccountRateHistory"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountRateHistory" nillable="true" type="tns:ArrayOfAccountRateHistory"/>
+  <xs:complexType name="AccountRateHistory">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountInfoDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies Account InfoDate for this account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DisclosedInterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Rate disclosed on statements, bills, etc., by the current rate history parameters.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies interest rate for this account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsActive" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates whether or not a rate is currently active.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Date the current rate took effect 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateInactiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date the current rate will no longer be in effect 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountRateHistory" nillable="true" type="tns:AccountRateHistory"/>
+</xs:schema>

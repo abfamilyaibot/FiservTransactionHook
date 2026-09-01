@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ExcludeApplicationsInquiry.Request" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ExcludeApplicationsInquiry.Request">
+  <xs:complexType name="ArrayOfExcludeAccounts">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExcludeAccounts" nillable="true" type="tns:ExcludeAccounts"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExcludeAccounts" nillable="true" type="tns:ArrayOfExcludeAccounts"/>
+  <xs:complexType name="ExcludeAccounts">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Account Number of Account which is exculded
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExcludeAccounts" nillable="true" type="tns:ExcludeAccounts"/>
+</xs:schema>

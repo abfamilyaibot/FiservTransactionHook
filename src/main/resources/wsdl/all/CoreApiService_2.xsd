@@ -1,0 +1,3160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.Common">
+  <xs:complexType name="ArrayOfPersOrgUserField">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgUserField" nillable="true" type="tns:PersOrgUserField"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgUserField" nillable="true" type="tns:ArrayOfPersOrgUserField"/>
+  <xs:complexType name="PersOrgUserField">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            User field information for a person or org.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="UserFieldCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies user field code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserFieldDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies user field description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserFieldValueDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the description of the user field value.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Tag value contains the value for the user field.  Valid values are defined in the USERFIELD table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ValueLastUpdatedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            attribute identifies the last updated date for the user field value.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgUserField" nillable="true" type="tns:PersOrgUserField"/>
+  <xs:complexType name="ArrayOfUserField">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserField" nillable="true" type="tns:UserField"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserField" nillable="true" type="tns:ArrayOfUserField"/>
+  <xs:complexType name="UserField">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Class representing custom data for an entity in the form of a key-value pair.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies user field code.  Will be validated against the UserField table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Tag contains the value for the user field.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserField" nillable="true" type="tns:UserField"/>
+  <xs:complexType name="ArrayOfAccountLoanRepricingPlan">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountLoanRepricingPlan" nillable="true" type="tns:AccountLoanRepricingPlan"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountLoanRepricingPlan" nillable="true" type="tns:ArrayOfAccountLoanRepricingPlan"/>
+  <xs:complexType name="AccountLoanRepricingPlan">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The wrapped tag to represents the table AcctLoanRepricPlan and contains all of its columns as its child tags which are User input.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountLoanRepricingPlanOptions" nillable="true" type="tns:ArrayOfAccountLoanRepricingPlanOption">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The wrapper Tag for AcctLoanRepricPlanOpt Tag. This is supported when maintenance mode is false
+            This tag is used to send in AcctLoanRepricPlanOptInt Information.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DefaultRepricingPlanOptionNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies Default Repricing Plan Option YN
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the Repricing Effective Date
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingInactiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the Repricing Effective Date
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan number
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanOptionNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies Default Repricing Plan Option YN
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanStatusCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Status Code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanStatusDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Status Code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RespondByDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the Respond By Date
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountLoanRepricingPlan" nillable="true" type="tns:AccountLoanRepricingPlan"/>
+  <xs:complexType name="ArrayOfAccountLoanRepricingPlanOption">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountLoanRepricingPlanOption" nillable="true" type="tns:AccountLoanRepricingPlanOption"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountLoanRepricingPlanOption" nillable="true" type="tns:ArrayOfAccountLoanRepricingPlanOption"/>
+  <xs:complexType name="AccountLoanRepricingPlanOption">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The wrapped tag to represents the table AcctLoanRepricPlanOpt and contains all of its columns as its child tags which are User Input.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountLoanRepricingPlanOptionInterest" nillable="true" type="tns:AccountLoanRepricingPlanOptionInterest">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The wrapper Tag for AcctLoanRepricPlanOptInt Tag. This is supported when maintenance mode is false
+            This tag is used to send in AcctLoanRepricPlanOptInt Information.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountLoanRepricingPlanOptionLoan" nillable="true" type="tns:AccountLoanRepricingPlanOptionLoan">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The wrapper Tag for AcctLoanRepricPlanOptLoan Tag. This is supported when maintenance mode is false
+            This tag is used to send in AcctLoanRepricPlanOptInt Information.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountLoanRepricingPlanOptionRate" nillable="true" type="tns:AccountLoanRepricingPlanOptionRate">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FeeAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Fee Amount
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FeePercent" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Fee Percent
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanOptionDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Option Description
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanOptionNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Option number
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanOptionStatusCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Option status code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RepricingPlanOptionStatusDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Repricing Plan Option status code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountLoanRepricingPlanOption" nillable="true" type="tns:AccountLoanRepricingPlanOption"/>
+  <xs:complexType name="AccountLoanRepricingPlanOptionInterest">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapped tag of the table AcctLoanRepricPlanOptInt and contains all of its columns as its child tags which are user input.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AmortizationTerm" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the amortization term.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Category and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Category and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Type and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationSchedule" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the calculation schedule number for the penalty.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationScheduleNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the calculation schedule number for the penalty.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DaysMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Days Method as an interest parameter of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DaysMethodDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Days Method as an interest parameter of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestBase" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains interest base as an interest parameter of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRateReCalculationMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains  interest rate recalculation method as an interest parameter of the related option
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRateReCalculationMethodDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains  interest rate recalculation method as an interest parameter of the related option
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MarginFixed" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the fixed margin for the rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MarginPercent" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the fixed margin for the rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumInterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum interest rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumRateChangeDown" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum amount that a rate can change down.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumRateChangeUp" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum amount that a rate can change up.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumInterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum interest rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumRateChangeDown" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum amount that a rate can change down.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumRateChangeUp" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum amount that a rate can change up.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeCalendarPeriodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change calendar period code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeCalendarPeriodDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change calendar period description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change method code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeMethodDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the rate change method description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeRoundingMethodCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The RndMethCd identifies upon a scheduled rate change how the interest will be rounded.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeRoundingMethodDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The RndMethCd identifies upon a scheduled rate change how the interest will be rounded.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Rate type as an interest parameter of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Rate type as an interest parameter of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountLoanRepricingPlanOptionInterest" nillable="true" type="tns:AccountLoanRepricingPlanOptionInterest"/>
+  <xs:complexType name="AccountLoanRepricingPlanOptionLoan">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The wrapper tag to represents the table AcctLoanRepricPlanOptLoan and contains all of its columns as its child tags which are user input.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsRateChangeReCalulatedPayment" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates that the payment will be recalculated when rate change takes place. Valid values are Y, N.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NewMajorTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the New major account type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NewMajorTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the New major account type description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NewMinorTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the New minor account type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NewMinorTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the New minor account type description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextPaymentChangeDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The next date the payment is due to change.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextRateChangeDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the date of the next rate change.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PaymentChangeLeadDays" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the number of days prior to the Payment Change Date that the payment change will occur.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateChangeLeadDays" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates the number of days prior to the Rate Change Date that the rate change will occur.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountLoanRepricingPlanOptionLoan" nillable="true" type="tns:AccountLoanRepricingPlanOptionLoan"/>
+  <xs:complexType name="AccountLoanRepricingPlanOptionRate">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The wrapped tag to represents the table AcctLoanRepricPlanOptRate and contains all of its columns as its child tags which are user input.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Category and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Category and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            It contains Balance Type and Code of the related option.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationScheduleEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The effective date of the calculation schedule.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRate" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the interest rate.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountLoanRepricingPlanOptionRate" nillable="true" type="tns:AccountLoanRepricingPlanOptionRate"/>
+  <xs:complexType name="ArrayOfBalanceDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BalanceDetail" nillable="true" type="tns:BalanceDetail"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBalanceDetail" nillable="true" type="tns:ArrayOfBalanceDetail"/>
+  <xs:complexType name="BalanceDetail">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The balance detail information for the account specified.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountPayOffPayDownInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AmountDueCustomer" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The amount due back to the customer for this Balance Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AmountDueFinancialInstitution" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The amount due to the Financial Institution for this Balance Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The balance for the specific Balance Type identified by the attributes in the Detail Node.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute that identifies the balance category code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The value will contain the Balance Description, 
+            when available, the product over ride for the Balance Description will be provided.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute that identifies the balance type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiscBankAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The MiscBankAmount of customer for this Balance Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BalanceDetail" nillable="true" type="tns:BalanceDetail"/>
+  <xs:complexType name="ArrayOfAccountRiskRating">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountRiskRating" nillable="true" type="tns:AccountRiskRating"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountRiskRating" nillable="true" type="tns:ArrayOfAccountRiskRating"/>
+  <xs:complexType name="AccountRiskRating">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            A specific Line of Risk Rating.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance category code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance type code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The effective date for the risk rating account. Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RiskRatingCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies risk rating code for this account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RiskRatingDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies risk rating description for this account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountRiskRating" nillable="true" type="tns:AccountRiskRating"/>
+  <xs:complexType name="TaxOwner">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Contains the tax owner information for a given account.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OwnerName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The person or organization's full name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnerOrganizationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the TaxRptforOrgNbr for this account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnerPersonNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the TaxRptforPersNbr for this account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SignerName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The person's full name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SignerPersonNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the TaxRptforPersNbr for the signer of this account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaxOwner" nillable="true" type="tns:TaxOwner"/>
+  <xs:complexType name="ArrayOfYear">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Year" nillable="true" type="tns:Year"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfYear" nillable="true" type="tns:ArrayOfYear"/>
+  <xs:complexType name="Year">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific year containing totals for an account.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountYTDHistoryInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="YTDTypes" nillable="true" type="tns:ArrayOfYTDType">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Repeating Tag For Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="YearNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the year for which the following data belong.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Year" nillable="true" type="tns:Year"/>
+  <xs:complexType name="ArrayOfYTDType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="YTDType" nillable="true" type="tns:YTDType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfYTDType" nillable="true" type="tns:ArrayOfYTDType"/>
+  <xs:complexType name="YTDType">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific YTD type.
+            </summary>
+            <remarks>This class is used by the <see cref="T:Year" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TotalYTDAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The total YTD dollar amount for the YTD Type. Presented as an absolute value.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="YTDTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the YTD Type Code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="YTDTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The description for the YTD Type Code as defined in the YTDTyp table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="YTDType" nillable="true" type="tns:YTDType"/>
+  <xs:complexType name="ArrayOfEAgreementOrg">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EAgreementOrg" nillable="true" type="tns:EAgreementOrg"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEAgreementOrg" nillable="true" type="tns:ArrayOfEAgreementOrg"/>
+  <xs:complexType name="EAgreementOrg">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            this identifies the related organization(s) that can be linked to an existing electronic agreement.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OrganizationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            identifies the OrgNbr  that can be linked to an existing electronic agreement.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EAgreementOrg" nillable="true" type="tns:EAgreementOrg"/>
+  <xs:complexType name="ArrayOfPersOrgAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgAddress" nillable="true" type="tns:PersOrgAddress"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgAddress" nillable="true" type="tns:ArrayOfPersOrgAddress"/>
+  <xs:complexType name="PersOrgAddress">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            A person or org's detailed address information.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressLines" nillable="true" type="tns:ArrayOfPersOrgAddressLine">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag for multiple address lines.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attributes indicates the unique address number of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressUseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the address use, e.g., PRI = Primary, SEA = Seasonal, BUS = Business.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CensusTractNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Census Tract Number from the Census Bureau.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CityName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The city name of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Country Code is used to identify the country of the address, e.g., USA.
+            Valid values are defined by CTRY table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountrySubdivisionCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Country Subdivision Code is used to identify the subdivision of a country.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsElectronic" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates whether or not this is an electronic address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MailCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The country mail code for non-U.S. addresses.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SMSANumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Metropolitan Statistical Number for this address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SeasonalAddress" nillable="true" type="tns:SeasonalAddress">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            This field identifies seasonal address information.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StateCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The state code for the address.  Valid values are defined by STATE table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The 5-digit ZIP code of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ZipSuffix" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The 4-digit ZIP code suffix of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgAddress" nillable="true" type="tns:PersOrgAddress"/>
+  <xs:complexType name="ArrayOfPersOrgAddressLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgAddressLine" nillable="true" type="tns:PersOrgAddressLine"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgAddressLine" nillable="true" type="tns:ArrayOfPersOrgAddressLine"/>
+  <xs:complexType name="PersOrgAddressLine">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The address line information for a PersOrgAddress.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersOrgAddress" /> class.</remarks>
+            <tocexclude />
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressLineLastUpdatedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Last Date when Adress is Updated.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the line number of the record.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineText" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The address line text, e.g., 805 South St.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the address line type, e.g., ST = Street, APTN = Apartment.
+            Valid values are defined by ADDRLINETYP table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgAddressLine" nillable="true" type="tns:PersOrgAddressLine"/>
+  <xs:complexType name="SeasonalAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Start Date is the start date for a seasonal address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StartDayNbr" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Start Day Number is the day of the month the address starts.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StartMonthCd" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Start Month Code is the user assigned code that identifies the start date for an address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StopDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Stop Date is the stop date for a seasonal address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StopDayNbr" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Stop Day Number is the day of the month the address stops.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StopMonthCd" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Stop Month Code is the user assigned code that identifies the stop month of an address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SeasonalAddress" nillable="true" type="tns:SeasonalAddress"/>
+  <xs:complexType name="ArrayOfSecondaryStatementAccountNumber">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SecondaryStatementAccountNumber" nillable="true" type="tns:SecondaryStatementAccountNumber"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSecondaryStatementAccountNumber" nillable="true" type="tns:ArrayOfSecondaryStatementAccountNumber"/>
+  <xs:complexType name="SecondaryStatementAccountNumber">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            A specific Secondary statement account number of the combined statement
+            &lt;/summary>
+            &lt;remarks>
+            This class is used by the &lt;see cref="T:AccountDetailInquiryResponse" /> class.
+            &lt;/remarks></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SecondaryStatementAccount" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Secondary statement account number of the combined statement
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SecondaryStatementAccountNumber" nillable="true" type="tns:SecondaryStatementAccountNumber"/>
+  <xs:complexType name="ArrayOfSummaryAccountNumber">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SummaryAccountNumber" nillable="true" type="tns:SummaryAccountNumber"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSummaryAccountNumber" nillable="true" type="tns:ArrayOfSummaryAccountNumber"/>
+  <xs:complexType name="SummaryAccountNumber">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag for Summary Account information section
+            &lt;/summary>
+            &lt;remarks>
+            This class is used by the &lt;see cref="T:AccountDetailInquiryResponse" /> class.
+            &lt;/remarks></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SummaryAccount" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Summary account number of the combined statement. 
+            Available only for Primary Statement Account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SummaryAccountNumber" nillable="true" type="tns:SummaryAccountNumber"/>
+  <xs:complexType name="CurrentMailingAddress">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The wrapper tag for the entire set of Current mailing addressess.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MailAddressLines" nillable="true" type="tns:ArrayOfMailAddressLine">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper for multiple address lines
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CurrentMailingAddress" nillable="true" type="tns:CurrentMailingAddress"/>
+  <xs:complexType name="ArrayOfMailAddressLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MailAddressLine" nillable="true" type="tns:MailAddressLine"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMailAddressLine" nillable="true" type="tns:ArrayOfMailAddressLine"/>
+  <xs:complexType name="MailAddressLine">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The wrapper tag for the entire set of Mail Address Lines.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MailAddrLine" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address line text including the owner, care of, address, state, zip, country as applicable based on the address format.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MailAddressLine" nillable="true" type="tns:MailAddressLine"/>
+  <xs:complexType name="ArrayOfRoleDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RoleDetail" nillable="true" type="tns:RoleDetail"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRoleDetail" nillable="true" type="tns:ArrayOfRoleDetail"/>
+  <xs:complexType name="RoleDetail">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The role detail for an account.
+            &lt;para>&lt;!-- Failed to insert some or all of included XML -->&lt;/para>
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CanTransact" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies if the person or organization can transact with the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the entity name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies person number or organization number (depending on entityTypCd).
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the entity type code, e.g., PERS = Person, ORG = Organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsEmployeeRole" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies if this role is considered an employee role.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RoleCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the role code for this entity and account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RoleDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Tag value contains the role description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RoleDetail" nillable="true" type="tns:RoleDetail"/>
+  <xs:complexType name="ArrayOfTaxRptOverride">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxRptOverride" nillable="true" type="tns:TaxRptOverride"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTaxRptOverride" nillable="true" type="tns:ArrayOfTaxRptOverride"/>
+  <xs:complexType name="TaxRptOverride">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            tax reporting override information
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountRoleCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies override account role of the person or organization on the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Person Number or Organization Number
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indentifies the Entity type code 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxReportingTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the tax reporting type code for entity and account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaxRptOverride" nillable="true" type="tns:TaxRptOverride"/>
+  <xs:complexType name="ArrayOfSeasonalAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SeasonalAddress" nillable="true" type="tns:SeasonalAddress"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSeasonalAddress" nillable="true" type="tns:ArrayOfSeasonalAddress"/>
+  <xs:complexType name="ArrayOfCreditScoreHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CreditScoreHistory" nillable="true" type="tns:CreditScoreHistory"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCreditScoreHistory" nillable="true" type="tns:ArrayOfCreditScoreHistory"/>
+  <xs:complexType name="CreditScoreHistory">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Common class used to update credit score information for an entity.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreditOrganizationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The organization number of the credit bureau company the score was from.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreditScore" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The credit score for the person
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ScoreDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date the score was pulled from the credit bureau FORMAT Attribute identifies an alternative date format.
+            Default date format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreditScoreHistory" nillable="true" type="tns:CreditScoreHistory"/>
+  <xs:complexType name="OrganizationSIC">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            An organization's standard industry code information.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="NAICSNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The NAICS number that has been assigned to this organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SICCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The SIC code that has been assigned to this organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SICSubCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The SIC sub code that has been assigned to this organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrganizationSIC" nillable="true" type="tns:OrganizationSIC"/>
+  <xs:complexType name="EntityImage">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Represents an image record for a given entity.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntityNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Attribute identifies the DNA person number or organization number (depending on the entityTypCd).
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Attribute identifies the entity type for the request. Valid value is PERS = Person.
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ImageNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Attribute identifies the image to update. This transaction only supports adds so this attribute should be left blank.
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ImageUseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Attribute identifies the document type. Valid values are in the DocTyp table.
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EntityImage" nillable="true" type="tns:EntityImage"/>
+  <xs:complexType name="ArrayOfPersonAgreementAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonAgreementAccount" nillable="true" type="tns:PersonAgreementAccount"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersonAgreementAccount" nillable="true" type="tns:ArrayOfPersonAgreementAccount"/>
+  <xs:complexType name="PersonAgreementAccount">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific account linked to an agreement.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonInquiryAgreement" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccessTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the access type or agreement type for the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountCurrencyCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies product type currency default. Ex. USD, CDN.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the account number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AllowCrossAccountTransfer" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies whether a cross-account transfer is allowed as specified in the AcctAgreementPers or AgreePersAccessTypAcct table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CrossAccountDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains text describing the cross transfer account to the agreement person.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CycleDepositLimitAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the deposit limit amount as specified in the AcctAgreementPers or AgreePersAccessTypAcct table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CycleWithdrawalLimitAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the withdrawal limit amount as specified in the AcctAgreementPers or AgreePersAccessTyp Acct table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DepositAllowed" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If cycleDepositLimitAmt &amp;gt; 0 then this attribute is set to Y, otherwise N
+            The tag value contains the minor type product description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MajorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the major account type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the minor account type code.  
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ProductDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The tag value contains the minor type product description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="WithdrawalAllowed" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If cycleWthdlLimitAmt &amp;gt; 0 then this attribute is set to Y, otherwise N
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonAgreementAccount" nillable="true" type="tns:PersonAgreementAccount"/>
+  <xs:complexType name="ArrayOfAgreementAccessType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AgreementAccessType" nillable="true" type="tns:AgreementAccessType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAgreementAccessType" nillable="true" type="tns:ArrayOfAgreementAccessType"/>
+  <xs:complexType name="AgreementAccessType">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Agreement Access Tpye Class.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccessTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            This attribute that identifies eAgreement type to be created or maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsDisclaimer" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Boolean indicating whether agreement disclaimer has been read.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsEStatementDeliveryIndicator" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            This tag identifies if the member wants to opt in/out of E-statements.  
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastSuccessfulAccessDateTime" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date of the last successful agreement access.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AgreementAccessType" nillable="true" type="tns:AgreementAccessType"/>
+  <xs:complexType name="ArrayOfPersOrgElectronicAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgElectronicAddress" nillable="true" type="tns:PersOrgElectronicAddress"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgElectronicAddress" nillable="true" type="tns:ArrayOfPersOrgElectronicAddress"/>
+  <xs:complexType name="PersOrgElectronicAddress">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Contains electronic address information for a person or org.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attributes indicates the unique address number of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressUseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the email address use code type, e.g., WORK = Work Email, BEML = Primary Email.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ElectronicAddressLines" nillable="true" type="tns:ArrayOfPersOrgElectronicAddressLine">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag containing one or more electronic address lines.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsElectronic" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates that this is an electronic address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgElectronicAddress" nillable="true" type="tns:PersOrgElectronicAddress"/>
+  <xs:complexType name="ArrayOfPersOrgElectronicAddressLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgElectronicAddressLine" nillable="true" type="tns:PersOrgElectronicAddressLine"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgElectronicAddressLine" nillable="true" type="tns:ArrayOfPersOrgElectronicAddressLine"/>
+  <xs:complexType name="PersOrgElectronicAddressLine">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The address line information for an electronic address.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersOrgElectronicAddress" /> class.</remarks>
+            <tocexclude />
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressLineLastUpdatedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Last Date when Adress is Updated.
+            This field is obsolete for CAPR 7707 (PersonMaintenanceRequest),7759 (OrgMaintenanceRequest) maintenance request.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the line number of the record.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineText" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The address line text, e.g., johnsmith@somewhere.com.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AddressLineTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the address line type, e.g., ATTN = Attention.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgElectronicAddressLine" nillable="true" type="tns:PersOrgElectronicAddressLine"/>
+  <xs:complexType name="Name">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Contains the name information for a given person.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Person's first name (required).
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            Person's last name (required)
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiddleInitial" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Person's middle initial.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Person's middle name.  If you provide MdlName and not MdlInit then the api will populate the Pers.MdlInit 
+            column in the database with the first letter provided in the MdlName tag.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NickName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Person's nickname.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SalutationCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the salutation code for the person.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Suffix" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the suffix for the person's name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Name" nillable="true" type="tns:Name"/>
+  <xs:complexType name="ArrayOfPersonPersType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonPersType" nillable="true" type="tns:PersonPersType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersonPersType" nillable="true" type="tns:ArrayOfPersonPersType"/>
+  <xs:complexType name="PersonPersType">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A person type record associated with this person.
+            </summary>
+            <remarks>This class is used by the <see cref="!:PersonDetailInquiryResponse and PersonDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="TypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the PersTyp assigned to the Person.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonPersType" nillable="true" type="tns:PersonPersType"/>
+  <xs:complexType name="ArrayOfPersOrgPhone">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersOrgPhone" nillable="true" type="tns:PersOrgPhone"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersOrgPhone" nillable="true" type="tns:ArrayOfPersOrgPhone"/>
+  <xs:complexType name="PersOrgPhone">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Phone information for a person or org.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AreaCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The area code for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the country code, e.g., USA.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Exchange" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The exchange for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ForeignPhoneNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If this phone number is a non-U.S. phone, this will contain the full phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsPreferred" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the Phone Number is preferred phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Phone Code Attribute identifies the phone code for a country.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneExtension" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The extension for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneLastUpdatedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Last Date when Phone is Updated.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneSequenceNumber" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Phone sequence number is a system assigned number to uniquely identity the phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneUseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the phone number's usage code, e.g., BUS = Business.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersOrgPhone" nillable="true" type="tns:PersOrgPhone"/>
+  <xs:complexType name="ArrayOfOrganizationOwnerOrganization">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrganizationOwnerOrganization" nillable="true" type="tns:OrganizationOwnerOrganization"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrganizationOwnerOrganization" nillable="true" type="tns:ArrayOfOrganizationOwnerOrganization"/>
+  <xs:complexType name="OrganizationOwnerOrganization">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            An owner Organiozation's record for an organization.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OwnerOrganizationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the unique organization number identifier.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnershipPercent" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the member number associated with this organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrganizationOwnerOrganization" nillable="true" type="tns:OrganizationOwnerOrganization"/>
+  <xs:complexType name="ArrayOfOrganizationOwnerPerson">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrganizationOwnerPerson" nillable="true" type="tns:OrganizationOwnerPerson"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrganizationOwnerPerson" nillable="true" type="tns:ArrayOfOrganizationOwnerPerson"/>
+  <xs:complexType name="OrganizationOwnerPerson">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            An Owner Person's record for an organization.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsControllingPerson" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies whether the organization has been validated in the Core application.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnerPersonNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the unique organization number identifier.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnershipPercent" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the member number associated with this organization.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrganizationOwnerPerson" nillable="true" type="tns:OrganizationOwnerPerson"/>
+  <xs:complexType name="ArrayOfForeignTaxIdInquiry">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignTaxIdInquiry" nillable="true" type="tns:ForeignTaxIdInquiry"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfForeignTaxIdInquiry" nillable="true" type="tns:ArrayOfForeignTaxIdInquiry"/>
+  <xs:complexType name="ForeignTaxIdInquiry">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The Foreign Tax Id type information being created or maintained for this Person/Organization.
+            </summary>
+            <remarks>This class is used by the <see cref="T:OrgDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Country Code to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIDTyp" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID type to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdApplyDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID apply date to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdCertDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID certification date to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdNbr" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ForeignTaxIdInquiry" nillable="true" type="tns:ForeignTaxIdInquiry"/>
+  <xs:complexType name="ArrayOfAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Address" nillable="true" type="tns:Address"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAddress" nillable="true" type="tns:ArrayOfAddress"/>
+  <xs:complexType name="Address">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Class containing address information for a given entity.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressLines" nillable="true" type="tns:ArrayOfAddressLine">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag that identifies multiple address lines.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CensusTractNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Census Tract Number from the Census Bureau.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CityName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The city name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the country this address resides.  Will be validated against the Ctry table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountrySubdivisionCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The country subdivision code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAddressChange" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates whether address is changed or minor updated
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MailCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Country mail code for non-U.S. addresses.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SMSANumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Metropolitan Statistical Number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SeasonalAddress" nillable="true" type="tns:ArrayOfSeasonalAddress">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            This field identifies seasonal address information.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShouldUpdate" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates if the address should be updated.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="State" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            State code Will be validated against the State table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the address use.  Will be validated against the AddrUse table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ZipCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            5-digit ZIP code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ZipSuffix" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The 4-digit ZIP code suffix of the address.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Address" nillable="true" type="tns:Address"/>
+  <xs:complexType name="ArrayOfAddressLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AddressLine" nillable="true" type="tns:AddressLine"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAddressLine" nillable="true" type="tns:ArrayOfAddressLine"/>
+  <xs:complexType name="AddressLine">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The address line code and value for a given address.
+            </summary>
+            <remarks>This class is used by the <see cref="T:Address" /> class.</remarks>
+            <tocexclude />
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddrLineTypCd" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the address line type.  Will be validated against the AddrLineTyp table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Tag value contains the address line.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AddressLine" nillable="true" type="tns:AddressLine"/>
+  <xs:complexType name="ArrayOfForeignTaxId">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ForeignTaxId" nillable="true" type="tns:ForeignTaxId"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfForeignTaxId" nillable="true" type="tns:ArrayOfForeignTaxId"/>
+  <xs:complexType name="ForeignTaxId">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The person type information being created or maintained for this person.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonMaintenanceRequest" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Country Code to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIDTyp" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID type to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdApplyDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID apply date to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdCertDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID certification date to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdNbr" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Tax ID to assign.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ForeignTaxId" nillable="true" type="tns:ForeignTaxId"/>
+  <xs:complexType name="Country">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The country code and value for a given entity.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the country code for the entity.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The country description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Country" nillable="true" type="tns:Country"/>
+  <xs:complexType name="State">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Class representing the U.S. state code and name.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="StateCd" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The state code abbreviation.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The state name.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="State" nillable="true" type="tns:State"/>
+  <xs:complexType name="ArrayOfPhone">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Phone" nillable="true" type="tns:Phone"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPhone" nillable="true" type="tns:ArrayOfPhone"/>
+  <xs:complexType name="Phone">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Class representing a phone number and its attributes.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AreaCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The area code for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the country this phone number resides.  Will be validated against the Ctry table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Exchange" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The exchange for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Extension" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The extension for this phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ForeignPhoneNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The non U.S. phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsPreferred" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the Phone Number is preferred phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Phone code for country.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneLastUpdatedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Last Date when Phone is Updated.
+            This field is obsolete for CAPR 7707 (PersonMaintenanceRequest),7714 (PersonSearchRequest),
+            7719 (AccountMaintenanceRequest),7756 (OrganizationSearchRequest),7759 (OrgMaintenanceRequest) maintenance request.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PhoneSequenceNumber" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Phone sequence number is a system assigned number to uniquely identity the phone number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShouldDelete" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies whether or not deleted. Default value is N.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShouldUpdate" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates if the phone number should be updated.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UsageCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the phone number usage.  Will be validated against the PhoneUse table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Phone" nillable="true" type="tns:Phone"/>
+  <xs:complexType name="ArrayOfExternalOrganizationIdentification">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExternalOrganizationIdentification" nillable="true" type="tns:ExternalOrganizationIdentification"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExternalOrganizationIdentification" nillable="true" type="tns:ArrayOfExternalOrganizationIdentification"/>
+  <xs:complexType name="ExternalOrganizationIdentification">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific external org ID type linked to the account.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonAgreementAccountInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountExternalOrganizationName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             The tag value contains the OrgName.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.EffDate. Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalAccountNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.ExtAcctNbr.
+            If extIdTypCd equals 3RDP then this tag value will be returned as it is stored in the database, encrypted.
+            To return this column in clear text you must set the ApplCalcVar (CalcVarCd = 3RDP) to Y for the Appl using the Core API.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalAccountOrganizationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             Database value stored in AcctExtOrgId.ExtOrgNbr.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.ExtAmt.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalAmountEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.ExtAmtEffDate. Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalIdTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.ExtIdTypCd. Value is also valid against the ExtIdTyp table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalIdTypeCodeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.ExtIdTypCd. Value is also valid against the ExtIdTyp table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InActiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Database value stored in AcctExtOrgId.InactiveDate. Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExternalOrganizationIdentification" nillable="true" type="tns:ExternalOrganizationIdentification"/>
+  <xs:complexType name="PersDemographics">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Identifies a person's demographic and other miscellaneous information.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Date the person was added to the database.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreditRatingCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies credit rating code for the person.
+            Valid values are defined by CREDITRATING table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreditReportCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the credit report code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CustomerKeyword" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The customer key word.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CustomerTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the current customer type code. Valid values in the CUSTTYP table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CustomerTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The customer type description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DateOfBirth" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date of birth for the person.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DateOfDeath" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The date of death for the person.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EducationLevel" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the person's education level code.  Valid values are defined by EDUCLEV table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ForeignCertExpireDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the date the foreign certificate expires.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="GraduationDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IncomeLevel" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the person's income level code.  Valid values are defined by INCOMELEV table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAllowPromCallsMsgs" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates whether this person has opted for promotional calls and messages. Valid values are Y and N. (Default Value = N, Optional)
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsValid" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies whether this person has been successfully validated.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MailTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the mail type code as defined in the MAILTYP table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MemberGroupCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the member group code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NumberOfDependents" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The number of dependents for the person.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Occupation" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies that person's occupation code.  Valid values are defined by OCCPTN table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="OwnOrRent" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies whether the person owns or rents a home.  Valid values are O = Own, R = Rent.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PreferredLocaleCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates Locale Code to be used for language and format with communication and media for the person.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PrivacyRequested" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates whether this person has requested the privacy option.  Valid values are Y, N.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PurgeFlag" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Purge Y or N. Default is N.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RemoteDepositRisk" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The tag indicates the risk profile of the member for Remote Deposit Capture feature for cheques that can be deposited by a RDC member
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Report1042sFlag" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Report 1042 flag.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ShareAccountNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The account number of the share account for this specific member.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SpousePersonNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the Spouse of the person (if on file).
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxCountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the country that the Tax Id is for.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxCountryDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The description of the country.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The tax identification number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdApplyDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the date of tax ID application.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdCertDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute contains the date of tax ID certification.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdDisplay" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The display value for the tax ID.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TaxIdIsMasked" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute to identify whether or not the TaxId is being returned masked for security purposes. 
+            This masking comes from an institution level setting on the database.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersDemographics" nillable="true" type="tns:PersDemographics"/>
+  <xs:complexType name="ArrayOfPersonDetailPersExtOrgId">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonDetailPersExtOrgId" nillable="true" type="tns:PersonDetailPersExtOrgId"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersonDetailPersExtOrgId" nillable="true" type="tns:ArrayOfPersonDetailPersExtOrgId"/>
+  <xs:complexType name="PersonDetailPersExtOrgId">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            An external organization related to this person.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonAgreementAccountInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Effective date defined in the PersExtOrgId table. Format MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            ExtId defined in the PersExtOrgId table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalIdTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            ExtIdTypCd defined in the PersExtOrgid table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalOrgNumber" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            OrgNbr defined in the PersExtOrgId table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonDetailPersExtOrgId" nillable="true" type="tns:PersonDetailPersExtOrgId"/>
+  <xs:complexType name="ArrayOfPersonPersId">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonPersId" nillable="true" type="tns:PersonPersId"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersonPersId" nillable="true" type="tns:ArrayOfPersonPersId"/>
+  <xs:complexType name="PersonPersId">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific identification record for this person.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersonDetailInquiryResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the country code for the person ID.  Valid values are defined in the CTRY table
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CountrySubdivisionCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Country sub-division code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The persIdTypCd description as defined in the PERSIDTYP table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExpireDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Value contains the expiration date for the person ID.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IdValue" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The value of the identification.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IssueDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Value contains the issue date for the person ID.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastVerificationDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Value contains the last verification date for the person ID.  Format is MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PersIdTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the person identification type code. Valid values are defined by PERSIDTYP table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StateCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the state code for the person ID.  Valid values are defined in the STATE table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonPersId" nillable="true" type="tns:PersonPersId"/>
+  <xs:complexType name="ArrayOfEmailAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EmailAddress" nillable="true" type="tns:EmailAddress"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEmailAddress" nillable="true" type="tns:ArrayOfEmailAddress"/>
+  <xs:complexType name="EmailAddress">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Class containing address information for a given entity.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElectronicAddressLines" nillable="true" type="tns:ArrayOfElectronicAddressLine"/>
+      <xs:element minOccurs="0" name="IsDelete" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates whether or not the the email address is being deleted. Default is false.
+             &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="addrUseCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute indicates the address use, e.g., WORK = Work Email, BEML = Primary Email.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EmailAddress" nillable="true" type="tns:EmailAddress"/>
+  <xs:complexType name="ArrayOfElectronicAddressLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ElectronicAddressLine" nillable="true" type="tns:ElectronicAddressLine"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfElectronicAddressLine" nillable="true" type="tns:ArrayOfElectronicAddressLine"/>
+  <xs:complexType name="ElectronicAddressLine">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            The address line information for an electronic address.
+            </summary>
+            <remarks>This class is used by the <see cref="T:PersOrgElectronicAddress" /> class.</remarks>
+            <tocexclude />
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddrLine" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The address line text, e.g., johnsmith@somewhere.com.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ElectronicAddressLine" nillable="true" type="tns:ElectronicAddressLine"/>
+  <xs:complexType name="ArrayOfProductInquiry">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProductInquiry" nillable="true" type="tns:ProductInquiry"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProductInquiry" nillable="true" type="tns:ArrayOfProductInquiry"/>
+  <xs:complexType name="ProductInquiry">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Common criteria for a product list or product detail inquiry.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MajorAccountCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the major account category type code for the request. 
+            If you are searching by category code then do not provide the previous two attributes (mjAcctTypCd, miAcctTypCd) in the request.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MajorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the major account type for the request.  Sample values are CK = Checking, SAV = Savings.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the minor account type to list products for.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProductInquiry" nillable="true" type="tns:ProductInquiry"/>
+</xs:schema>

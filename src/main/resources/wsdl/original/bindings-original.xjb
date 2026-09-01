@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="3.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb">
+
+  <jaxb:globalBindings generateElementProperty="false"/>
+
+  <jaxb:bindings schemaLocation="CoreApiService_7.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_transactionmaintenance.response"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_8.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_transactionmaintenance.request"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_10.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_nowmultiaccountbalanceinquiry.response"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_11.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_nowmultiaccountbalanceinquiry.request"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_18.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_accountinterestdetailsinquiry.response"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_19.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_messages_accountinterestdetailsinquiry.request"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_27.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_cdnapiacct.response"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_26.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_extension.request"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_29.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.opensolutions_coreapiservice_services_extension.response"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="CoreApiService_31.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="org.datacontract.schemas._2004._07.coreapiextension_messages.bills.extension"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+</jaxb:bindings>

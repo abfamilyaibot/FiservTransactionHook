@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.CustomerPayeeList" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.CustomerPayeeList">
+  <xs:complexType name="ArrayOfVendor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vendor" nillable="true" type="tns:Vendor"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVendor" nillable="true" type="tns:ArrayOfVendor"/>
+  <xs:complexType name="Vendor">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CRATaxPaymentTypes" nillable="true" type="tns:ArrayOfCRATaxPaymentType"/>
+      <xs:element minOccurs="0" name="CRATaxTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CategoryCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="IsCRATaxPayee" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="VendorAccountNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorId" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorNickname" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Vendor" nillable="true" type="tns:Vendor"/>
+  <xs:complexType name="ArrayOfCRATaxPaymentType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CRATaxPaymentType" nillable="true" type="tns:CRATaxPaymentType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCRATaxPaymentType" nillable="true" type="tns:ArrayOfCRATaxPaymentType"/>
+  <xs:complexType name="CRATaxPaymentType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CRATaxPaymentTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CRATaxPaymentTypeDescription" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CRATaxPaymentType" nillable="true" type="tns:CRATaxPaymentType"/>
+</xs:schema>

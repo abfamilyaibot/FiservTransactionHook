@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayMaintenance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayMaintenance">
+  <xs:complexType name="ArrayOfBillPayAllotments">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BillPayAllotments" nillable="true" type="tns:BillPayAllotments"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBillPayAllotments" nillable="true" type="tns:ArrayOfBillPayAllotments"/>
+  <xs:complexType name="BillPayAllotments">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AllotmentType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="CRATaxPayment" nillable="true" type="tns:CRATaxPayment"/>
+      <xs:element minOccurs="0" name="CallPeriodCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrencyCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="SourceTraceNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="TransactionSourceCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorAccountNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorID" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BillPayAllotments" nillable="true" type="tns:BillPayAllotments"/>
+  <xs:complexType name="CRATaxPayment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AdjustedGSTAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="ArrearsAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="AuditAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="BillPayCRATaxPaymentTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ContactName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ContactPhoneNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ContactTitle" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EmployeeCount" nillable="true" type="xs:int"/>
+      <xs:element minOccurs="0" name="FileDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="FiscalEndDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="GrossPayroll" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="InputTaxCredit" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="InstallmentAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="InstallmentPaid" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="NetTaxRemittance" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="NewHousingGSTRebateAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="OnFileAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="OtherPayments" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="PayerName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PeriodEndDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="PeriodStartDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="PropertyTax" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="RebateAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="SalesOtherRevenue" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="TaxTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TaxableSupplies" nillable="true" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CRATaxPayment" nillable="true" type="tns:CRATaxPayment"/>
+  <xs:complexType name="ArrayOfBillPaymentResponseAllotments">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BillPaymentResponseAllotments" nillable="true" type="tns:BillPaymentResponseAllotments"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBillPaymentResponseAllotments" nillable="true" type="tns:ArrayOfBillPaymentResponseAllotments"/>
+  <xs:complexType name="BillPaymentResponseAllotments">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AllotmentNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="CallPeriodCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="FirstMonthCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TransactionNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="VendorAccountNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="VendorName" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BillPaymentResponseAllotments" nillable="true" type="tns:BillPaymentResponseAllotments"/>
+</xs:schema>

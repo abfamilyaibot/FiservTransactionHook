@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Application" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Application">
+  <xs:complexType name="Internationalization">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag for the culture code attribute.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the culture code used for getting local text, formats, etc.  
+            Valid values defined in the CULTURE table.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Internationalization" nillable="true" type="tns:Internationalization"/>
+</xs:schema>

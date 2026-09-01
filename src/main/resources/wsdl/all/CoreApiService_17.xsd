@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountLoanExceptionPaymentDetailInquiry.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountLoanExceptionPaymentDetailInquiry.Response">
+  <xs:complexType name="ArrayOfDueDate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DueDate" nillable="true" type="tns:DueDate"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDueDate" nillable="true" type="tns:ArrayOfDueDate"/>
+  <xs:complexType name="DueDate">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            DueDate Class Records
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BalanceTypes" nillable="true" type="tns:ArrayOfBalanceType">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Array of BalanceType objects
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PaymentDueDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the each due date of payment.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DueDate" nillable="true" type="tns:DueDate"/>
+  <xs:complexType name="ArrayOfBalanceType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BalanceType" nillable="true" type="tns:BalanceType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBalanceType" nillable="true" type="tns:ArrayOfBalanceType"/>
+  <xs:complexType name="BalanceType">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            BalanceType Class Records.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Balance Type Category for the transaction.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Balance Type for the transaction.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ReceivableAmountDue" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the receivable amount due.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ReceivableNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Receivable number for the receivable.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SubAccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the Sub-account number for Balance Category / Balance Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BalanceType" nillable="true" type="tns:BalanceType"/>
+</xs:schema>

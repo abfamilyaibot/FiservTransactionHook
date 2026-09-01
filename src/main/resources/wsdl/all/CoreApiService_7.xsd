@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.TransactionMaintenance.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.TransactionMaintenance.Response">
+  <xs:complexType name="ArrayOfTransaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" nillable="true" type="tns:Transaction"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTransaction" nillable="true" type="tns:ArrayOfTransaction"/>
+  <xs:complexType name="Transaction">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific transaction 
+            </summary>
+            <remarks>This class is used by the <see cref="T:TransactionMaintenanceResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Transaction Account Number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RtxnNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Transaction Number assigned to the transaction.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Transaction" nillable="true" type="tns:Transaction"/>
+</xs:schema>

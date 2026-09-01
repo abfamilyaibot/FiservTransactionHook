@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountBalanceVariableMaintenance.Request" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountBalanceVariableMaintenance.Request">
+  <xs:complexType name="AccountBalanceVariableMaintenanceAccount">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific account being created or maintained.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountBalanceVariableMaintenanceRequest" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the account number being maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccountSubAccountCalculationVariable" nillable="true" type="tns:AccountSubAccountCalculationVariable">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Account sub account calculation variable being created or maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Balance Category being maintained. Optional unless SubAccountNumber not provided.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Balance Type being maintained. Optional unless SubAccountNumber not provided.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsNextEarningDateNull" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If true, NextEarningDate will be updated to null. If false, NextEarningDate will be updated with the value if provided. Default is false.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NextEarningDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            AcctSubAcct Next Earning Date being maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SubAccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            SubAccount number being maintained. When not provided, BalanceCategoryCode and BalanceTypeCode are required.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountBalanceVariableMaintenanceAccount" nillable="true" type="tns:AccountBalanceVariableMaintenanceAccount"/>
+  <xs:complexType name="AccountSubAccountCalculationVariable">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific account sub account calculation variable being created or maintained.
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountBalanceVariableMaintenanceAccount" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CalculationTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Calcualtion Type being maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Calculation Variable being maintained.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableValue" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Calculation Variable Value.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableValueEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Calculation Variable Value Effective Date.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsCalculationVariablesToAccountLevel" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If true, all account level calculation variables are immediately activated for the given Balance Type/Calculation Type combination and remaining tags are ignored.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsInactivateAll" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            If true, all account level calculation variables are immediately inactivated for the given Balance Type/Calculation Type combination and remaining tags are ignored.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountSubAccountCalculationVariable" nillable="true" type="tns:AccountSubAccountCalculationVariable"/>
+</xs:schema>

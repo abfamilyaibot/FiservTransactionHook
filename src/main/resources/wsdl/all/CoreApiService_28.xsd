@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.CDNAPIAcct.Messages" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.CDNAPIAcct.Messages">
+  <xs:complexType name="Member">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Accounts" nillable="true" type="tns:ArrayOfAccount"/>
+      <xs:element minOccurs="0" name="branchOrgNbr" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="memberNbr" nillable="true" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Member" nillable="true" type="tns:Member"/>
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount"/>
+  <xs:complexType name="Account">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AcctActiveYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AcctCurrencyCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrRouteNbr" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrTransitNbr" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="EBustAcctYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExtAcctDesc" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExtAcctNbr" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ISOCurrencyCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PayeeName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TransferFromYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TransferToYN" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account"/>
+</xs:schema>

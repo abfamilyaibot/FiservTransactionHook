@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountSystemCodeResponse.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountSystemCodeResponse.Response">
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount"/>
+  <xs:complexType name="Account">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Account number, Major and Minor type codes and associated calculation variables
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The account number
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationCategories" nillable="true" type="tns:ArrayOfCalculationCategory">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            An array of Calculation Categories for given parameters
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Product" nillable="true" type="tns:Product">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The product is the major and minor account types
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account"/>
+  <xs:complexType name="ArrayOfCalculationCategory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CalculationCategory" nillable="true" type="tns:CalculationCategory"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCalculationCategory" nillable="true" type="tns:ArrayOfCalculationCategory"/>
+  <xs:complexType name="CalculationCategory">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The calculation category code, description and associated calculation types
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CalculationCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Category Code identifies the different types of calculations.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationCategoryDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The description of the calculation category code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationTypes" nillable="true" type="tns:ArrayOfCalculationType">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            An array of calculation types for a given calculation type code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CalculationCategory" nillable="true" type="tns:CalculationCategory"/>
+  <xs:complexType name="ArrayOfCalculationType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CalculationType" nillable="true" type="tns:CalculationType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCalculationType" nillable="true" type="tns:ArrayOfCalculationType"/>
+  <xs:complexType name="CalculationType">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The calculation type code and associated list of calculation variables
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CalculationTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Type Code identifies the valid calculation types.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariables" nillable="true" type="tns:ArrayOfCalculationVariable">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            An array of calculation variables for a given calculation type code
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CalculationType" nillable="true" type="tns:CalculationType"/>
+  <xs:complexType name="ArrayOfCalculationVariable">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CalculationVariable" nillable="true" type="tns:CalculationVariable"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCalculationVariable" nillable="true" type="tns:ArrayOfCalculationVariable"/>
+  <xs:complexType name="CalculationVariable">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Calculation variable details
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountOverrideYN" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Account Override Indicator indicates whether or not the calculation variable value can be overriden at the account level.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Variable Code identifies the valid type of variables.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Variable Name is the identification for the calculation variable.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CalculationVariableValue" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Variable Value specifies the actual value to be used by the Calculation Type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InactiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Inactive Date is the date that the value for the calculation is no longer effective.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAccountOverriddenYN" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Flag to determine if the calcvar has been overridden
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ValueEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Calculation Value Effective Date is the date the calculation value is effective.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CalculationVariable" nillable="true" type="tns:CalculationVariable"/>
+  <xs:complexType name="Product">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Major and Minor account type associated with the product
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MajorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             The Major Account Type Code identifies the valid major types.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            The Minor Account Type Code identifies the valid minor types.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Product" nillable="true" type="tns:Product"/>
+</xs:schema>

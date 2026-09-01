@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dep.integration.billpayment.hook.fiserv</groupId>
+    <artifactId>hook</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <log4j.version>2.20.0</log4j.version>
+        <ra.version>24.2.2.16</ra.version>
+        <!-- <jaxb2.maven.plugin.version>3.2.0</jaxb2.maven.plugin.version> -->
+        <maven.assembly.version>3.7.1</maven.assembly.version>
+        <skipTests>true</skipTests>
+    </properties>
+    <dependencies>
+
+
+        <dependency>
+            <groupId>com.dep.integration</groupId>
+            <artifactId>ra-commons</artifactId>
+            <version>${ra.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dep.integration</groupId>
+            <artifactId>ra-transportmanager</artifactId>
+            <version>${ra.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dep.integration</groupId>
+            <artifactId>ra-commonentity</artifactId>
+            <version>${ra.version}</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.18.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>jakarta.activation</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.sun.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-impl</artifactId>-->
+<!--            <version>2.3.3</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+<!--            <version>2.3.2</version>-->
+            <version>4.0.9</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <outputDirectory>${project.build.directory}/maven-classes</outputDirectory>
+        <testOutputDirectory>${project.build.directory}/maven-test-classes</testOutputDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven.assembly.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/distribution.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+                       <!-- <plugin> 
+                           <groupId>org.codehaus.mojo</groupId>
+                           <artifactId>jaxb2-maven-plugin</artifactId>
+                           <version>${jaxb2.maven.plugin.version}</version>
+                           <executions>
+                               <execution>
+                                   <id>xjc-coreapi</id>
+                                   <goals>
+                                       <goal>xjc</goal>
+                                   </goals>
+                                   <configuration>
+                                       <sources>
+                                           <source>${project.basedir}/src/main/resources/wsdl/transaction</source>
+                                       </sources>
+                                       <xjbSources>
+                                           <xjbSource>${project.basedir}/src/main/resources/wsdl/transaction/bindings.xjb</xjbSource>
+                                       </xjbSources>
+                                       <xjcSourceExcludeFilters>
+                                           <filter implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+                                               <patterns>
+                                                   <pattern>\.wsdl</pattern>
+                                                   <pattern>\.xjb</pattern>
+                                                   <pattern>\.xml</pattern>
+                                               </patterns>
+                                           </filter>
+                                       </xjcSourceExcludeFilters>
+                                   </configuration>
+                               </execution>
+                           </executions>
+                        </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

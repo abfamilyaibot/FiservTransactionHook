@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountRateHistoryMaintenance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountRateHistoryMaintenance">
+  <xs:import schemaLocation="CoreApiService_6.xsd" namespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services"/>
+  <xs:complexType name="ArrayOfBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Balance" nillable="true" type="tns:Balance"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBalance" nillable="true" type="tns:ArrayOfBalance"/>
+  <xs:complexType name="Balance">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag to identify account rate balance.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountRateHistories" nillable="true" type="tns:ArrayOfAccountRateHistory">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            List of Account Rate History to identify multiple rates being returned.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute to identify balance category code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute to identify balance type code.    
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Balance" nillable="true" type="tns:Balance"/>
+  <xs:complexType name="ArrayOfAccountRateHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountRateHistory" nillable="true" type="tns:AccountRateHistory"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccountRateHistory" nillable="true" type="tns:ArrayOfAccountRateHistory"/>
+  <xs:complexType name="AccountRateHistory">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            Wrapper tag to identify Account Rate History.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActionCode" type="q1:ActionCode" xmlns:q1="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Enum attribute to identify action code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Element to identify effective date.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IndexedDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute to identify Indexed Date. Format MM/DD/YYYY.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRate" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Element to identify interest rate of the account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsBackDate" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Element to identify if effective provided can be backdated or not
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsIndexed" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Element to identify indexed value is true or false. Default is false.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsTeaserRate" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Element to identify teaser rate is true or false. Default is false.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccountRateHistory" nillable="true" type="tns:AccountRateHistory"/>
+</xs:schema>

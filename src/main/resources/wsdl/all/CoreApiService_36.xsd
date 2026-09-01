@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DNA.VirtualCardAPI" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/DNA.VirtualCardAPI">
+  <xs:complexType name="CardAgreement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AgreementNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="PreviousAgreementNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="SuccessMessage" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CardAgreement" nillable="true" type="tns:CardAgreement"/>
+  <xs:complexType name="ArrayOfCardAgreementDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CardAgreementDetail" nillable="true" type="tns:CardAgreementDetail"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCardAgreementDetail" nillable="true" type="tns:ArrayOfCardAgreementDetail"/>
+  <xs:complexType name="CardAgreementDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AgreementNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AgreementTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AgreementTypeDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CardMembers" nillable="true" type="tns:ArrayOfCardMember"/>
+      <xs:element minOccurs="0" name="OwnerName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="OwnerNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="OwnerType" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PANNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="ServiceChargesAccountNumber" nillable="true" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CardAgreementDetail" nillable="true" type="tns:CardAgreementDetail"/>
+  <xs:complexType name="ArrayOfCardMember">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CardMember" nillable="true" type="tns:CardMember"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCardMember" nillable="true" type="tns:ArrayOfCardMember"/>
+  <xs:complexType name="CardMember">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ATMWithdrawalLimitAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="CardMemberIssues" nillable="true" type="tns:ArrayOfCardMemberIssue"/>
+      <xs:element minOccurs="0" name="CardMemberName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CombinedDailyWithdrawalLimitAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="DepositLimitAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="MemberNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="PersonNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="PinOffset" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PointOfSaleWithdrawalLimitAmount" nillable="true" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CardMember" nillable="true" type="tns:CardMember"/>
+  <xs:complexType name="ArrayOfCardMemberIssue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CardMemberIssue" nillable="true" type="tns:CardMemberIssue"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCardMemberIssue" nillable="true" type="tns:ArrayOfCardMemberIssue"/>
+  <xs:complexType name="CardMemberIssue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CardOrderabilityCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CardOrderabilityDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CardStatusDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CardStatusReasonCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CardStatusReasonDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentStatusCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExpireDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="IssueDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="IssueNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="StatusReasonFreeText" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CardMemberIssue" nillable="true" type="tns:CardMemberIssue"/>
+</xs:schema>

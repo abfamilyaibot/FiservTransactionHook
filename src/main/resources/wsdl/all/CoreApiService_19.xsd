@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountInterestDetailsInquiry.Request" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.AccountInterestDetailsInquiry.Request">
+  <xs:complexType name="ArrayOfBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Balance" nillable="true" type="tns:Balance"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBalance" nillable="true" type="tns:ArrayOfBalance"/>
+  <xs:complexType name="Balance">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Balance
+            </summary>
+            <remarks>This class is used by the <see cref="T:AccountInterestDetailsInquiryRequest" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BalanceCategoryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance category code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BalanceTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies balance type code for this balance.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Balance" nillable="true" type="tns:Balance"/>
+</xs:schema>

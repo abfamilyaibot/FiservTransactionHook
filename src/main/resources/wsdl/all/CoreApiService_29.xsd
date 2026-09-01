@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Extension.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Extension.Response">
+  <xs:complexType name="ArrayOfGeneratedRTXN">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GeneratedRTXN" nillable="true" type="tns:GeneratedRTXN"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGeneratedRTXN" nillable="true" type="tns:ArrayOfGeneratedRTXN"/>
+  <xs:complexType name="GeneratedRTXN">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GenRtxnTypDesc" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GenTranAmt" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="RtxnTypCd" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeneratedRTXN" nillable="true" type="tns:GeneratedRTXN"/>
+  <xs:complexType name="ArrayOfProdMajor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProdMajor" nillable="true" type="tns:ProdMajor"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProdMajor" nillable="true" type="tns:ArrayOfProdMajor"/>
+  <xs:complexType name="ProdMajor">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MajorDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MjAcctCatCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MjAcctTypCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ProductMinors" nillable="true" type="tns:ArrayOfProdMinor"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProdMajor" nillable="true" type="tns:ProdMajor"/>
+  <xs:complexType name="ArrayOfProdMinor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProdMinor" nillable="true" type="tns:ProdMinor"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProdMinor" nillable="true" type="tns:ArrayOfProdMinor"/>
+  <xs:complexType name="ProdMinor">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChecksYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="DefaultTermDays" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="DisplayDesc" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MaxTermDays" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="MiAcctTypCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MinTermDays" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="MinorDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="OfferStartDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="OfferStopDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="PrimaryYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtmtPlanTypCd" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProdMinor" nillable="true" type="tns:ProdMinor"/>
+  <xs:complexType name="ArrayOfRtmtPlan">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RtmtPlan" nillable="true" type="tns:RtmtPlan"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRtmtPlan" nillable="true" type="tns:ArrayOfRtmtPlan"/>
+  <xs:complexType name="RtmtPlan">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AcctNbr" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="RtmtPlanTypCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Years" nillable="true" type="tns:ArrayOfYear"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RtmtPlan" nillable="true" type="tns:RtmtPlan"/>
+  <xs:complexType name="ArrayOfYear">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Year" nillable="true" type="tns:Year"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfYear" nillable="true" type="tns:ArrayOfYear"/>
+  <xs:complexType name="Year">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RetirementTransactionCategorys" nillable="true" type="tns:ArrayOfRtmtTxnCat"/>
+      <xs:element minOccurs="0" name="YearNbr" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Year" nillable="true" type="tns:Year"/>
+  <xs:complexType name="ArrayOfRtmtTxnCat">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RtmtTxnCat" nillable="true" type="tns:RtmtTxnCat"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRtmtTxnCat" nillable="true" type="tns:ArrayOfRtmtTxnCat"/>
+  <xs:complexType name="RtmtTxnCat">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ContribYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RolloverYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RptYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RtmtTxnCatCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TaxableYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TotalAmt" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="WithholdYN" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RtmtTxnCat" nillable="true" type="tns:RtmtTxnCat"/>
+  <xs:complexType name="ArrayOfRetirementAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RetirementAccount" nillable="true" type="tns:RetirementAccount"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRetirementAccount" nillable="true" type="tns:ArrayOfRetirementAccount"/>
+  <xs:complexType name="RetirementAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RetirementAcctNbr" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="LockedInYN" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GroupBalance" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="WithdrawalYTD" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="ContributionYTD" nillable="true" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="RetirementPlanCatCd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="RetirementContractNbr" nillable="true" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RetirementAccount" nillable="true" type="tns:RetirementAccount"/>
+  <xs:complexType name="ArrayOfAccessType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccessType" nillable="true" type="tns:AccessType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccessType" nillable="true" type="tns:ArrayOfAccessType"/>
+  <xs:complexType name="AccessType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccessTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Accounts" nillable="true" type="tns:ArrayOfAccount"/>
+      <xs:element minOccurs="0" name="IsActive" nillable="true" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccessType" nillable="true" type="tns:AccessType"/>
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount"/>
+  <xs:complexType name="Account">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountCurrency" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AccountDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AccountMemberProductGroupSuffix" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="AvailableBalance" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="BranchOrganizationName" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="BranchOrganizationNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="BranchRouteNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentAccountStatusCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentAccountStatusDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentBalance" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="CurrentMinorAccountTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentMinorAccountTypeDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MajorAccountTypeCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="MajorAccountTypeDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PrimaryStatementAccountNumber" nillable="true" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account"/>
+  <xs:complexType name="ArrayOfPayment">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Payment" nillable="true" type="tns:Payment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPayment" nillable="true" type="tns:ArrayOfPayment"/>
+  <xs:complexType name="Payment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExternalStatusCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExternalStatusDescription" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="FeeAmount" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="FeeCurrencyCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ReferenceNumber" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Payment" nillable="true" type="tns:Payment"/>
+  <xs:complexType name="ArrayOfChildTransaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ChildTransaction" nillable="true" type="tns:ChildTransaction"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChildTransaction" nillable="true" type="tns:ArrayOfChildTransaction"/>
+  <xs:complexType name="ChildTransaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="CurrentTransactionStatusCode" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="TransactionNumber" nillable="true" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChildTransaction" nillable="true" type="tns:ChildTransaction"/>
+</xs:schema>

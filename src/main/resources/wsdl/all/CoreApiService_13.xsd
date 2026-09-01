@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ExcludeApplicationsMaintenance.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ExcludeApplicationsMaintenance.Response">
+  <xs:complexType name="ArrayOfExcludeAccounts">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExcludeAccounts" nillable="true" type="tns:ExcludeAccounts"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExcludeAccounts" nillable="true" type="tns:ArrayOfExcludeAccounts"/>
+  <xs:complexType name="ExcludeAccounts">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Account Number of Account which is exculded
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExcludeApplications" nillable="true" type="tns:ArrayOfExcludeAccountApplication">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Collection of Excluded Applications
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExcludeAccounts" nillable="true" type="tns:ExcludeAccounts"/>
+  <xs:complexType name="ArrayOfExcludeAccountApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExcludeAccountApplication" nillable="true" type="tns:ExcludeAccountApplication"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExcludeAccountApplication" nillable="true" type="tns:ArrayOfExcludeAccountApplication"/>
+  <xs:complexType name="ExcludeAccountApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ApplicationDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Desciption of Exculded Application
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ApplicationId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Application Id of Exculded Application
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ApplicationNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Application Number of Exculded Application
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ApplicationTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            TypeCd of Exculded Application
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsRemoveExculsion" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Represents whether Application is marked for removal from exclusion
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExcludeAccountApplication" nillable="true" type="tns:ExcludeAccountApplication"/>
+</xs:schema>

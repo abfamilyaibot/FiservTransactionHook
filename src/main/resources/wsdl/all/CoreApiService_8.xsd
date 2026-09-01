@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.TransactionMaintenance.Request" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.TransactionMaintenance.Request">
+  <xs:complexType name="ArrayOfTransaction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" nillable="true" type="tns:Transaction"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTransaction" nillable="true" type="tns:ArrayOfTransaction"/>
+  <xs:complexType name="Transaction">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific Transaction to gather the details
+            </summary>
+            <remarks>This class is used by the <see cref="T:TransactionMaintenanceRequest" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Account Number that will need the transaction maintenance  
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Transaction number which is needed to be modified
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionReasonCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Transaction Reason Code
+             &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="WaiveApproverPersonNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Waive Approver Person Number.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Transaction" nillable="true" type="tns:Transaction"/>
+</xs:schema>

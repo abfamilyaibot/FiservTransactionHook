@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services">
+  <xs:import schemaLocation="CoreApiService_5.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+  <xs:simpleType name="SystemStatus">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            The possible system status 
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Not defined
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ONLINE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Represents system is Online
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OFFLINE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Represents system is Offline
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BATCH">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Represents system is in Batch running mode.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SystemStatus" nillable="true" type="tns:SystemStatus"/>
+  <xs:simpleType name="ActionCode">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+             The possible action code 
+             &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Not defined
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ADD">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Insert new record in database
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UPDATE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Update existing record in database
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DELETE">
+        <xs:annotation>
+          <xs:documentation>&lt;summary>
+            Delete existing record in database
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ActionCode" nillable="true" type="tns:ActionCode"/>
+  <xs:simpleType name="AuthTypes">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="long" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/"/>
+      </xs:appinfo>
+      <xs:documentation>&lt;summary>
+            The possible authorization types for the Core API Service.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CoreApplication">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+          <xs:documentation>&lt;summary>
+            Core Application Authentication with encrypted UserId and PSWD.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SingleSignOn">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+          <xs:documentation>&lt;summary>
+            Level 1 SAF integrated ( Single Sign On ).
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CardAgreement">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+          <xs:documentation>&lt;summary>
+            AuthTyp 4 (CardAgreement)
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ElectronicAgreement">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+          <xs:documentation>&lt;summary>
+            AuthTyp 6 (Eagreement)
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EAgreementSSO">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+          </xs:appinfo>
+          <xs:documentation>&lt;summary>
+            AuthTyp 7 (EagreementSSO)
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AuthTypes" nillable="true" type="tns:AuthTypes"/>
+</xs:schema>

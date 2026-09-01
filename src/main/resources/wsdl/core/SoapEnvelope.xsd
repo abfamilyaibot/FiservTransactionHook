@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://schemas.xmlsoap.org/soap/envelope/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://schemas.xmlsoap.org/soap/envelope/"
+           xmlns:core="http://www.opensolutions.com/CoreApi">
+    <xs:import schemaLocation="CoreApiService.xsd"
+               namespace="http://www.opensolutions.com/CoreApi"/>
+
+    <xs:element name="Envelope" type="tns:Envelope"/>
+
+    <xs:complexType name="Envelope">
+        <xs:sequence>
+            <xs:element name="Body" type="tns:Body"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Body">
+        <xs:choice>
+            <xs:element ref="core:SubmitRequest"/>
+            <xs:element ref="core:SubmitRequestResponse"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

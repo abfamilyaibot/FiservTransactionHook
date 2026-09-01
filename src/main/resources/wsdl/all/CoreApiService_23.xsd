@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.PersonConsent" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.PersonConsent">
+  <xs:complexType name="ArrayOfConsent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Consent" nillable="true" type="tns:Consent"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConsent" nillable="true" type="tns:ArrayOfConsent"/>
+  <xs:complexType name="Consent">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            A specific consent being maintained.
+            &lt;/summary>
+            &lt;remarks>This class is used by the &lt;see cref="T:PersonConsentMaintenanceRequest" /> class.&lt;/remarks></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ConsentTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies Consent type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ConsentTypeValue" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies value for consent type.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Consent" nillable="true" type="tns:Consent"/>
+  <xs:complexType name="ArrayOfPerson">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Person" nillable="true" type="tns:Person"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPerson" nillable="true" type="tns:ArrayOfPerson"/>
+  <xs:complexType name="Person">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            A person which is affected by PersonConsentMaintenance request
+            &lt;/summary>
+            &lt;remarks>This class is used by the &lt;see cref="T:PersonConsentMaintenanceResponse" /> class.&lt;/remarks></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsTaxOwner" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies whether person is taxowner or joint owner.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PersonNumber" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies Person number affected.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Person" nillable="true" type="tns:Person"/>
+</xs:schema>

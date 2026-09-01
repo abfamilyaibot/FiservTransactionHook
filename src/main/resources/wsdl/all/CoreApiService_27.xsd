@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.CDNAPIAcct.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.CDNAPIAcct.Response">
+  <xs:complexType name="ArrayOfAccount">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Account" nillable="true" type="tns:Account"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccount" nillable="true" type="tns:ArrayOfAccount"/>
+  <xs:complexType name="Account">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:long"/>
+      <xs:element minOccurs="0" name="CurrentRouteNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentTransitNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="CurrentYearInterestCharged" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="IsEStatemnent" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="IsInterMemberTransferAccount" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="IsPayFrom" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="IsTransferFrom" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="IsTransferTo" nillable="true" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="LOCInterestRate" nillable="true" type="xs:double"/>
+      <xs:element minOccurs="0" name="MatToIndicator" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="NextInterestDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="PriorYearInterestCharged" nillable="true" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Account" nillable="true" type="tns:Account"/>
+</xs:schema>

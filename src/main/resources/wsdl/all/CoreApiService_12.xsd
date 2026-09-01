@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.NOWMonetaryTransaction.Request" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.NOWMonetaryTransaction.Request">
+  <xs:complexType name="NOWMonetaryTransactionRequest.AMLDebtorInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Debtor detail for Anti-Money Laundering (AML). Provided with Credit transaction activity only.
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Account" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Debtor’s Account number funding the credit transaction.
+            Note: The account number can be alphanumeric
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address of the Person/Organization originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address of the Person/Organization originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address3" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address of the Person/Organization originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BusinesName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Business name originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            City location of the Person/Organization originating credit transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            ISO 3166 Country code of the Person/Organization originating credit transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FinancialInstitution" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Federal Reserve ABA Routing Number of originating financial institution.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            First name of the person originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Last name of the person originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Middle name of the person originating the credit transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Zip/Postal code of the Person/Organization originating credit transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StateProvince" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            State or Province of the Person/Organization originating credit transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.AMLDebtorInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.AMLDebtorInfo"/>
+  <xs:complexType name="NOWMonetaryTransactionRequest.NetworkInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Contains NOW Network Transaction Data.
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClientTransactionDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Originating time and date for the monetary transaction activity.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalCountryCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+             ISO-3166 Country Code of Acquirer.
+             &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalSupportPhone" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Customer support phone number for originating client application.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalTransactionCategory" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network transaction payment type. Ex. P2P – person to person; A2A – account to account.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MerchantType" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network Merchant Type code.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="NetworkTraceAuditNumber" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation><![CDATA[<summary>
+            NOW network assigned trace audit number 
+            </summary>
+            <remarks>
+            <note type="caution"><!-- Failed to insert some or all of included XML --></note>
+            </remarks>]]></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SettlementDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW Network settlement date for transaction activity and reconciliation process.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network assigned transaction id for original transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionOriginatorId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Enduser friendly application reference name. Ex. POPMONEY
+             &lt;/summary>
+             &lt;remarks>
+             &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.NetworkInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.NetworkInfo"/>
+  <xs:complexType name="NOWMonetaryTransactionRequest.RefundInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Contains refund transaction processing.
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExternalRefundDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Description detail for refund transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalRefundReason" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network assigned code for refund transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RefundOriginalDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Original transaction time and date of transaction being refunded.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RefundOriginalTranId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network assigned transaction id for refund transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.RefundInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.RefundInfo"/>
+  <xs:complexType name="NOWMonetaryTransactionRequest.RegEInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            RegE Detail Information
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Account" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Account number reference for an Account to Account (A2A) transaction
+            Note: The account number can be alphanumeric.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address detail of the person or business receiving funds
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address detail of the person or business receiving funds
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Address3" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Address detail for the person or business originating transaction
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="BusinesName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Business organization receiving funds
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            City location for originating source.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            ISO 3166 Country code for originating source
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            First name of person receiving funds.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Last name of person receiving funds
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Middle name of person receiving funds
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Zip/Postal code for originating source
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="StateProvince" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            State or Province for originating source.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.RegEInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.RegEInfo"/>
+  <xs:complexType name="NOWMonetaryTransactionRequest.ReversalInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Tansaction reversal Information.
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExternalReversalDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Reversal Description detail provided with reversal transaction activity.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ReversalOrigTranId" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network assigned transaction id for reversal transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ReversalOriginalDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Original transaction time and date of transaction being reversed.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ReversalReason" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            NOW network assigned code for reversal transaction.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.ReversalInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.ReversalInfo"/>
+  <xs:complexType name="NOWMonetaryTransactionRequest.TransactionInfo">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            A specific transaction
+            </summary>
+            <remarks>This class is used by the <see cref="!:NOWMonetaryTransactionResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrencyCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates Currency Code for transaction activity. Default is USD
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DisbursementRefNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Reference number generated by business or originating disbursement application. Applicable for B2C (Business to Consumer) transaction only.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Override effective date to be used for this request. If date not supplied, 
+            uses the \Input\UserAuthentication\EffDate tag. Default is current PostDate. Optional.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ExternalDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Externally provided transaction description detail with a maximum length of 128 characters. 
+            Description detail details in views of detail transaction history.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsErrorCorrect" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies if transaction is to be processed as an Error Correction (Reversal). Valid values Y/N. Default = N
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsRegD" nillable="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Indicates if the transaction should be considered for RegD reporting.Default = true
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionAmount" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Amount of the transaction. Always in Absolute Value format (Positive).  
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionFee" nillable="true" type="xs:double">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Amount of transaction fee. Always in Absolute Value format. (Positive) Optional
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionSource" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the source of the account transaction. Default is NOW. 
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="TransactionTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Transaction type for the monetary transaction request.
+            &lt;/summary>
+            &lt;remarks>
+            &lt;/remarks></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NOWMonetaryTransactionRequest.TransactionInfo" nillable="true" type="tns:NOWMonetaryTransactionRequest.TransactionInfo"/>
+</xs:schema>

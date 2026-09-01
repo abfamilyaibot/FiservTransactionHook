@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="3.0"
+               xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb">
+    <jaxb:globalBindings generateElementProperty="false"/>
+
+    <jaxb:bindings schemaLocation="CoreApiService_30.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="org.datacontract.schemas._2004._07.coreapiextension_messages"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="SoapEnvelope.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.dep.integration.hook.fiserv.jaxb.dto.soap"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+</jaxb:bindings>

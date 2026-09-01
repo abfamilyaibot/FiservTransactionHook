@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://www.opensolutions.com/CoreApi"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.opensolutions.com/CoreApi"
+           xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays"
+           xmlns:bill="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayMaintenance">
+    <xs:import schemaLocation="CoreApiService_4.xsd"
+               namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+    <xs:import schemaLocation="CoreApiService_30.xsd"
+               namespace="http://schemas.datacontract.org/2004/07/CoreApiExtension.Messages.BillPayMaintenance"/>
+
+    <xs:complexType name="ExtensionRequestBase">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ParentRequestNumber" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ExtensionRequestBase" nillable="true" type="tns:ExtensionRequestBase"/>
+
+    <xs:complexType name="BillPayMaintenanceRequest">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ExtensionRequestBase">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="BillPaymentAllotments" nillable="true" type="bill:ArrayOfBillPayAllotments"/>
+                    <xs:element minOccurs="0" name="EAgreementNumber" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="0" name="OrganizationNumber" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="0" name="PersonNumber" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="BillPayMaintenanceRequest" nillable="true" type="tns:BillPayMaintenanceRequest"/>
+
+    <xs:complexType name="ExtensionResponseBase">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfExtensionError"/>
+            <xs:element minOccurs="0" name="RequestNumber" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RequestTypeCode" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="WasSuccessful" nillable="true" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ExtensionResponseBase" nillable="true" type="tns:ExtensionResponseBase"/>
+
+    <xs:complexType name="ArrayOfExtensionError">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ExtensionError" nillable="true" type="tns:ExtensionError"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ArrayOfExtensionError" nillable="true" type="tns:ArrayOfExtensionError"/>
+
+    <xs:complexType name="ExtensionError">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="ErrorNumber" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" name="OraErrorMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RtxnExceptionMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RtxnExceptionNumber" nillable="true" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ExtensionError" nillable="true" type="tns:ExtensionError"/>
+
+    <xs:complexType name="BillPayMaintenanceResponse">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ExtensionResponseBase">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="BillPaymentResponseAllotments" nillable="true" type="bill:ArrayOfBillPaymentResponseAllotments"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="BillPayMaintenanceResponse" nillable="true" type="tns:BillPayMaintenanceResponse"/>
+
+    <xs:element name="SubmitRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="input" nillable="true" type="tns:TransactionInput"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="TransactionInput">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Input" nillable="true" type="tns:Input"/>
+            <xs:element minOccurs="0" name="ShouldCommitOrRollback" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="TransactionInput" nillable="true" type="tns:TransactionInput"/>
+
+    <xs:complexType name="Input">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ExtensionRequests" nillable="true" type="arr:ArrayOfanyType"/>
+            <xs:element minOccurs="0" name="UserAuthentication" nillable="true" type="tns:UAInput"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Input" nillable="true" type="tns:Input"/>
+
+    <xs:complexType name="UAInput">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="AccessTypeCode" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="AgreementTypeCode" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="ApplID" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="ApplNumber" type="xs:long"/>
+            <xs:element minOccurs="0" name="AuthorizationType" type="xs:string"/>
+            <xs:element minOccurs="0" name="CashBoxNumber" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="CustomerAccessNumber" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" name="Internationalization" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="LocationOrgNumber" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="NetworkNodeName" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="PIN" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="PhysicalAddress" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="PostDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" name="UsageCode" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="UAInput" nillable="true" type="tns:UAInput"/>
+
+    <xs:element name="SubmitRequestResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="SubmitRequestResult" nillable="true" type="tns:TransactionOutput"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="TransactionOutput">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Output" nillable="true" type="tns:Output"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="TransactionOutput" nillable="true" type="tns:TransactionOutput"/>
+
+    <xs:complexType name="Output">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ExtensionResponses" nillable="true" type="arr:ArrayOfanyType"/>
+            <xs:element minOccurs="0" name="UserAuthentication" nillable="true" type="tns:UAOutput">
+                <xs:annotation>
+                    <xs:appinfo/>
+                    <xs:documentation>&lt;summary>
+                        Wrapper tag that identifies if the request was successful and if not, a collection of one or more Errors.
+                        &lt;/summary></xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Output" nillable="true" type="tns:Output"/>
+    <xs:complexType name="UAOutput">
+        <xs:annotation>
+            <xs:appinfo/>
+            <xs:documentation>&lt;summary>
+                Wrapper tag that identifies if the request was successful and if not, a collection of one or more Errors.
+                &lt;/summary></xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError">
+                <xs:annotation>
+                    <xs:appinfo/>
+                    <xs:documentation>&lt;summary>
+                        A collection of one or more authentication errors.
+                        &lt;/summary></xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="PersNbr" nillable="true" type="xs:string">
+                <xs:annotation>
+                    <xs:appinfo/>
+                    <xs:documentation>&lt;summary>
+                        Logged-in user's persnbr
+                        &lt;/summary></xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="WasSuccessful" nillable="true" type="xs:boolean">
+                <xs:annotation>
+                    <xs:appinfo/>
+                    <xs:documentation>&lt;summary>
+                        Indicates if the request was successful.
+                        &lt;/summary></xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="UAOutput" nillable="true" type="tns:UAOutput"/>
+    <xs:complexType name="ArrayOfError">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError"/>
+    <xs:complexType name="Error">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="ErrorNumber" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" name="OraErrorMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RtxnExceptionMessage" nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="RtxnExceptionNumber" nillable="true" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Error" nillable="true" type="tns:Error"/>
+</xs:schema>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ProductListForTimeDeposit.Response" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/OpenSolutions.CoreApiService.Services.Messages.ProductListForTimeDeposit.Response">
+  <xs:complexType name="ArrayOfProdMinor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProdMinor" nillable="true" type="tns:ProdMinor"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProdMinor" nillable="true" type="tns:ArrayOfProdMinor"/>
+  <xs:complexType name="ProdMinor">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation>&lt;summary>
+            An individual product record for an account minor.
+            &lt;/summary></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DefaultTerm" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Defines the normal term, in days, for the product.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumInterestRate" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the maximum interest rate 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumTerm" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Defines the longest term, in days, for the product.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumInterestRate" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies the minimum interest rate 
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumTerm" nillable="true" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Defines the shortest term, in days, for the product.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Attribute identifies the minor account type code of the product being returned.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinorAccountTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Product Minor Description.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RateTiers" nillable="true" type="tns:ArrayOfRateTier">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Wrapper tag for associated rate. This is a repeating node as multiple rate tiers may exist for minor product.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProdMinor" nillable="true" type="tns:ProdMinor"/>
+  <xs:complexType name="ArrayOfRateTier">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RateTier" nillable="true" type="tns:RateTier"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRateTier" nillable="true" type="tns:ArrayOfRateTier"/>
+  <xs:complexType name="RateTier">
+    <xs:annotation>
+      <xs:appinfo/>
+      <xs:documentation><![CDATA[<summary>
+            Wrapper tag for associated rate. This is a repeating node as multiple rate tiers may exist for minor product.
+            </summary>
+            <remarks>This class is used by the <see cref="T:ProductMajorResponse" /> class.</remarks>
+            <tocexclude />]]></xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="APY" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Calculated APY for the product rate based on compounding, frequency, and day factors for the minor product.
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="InterestRate" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Identifies interest rate for this account
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MaximumTierBalance" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Maximum balance for the range of this rate tier
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MinimumTierBalance" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo/>
+          <xs:documentation>&lt;summary>
+            Minimum balance for the range of this rate tier
+            &lt;/summary></xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RateTier" nillable="true" type="tns:RateTier"/>
+</xs:schema>
