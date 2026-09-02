@@ -52,8 +52,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
    private static final DatatypeFactory XML_DATATYPE_FACTORY = createDatatypeFactory();
-   private static final String DEFAULT_SORT_BY = "TIMEUNIQUEEXTN";
-
+   
    public FiservTransactionProcessor() {
    }
 
@@ -140,13 +139,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
       request.setSortBy("EFFDATE");
       request.setSearchDateOption(3); // effectiveDate
-      // TODO: confirm RtxnTypeCodes filtering is working 
+      // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
       request.setRtxnTypeCodes(getRTxnTypeCodes(criteriaDetails.filterType()));
       
 
       if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
           criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
-            // TODO: confirm debitCreditOnly filtering is working
+            // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
          request.setDebitCreditOnly(criteriaDetails.filterType().value());
       }
 
@@ -209,13 +208,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       String searchValue = criteriaDetails.searchValue();
       switch (criteriaDetails.searchType()) {
          case CHEQUE_NUMBER -> {
-            // TODO: confirm AccountTransactionHistoryRequest working with fromCheckNumber and throughCheckNumber
+            // FromCheckNumber, ThroughtCheckNumber Not working, need to do manual filtering on AccountTransactionHistoryResponse
             Long chequeNumber = toLong(searchValue);
             request.setFromCheckNumber(chequeNumber);
             request.setThroughCheckNumber(chequeNumber);
          }
          case AMOUNT -> {
-            // TODO: confirm AccountTransactionHistoryRequest working with FromAmount and throughAmount
+            // FromAmount, ThroughAmount Not working, need to do manual filtering on AccountTransactionHistoryResponse
             Double amount = toDouble(searchValue);
             request.setFromAmount(amount);
             request.setThroughAmount(amount);
@@ -322,6 +321,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             List<CasaTransactionDtl> casatransactiondtls = filteredTransactions.stream()
                     .map(t -> mapToCasaTransactionDtl(t, depRequest))
                     .toList();
+            casatransactiondtls = filterTransactionsByDescription( casatransactiondtls, depRequest.criteriaDetails());
+
             CasaTransactionDtlsResponse casaTransactionDtlsResponse =
                     new CasaTransactionDtlsResponse(casatransactiondtls, casatransactiondtls.size());
 
@@ -397,7 +398,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
     
 
     private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
-      return null; // TODO: search: DESCRIPTION, CONFIRMATION_NUMBER 
+      return null; // TODO: search: DESCRIPTION, CONFIRMATION_NUMBER, AMOUNT, CHEQUE ; filter: D, C, BPMT (BILL_PAYMENT) , CWTH (CHEQUE)  
       // 
     }
 
@@ -407,5 +408,26 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
    private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
       return null; // TODO
+   }
+
+   private List<CasaTransactionDtl> filterTransactionsByDescription(List<CasaTransactionDtl> casaTransactionDtls, CriteriaDetails criteriaDetails) {
+      if (casaTransactionDtls == null || casaTransactionDtls.isEmpty() ||
+          criteriaDetails == null ||
+          criteriaDetails.searchType() != CriteriaDetails.SearchType.DESCRIPTION ||
+          criteriaDetails.searchValue() == null ||
+          criteriaDetails.searchValue().isBlank()) {
+         return casaTransactionDtls;
+      }
+
+      String searchValue = criteriaDetails.searchValue().toLowerCase();
+      return casaTransactionDtls.stream()
+          .filter(transaction -> descriptionContains(transaction, searchValue))
+          .toList();
+    }
+
+   private boolean descriptionContains(CasaTransactionDtl transaction, String searchValue) {
+      return transaction != null &&
+          transaction.transactionDescription() != null &&
+          transaction.transactionDescription().toLowerCase().contains(searchValue);
    }
 }
