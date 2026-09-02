@@ -321,7 +321,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             List<CasaTransactionDtl> casatransactiondtls = filteredTransactions.stream()
                     .map(t -> mapToCasaTransactionDtl(t, depRequest))
                     .toList();
-            casatransactiondtls = filterTransactionsByDescription( casatransactiondtls, depRequest.criteriaDetails());
+
+            // for 'search by Description': search the assembled CasaTransactionDtl transactionDescription field
+            casatransactiondtls = sesarchCasaTransactionDtlByDescription( casatransactiondtls, depRequest.criteriaDetails());
 
             CasaTransactionDtlsResponse casaTransactionDtlsResponse =
                     new CasaTransactionDtlsResponse(casatransactiondtls, casatransactiondtls.size());
@@ -398,19 +400,95 @@ public class FiservTransactionProcessor extends TransactionProcessor {
     
 
     private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
-      return null; // TODO: search: DESCRIPTION, CONFIRMATION_NUMBER, AMOUNT, CHEQUE ; filter: D, C, BPMT (BILL_PAYMENT) , CWTH (CHEQUE)  
-      // 
+      if (transactions == null || transactions.isEmpty()) {
+         return List.of();
+      }
+      if (criteriaDetails == null) {
+         return transactions;
+      }
+
+      return transactions.stream()
+          .filter(transaction -> matchesFilterType(transaction, criteriaDetails.filterType()))
+          .filter(transaction -> matchesSearchCriteria(transaction, criteriaDetails))
+          .toList();
+    }
+
+    private boolean matchesFilterType(FiservTransaction transaction, CriteriaDetails.FilterType filterType) {
+      if (filterType == null) {
+         return true;
+      }
+
+      Rtxn rtxn = transaction == null ? null : transaction.rtxn();
+      if (rtxn == null) {
+         return false;
+      }
+
+      return switch (filterType) {
+         // filter: C -> DebitCredit = C
+         case C -> "C".equals(rtxn.getDebitCredit());
+         // filter: D -> DebitCredit = D
+         case D -> "D".equals(rtxn.getDebitCredit());
+         // filter: BILL -> RtxnTypeCode = BPMT
+         case BILL -> "BPMT".equals(rtxn.getRtxnTypeCode());
+         // filter: CHEQUE -> RtxnTypeCode = CWTH
+         case CHEQUE -> "CWTH".equals(rtxn.getRtxnTypeCode());
+      };
+    }
+
+    private boolean matchesSearchCriteria(FiservTransaction transaction, CriteriaDetails criteriaDetails) {
+      if (criteriaDetails.searchType() == null ||
+          criteriaDetails.searchValue() == null ||
+          criteriaDetails.searchValue().isBlank()) {
+         return true;
+      }
+
+      return switch (criteriaDetails.searchType()) {
+         case DESCRIPTION -> true;
+         // search CONFIRMATION_NUMBER -> RtxnTypeCode = BPMT and BillPaymentTransactionNumber matches
+         case CONFIRMATION_NUMBER -> matchesConfirmationNumber(transaction, criteriaDetails.searchValue());
+         // search AMOUNT -> absolute value of TransactionAmount matches
+         case AMOUNT -> matchesAmount(transaction, toDouble(criteriaDetails.searchValue()));
+         // search CHEQUE -> CheckNumber matches
+         case CHEQUE_NUMBER -> matchesChequeNumber(transaction, toLong(criteriaDetails.searchValue()));
+      };
+    }
+
+    private boolean matchesConfirmationNumber(FiservTransaction transaction, String confirmationNumber) {
+      return transaction != null &&
+          transaction.rtxn() != null &&
+          transaction.billPayment() != null &&
+          "BPMT".equals(transaction.rtxn().getRtxnTypeCode()) &&
+          confirmationNumber.equals(String.valueOf(transaction.billPayment().getBillPayTransactionNumber()));
+    }
+
+    private boolean matchesAmount(FiservTransaction transaction, Double amount) {
+      return transaction != null &&
+          transaction.rtxn() != null &&
+          transaction.rtxn().getTransactionAmount() != null &&
+          amount != null &&
+          Double.compare(Math.abs(transaction.rtxn().getTransactionAmount()), Math.abs(amount)) == 0;
+    }
+
+    private boolean matchesChequeNumber(FiservTransaction transaction, Long chequeNumber) {
+      return transaction != null &&
+          transaction.rtxn() != null &&
+          transaction.rtxn().getCheckNumber() != null &&
+          transaction.rtxn().getCheckNumber().equals(chequeNumber);
     }
 
    private List<Rtxn> getChequeFiservTransactions(List<FiservTransaction> transactions) {
-         return null; // TODO
+      if (transactions == null || transactions.isEmpty()) {
+         return List.of();
+      }
+      return transactions.stream()
+          .map(FiservTransaction::rtxn)
+          .filter(rtxn -> rtxn != null && "CWTH".equals(rtxn.getRtxnTypeCode()))
+          .toList();
    }
 
-   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
-      return null; // TODO
-   }
 
-   private List<CasaTransactionDtl> filterTransactionsByDescription(List<CasaTransactionDtl> casaTransactionDtls, CriteriaDetails criteriaDetails) {
+   private List<CasaTransactionDtl> sesarchCasaTransactionDtlByDescription(List<CasaTransactionDtl> casaTransactionDtls, CriteriaDetails criteriaDetails) {
+      // matches assembled CasaTransactionDtl.transactionDescription for search by DESCRIPTION, case insensitive
       if (casaTransactionDtls == null || casaTransactionDtls.isEmpty() ||
           criteriaDetails == null ||
           criteriaDetails.searchType() != CriteriaDetails.SearchType.DESCRIPTION ||
@@ -429,5 +507,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return transaction != null &&
           transaction.transactionDescription() != null &&
           transaction.transactionDescription().toLowerCase().contains(searchValue);
+   }
+
+   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
+      return null; // TODO
    }
 }
