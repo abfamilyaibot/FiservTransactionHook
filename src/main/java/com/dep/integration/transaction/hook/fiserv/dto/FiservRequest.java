@@ -7,6 +7,7 @@ public record FiservRequest  (
     FiservCbsContext cbsContext,
     String depTenantId,
     boolean isLoanAccount,
+    String accountHolderName,
     CriteriaDetails criteriaDetails,
     String accessToken 
 ) implements Request {

@@ -1,5 +1,6 @@
 package com.dep.integration.transaction.hook.fiserv;
 
+import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.dep.integration.transaction.hook.fiserv.dto.common.Response;
+import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails.FilterType;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtl;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtlsResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
@@ -35,8 +37,10 @@ import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.TransactionH
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.UAInput;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Body;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Envelope;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.ExchTxn;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Rtxn;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Transaction;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.TransactionBalanceType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -106,8 +110,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       var requests = new ArrayOfRequestBase();
       requests.getRequestBase().add(accountTransactionHistoryRequest);
-      // TODO: add transactionHistoryInquiryRequest only if isLoanAccount = true
-      requests.getRequestBase().add(transactionHistoryInquiryRequest);
+      if (fiservRequest.isLoanAccount()) {
+         requests.getRequestBase().add(transactionHistoryInquiryRequest);
+      }
       input.setRequests(requests);
 
       var extensionRequests = new ArrayOfanyType();
@@ -141,20 +146,20 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setSortBy("EFFDATE");
       request.setSearchDateOption(3); // effectiveDate
       // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
-      request.setRtxnTypeCodes(getRTxnTypeCodes(criteriaDetails.filterType()));
+      // request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
       
 
-      if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
-          criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
-            // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
-         request.setDebitCreditOnly(criteriaDetails.filterType().value());
-      }
+      // if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
+      //     criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
+      //       // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
+      //    request.setDebitCreditOnly(criteriaDetails.filterType().value());
+      // }
 
       applySearchCriteria(request, criteriaDetails);
       return request;
    }
 
-   private String getRTxnTypeCodes(CriteriaDetails.FilterType filterType) {
+   private String getRTxnTypeCode(CriteriaDetails.FilterType filterType) {
       if (filterType == null) {
          return null;
       }
@@ -178,7 +183,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       request.setThruDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
-      // TODO: confirm date option is effectiveDate to align
+      // note:  the date search is for effectiveDate to align with the other requests
       request.setSearchDateOption(3); // effectiveDate
       return request;
    }
@@ -193,7 +198,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
-      // TODO: confirm the date search is for effectiveDate to align with the other requests
+      // note:  the date search is for effectiveDate to align with the other requests
       return request;
    }
 
@@ -339,13 +344,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
         }
     }
 
-    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
+   private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
       Envelope envelope = generateEnvelope(depRequest);
       FiservResponse fiservResponse = api.getTransactions(depRequest, envelope);
-      return convertFiservTransactions(fiservResponse);
-    }
+      return convertFiservTransactions(fiservResponse, depRequest.isLoanAccount());
+   }
 
-    private List<FiservTransaction> convertFiservTransactions(FiservResponse fiservResponse) {
+    private List<FiservTransaction> convertFiservTransactions(FiservResponse fiservResponse, boolean isLoanAccount) {
       if (fiservResponse == null ||
           fiservResponse.accountTransactionHistoryResponse() == null ||
           fiservResponse.accountTransactionHistoryResponse().getTransactions() == null) {
@@ -364,7 +369,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       }
 
       Map<Long, Transaction> transactionsByTransactionNumber = new HashMap<>();
-      if (fiservResponse.transactionHistoryInquiryResponse() != null &&
+      if (isLoanAccount &&
+          fiservResponse.transactionHistoryInquiryResponse() != null &&
           fiservResponse.transactionHistoryInquiryResponse().getTransactions() != null) {
          for (Transaction transaction : fiservResponse.transactionHistoryInquiryResponse().getTransactions().getTransaction()) {
             if (transaction != null && transaction.getTransactionNumber() != null) {
@@ -373,6 +379,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          }
       }
 
+      String accountCurrencyCode = fiservResponse.accountTransactionHistoryResponse().getAccountCurrencyCode();
+
       List<FiservTransaction> fiservTransactions = new ArrayList<>();
       for (Rtxn rtxn : fiservResponse.accountTransactionHistoryResponse().getTransactions().getRtxn()) {
          if (rtxn == null) {
@@ -380,10 +388,10 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          }
          Long transactionNumber = rtxn.getRtxnNumber();
          fiservTransactions.add(new FiservTransaction(
+             accountCurrencyCode,
              rtxn,
-             // TODO: only if rtxn.getRtxnTypeCode() == 'BPMT' (bill payment)
-             billPaymentsByTransactionNumber.get(transactionNumber),
-             transactionsByTransactionNumber.get(transactionNumber)
+             getRTxnTypeCode(FilterType.BILL).equals(rtxn.getRtxnTypeCode()) ? billPaymentsByTransactionNumber.get(transactionNumber) : null,
+             isLoanAccount ? transactionsByTransactionNumber.get(transactionNumber) : null
          ));
       }
       return fiservTransactions;
@@ -402,6 +410,14 @@ public class FiservTransactionProcessor extends TransactionProcessor {
     
 
     private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
+      // filter: C -> DebitCredit = C
+      // filter: D -> DebitCredit = D
+      // filter: BILL -> RtxnTypeCode = BPMT
+      // filter: CHEQUE -> RtxnTypeCode = CWTH
+      // search by AMOUNT -> absolute value of TransactionAmount matches
+      // search by CHEQUE_NUMBER -> CheckNumber matches
+      // search by CONFIRMATION_NUMBER -> RtxnTypeCode = BPMT and BillPaymentTransactionNumber matches
+      // search by DESCRIPTION -> wait til FiservTransaction converted to CassaTransctionDtl to search for the assembled CassaTransctionDtl.TransactionDescription
       if (transactions == null || transactions.isEmpty()) {
          return List.of();
       }
@@ -426,14 +442,10 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       }
 
       return switch (filterType) {
-         // filter: C -> DebitCredit = C
-         case C -> "C".equals(rtxn.getDebitCredit());
-         // filter: D -> DebitCredit = D
-         case D -> "D".equals(rtxn.getDebitCredit());
-         // filter: BILL -> RtxnTypeCode = BPMT
-         case BILL -> "BPMT".equals(rtxn.getRtxnTypeCode());
-         // filter: CHEQUE -> RtxnTypeCode = CWTH
-         case CHEQUE -> "CWTH".equals(rtxn.getRtxnTypeCode());
+         // filter: C -> DebitCredit = C; D -> DebitCredit = D
+         case C, D -> filterType.value().equals(rtxn.getDebitCredit());
+         // filter: BILL -> RtxnTypeCode = BPMT; CHEQUE -> RtxnTypeCode = CWTH
+         case BILL, CHEQUE -> getRTxnTypeCode(filterType).equals(rtxn.getRtxnTypeCode());
       };
     }
 
@@ -511,7 +523,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
           transaction.transactionDescription().toLowerCase().contains(searchValue);
    }
 
-   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
+   private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction fiservTransaction, FiservRequest depRequest) {
       // CasaTransactionDtl.tenantId: depRequest.depTenantId
 
       // CasaTransactionDtl.TransactionDescription: Rtxn.RtxnTypeDescription
@@ -519,41 +531,174 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       // if BillPayment.VendorName not empty: + ' ' + BillPayment.VendorName
       // if Rtxn.ExchTxnGrp.ExchTxn.OtherAmount not empty: +  ' Exchange Amount: $' + absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
       // if Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate not empty: +  ' Exchange Rate: ' + Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
-      
+
       // CasaTransactionDtl.transactionReference: BillPayment.BillPayTransactionNumber if not empty, else Rtxn.TransactionReferenceNumber
-      
+
       // CasaTransactionDtl.confirmationNumber: BillPayment.BillPayTransactionNumber if not empty
       // CasaTransactionDtl.merchantId: BillPayment.VendorID if not empty
 
       // CasaTransactionDtl.transactionDate: Rtxn.EffectiveDate in yyyy-MM-dd format
       // CasaTransactionDtl.valueDate: Rtxn.EffectiveDate in yyyy-MM-dd format
-      
-      // CasaTransactionDtl.balance: Rtxn.RunningBalance 
+
+      // CasaTransactionDtl.balance: Rtxn.RunningBalance
 
       // CasaTransactionDtl.transactionAmount = absolute value of Rtxn.TransactionAmount
 
-      // CasaTransactionDtl.principalAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescrption contains 'Note Balance'
-      // CasaTransactionDtl.interestChargeAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescrption contains 'Note Interest'
-      
+      // CasaTransactionDtl.principalAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
+      // CasaTransactionDtl.interestChargeAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
+
       // CasaTransactionDtl.transactionCurrency = Rtxn.TransactionCurrency
 
       // CasaTransactionDtl.debitCreditFlag = Rtxn.DebitCredit
       // CasaTransactionDtl.transactionType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
       // CasaTransactionDtl.transType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
-     
+
       // CasaTransactionDtl.transactionCategoryId: Rtxn.RtxnTypeCode: 'CWTH' -> 4, 'BPMT' -> 5; else Rtxn.DebitCredit 'Credit' -> 2, 'Debit' -> 3; else -> 1
       // CasaTransactionDtl.transactionCategory = Rtxn.RtxnTypeCode
 
       // CasaTransactionDtl.instrumentId = Rtxn.CheckNumber
       // CasaTransactionDtl.chequeNumber = Rtxn.CheckNumber
-      
+
       // CasaTransactionDtl.accountHolderName = Rtxn.AccountHolderName
 
       // CasaTransactionDtl.exchangeAmount =  absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
       // CasaTransactionDtl.exchangeRate = Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
 
-      // CasaTransactionDtl.accountNumber = Rtxn.AccountNumber  
+      // CasaTransactionDtl.accountNumber = Rtxn.AccountNumber
 
-            return null; // TODO
+      Rtxn rtxn = fiservTransaction == null ? null : fiservTransaction.rtxn();
+      BillPayment billPayment = fiservTransaction == null ? null : fiservTransaction.billPayment();
+      Transaction loanTransaction = fiservTransaction == null ? null : fiservTransaction.loanTransaction();
+      ExchTxn exchangeTransaction = getExchangeTransaction(rtxn);
+
+      Long billPayTransactionNumber = billPayment == null ? null : billPayment.getBillPayTransactionNumber();
+      String effectiveDate = rtxn == null ? null : toDateString(rtxn.getEffectiveDate());
+      String debitCreditType = toDebitCreditType(rtxn == null ? null : rtxn.getDebitCredit());
+      String checkNumber = rtxn == null || rtxn.getCheckNumber() == null ? null : String.valueOf(rtxn.getCheckNumber());
+      BigDecimal exchangeAmount = exchangeTransaction == null ? null : toAbsBigDecimal(exchangeTransaction.getOtherAmount());
+      String exchangeRate = exchangeTransaction == null || exchangeTransaction.getExchangeRate() == null
+          ? null
+          : exchangeTransaction.getExchangeRate().toPlainString();
+
+      return new CasaTransactionDtl(
+          depRequest == null ? null : depRequest.depTenantId(),
+          effectiveDate,
+          effectiveDate,
+          null, // // remarks not mapped as transfer memo is part of transactionDescription (from Rtxn.InternalRtxnDescription) and cannot extract the transfer memo portion
+          rtxn == null ? null : toAbsBigDecimal(rtxn.getTransactionAmount()),
+          billPayTransactionNumber == null ? (rtxn == null ? null : rtxn.getTransactionReferenceNumber()) : String.valueOf(billPayTransactionNumber),
+          getTransactionDescription(rtxn, billPayment, exchangeAmount, exchangeRate),
+          billPayment == null || billPayment.getVendorID() == null ? null : String.valueOf(billPayment.getVendorID()),
+          rtxn == null ? null : rtxn.getRtxnTypeCode(),
+          rtxn == null ? null : toBigDecimal(rtxn.getRunningBalance()),
+          rtxn == null ? null : rtxn.getDebitCredit(),
+          checkNumber,
+          debitCreditType,
+          checkNumber,
+          exchangeRate,
+          exchangeAmount,
+          rtxn == null || rtxn.getAccountNumber() == null ? null : String.valueOf(rtxn.getAccountNumber()),
+          fiservTransaction == null ? null : fiservTransaction.accountCurrencyCode(),
+          billPayTransactionNumber == null ? null : String.valueOf(billPayTransactionNumber),
+          depRequest == null ? null : depRequest.accountHolderName(),
+          getLoanBalanceAmount(loanTransaction, "Note Balance"),
+          getLoanBalanceAmount(loanTransaction, "Note Interest"),
+          getTransactionCategoryId(rtxn == null ? null : rtxn.getRtxnTypeCode(), debitCreditType),
+          debitCreditType
+      );
+   }
+
+   private static String getTransactionDescription(
+       Rtxn rtxn,
+       BillPayment billPayment,
+       BigDecimal exchangeAmount,
+       String exchangeRate
+   ) {
+      StringBuilder description = new StringBuilder();
+      if (rtxn != null && isNotBlank(rtxn.getRtxnTypeDescription())) {
+         description.append(rtxn.getRtxnTypeDescription());
+      }
+      appendDescriptionPart(description, rtxn == null ? null : rtxn.getInternalRtxnDescription());
+      appendDescriptionPart(description, billPayment == null ? null : billPayment.getVendorName());
+      if (exchangeAmount != null) {
+         appendDescriptionPart(description, "Exchange Amount: $" + exchangeAmount.toPlainString());
+      }
+      if (isNotBlank(exchangeRate)) {
+         appendDescriptionPart(description, "Exchange Rate: " + exchangeRate);
+      }
+      return description.isEmpty() ? null : description.toString();
+   }
+
+   private static void appendDescriptionPart(StringBuilder description, String value) {
+      if (isNotBlank(value)) {
+         if (!description.isEmpty()) {
+            description.append(' ');
+         }
+         description.append(value);
+      }
+   }
+
+   private static ExchTxn getExchangeTransaction(Rtxn rtxn) {
+      if (rtxn == null || rtxn.getExchTxnGrp() == null || rtxn.getExchTxnGrp().getExchTxn().isEmpty()) {
+         return null;
+      }
+      return rtxn.getExchTxnGrp().getExchTxn().get(0);
+   }
+
+   private static BigDecimal getLoanBalanceAmount(Transaction transaction, String balanceTypeDescription) {
+      if (transaction == null || transaction.getBalanceTypes() == null) {
+         return null;
+      }
+      for (TransactionBalanceType balanceType : transaction.getBalanceTypes().getTransactionBalanceType()) {
+         if (balanceType != null &&
+             balanceType.getAmount() != null &&
+             balanceType.getBalanceTypeDescription() != null &&
+             balanceType.getBalanceTypeDescription().contains(balanceTypeDescription)) {
+            return toAbsBigDecimal(balanceType.getAmount());
+         }
+      }
+      return null;
+   }
+
+   private static String getTransactionCategoryId(String rtxnTypeCode, String debitCreditType) {
+      if ("CWTH".equals(rtxnTypeCode)) {
+         return "4";
+      }
+      if ("BPMT".equals(rtxnTypeCode)) {
+         return "5";
+      }
+      if ("Credit".equals(debitCreditType)) {
+         return "2";
+      }
+      if ("Debit".equals(debitCreditType)) {
+         return "3";
+      }
+      return "1";
+   }
+
+   private static String toDebitCreditType(String debitCredit) {
+      if ("C".equals(debitCredit) || "Credit".equalsIgnoreCase(debitCredit)) {
+         return "Credit";
+      }
+      if ("D".equals(debitCredit) || "Debit".equalsIgnoreCase(debitCredit)) {
+         return "Debit";
+      }
+      return null;
+   }
+
+   private static BigDecimal toAbsBigDecimal(Double value) {
+      return value == null ? null : BigDecimal.valueOf(Math.abs(value));
+   }
+
+   private static BigDecimal toBigDecimal(Double value) {
+      return value == null ? null : BigDecimal.valueOf(value);
+   }
+
+   private static String toDateString(XMLGregorianCalendar value) {
+      return value == null ? null : value.toGregorianCalendar().toZonedDateTime().toLocalDate().toString();
+   }
+
+   private static boolean isNotBlank(String value) {
+      return value != null && !value.isBlank();
    }
 }
