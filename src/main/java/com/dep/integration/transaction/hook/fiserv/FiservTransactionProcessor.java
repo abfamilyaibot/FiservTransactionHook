@@ -3,7 +3,6 @@ package com.dep.integration.transaction.hook.fiserv;
 import java.net.http.HttpClient;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -18,14 +17,17 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails;
 import com.dep.integration.transaction.hook.fiserv.dto.common.EndpointAttributes;
 import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
-import com.dep.integration.transaction.hook.fiserv.FiservApiClient;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservImageCachesResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservTransaction;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.arrays.ArrayOfanyType;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.Input;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.ArrayOfRequestBase;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.BillPayHistoryRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.SubmitRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.TransactionInput;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.TransactionHistoryInquiryRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.UAInput;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Body;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Envelope;
@@ -45,6 +47,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
    private static final DatatypeFactory XML_DATATYPE_FACTORY = createDatatypeFactory();
+   private static final String DEFAULT_SORT_BY = "TIMEUNIQUEEXTN";
 
    public FiservTransactionProcessor() {
    }
@@ -110,43 +113,30 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    private Envelope generateEnvelope(
        FiservRequest fiservRequest
    ) {
-   //    var extRequest = new BillPayMaintenanceRequest();
-   //    var allotments = new ArrayOfBillPayAllotments();
-   //    extRequest.setBillPaymentAllotments(allotments);
-   //    extRequest.setUserId(fiservRequest.cbsContext().userId());
-
-   //    var allotment = new BillPayAllotments();
-   //    allotments.getBillPayAllotments().add(allotment);
-
-   //    allotment.setAccountNumber(Long.parseLong(fiservRequest.multiBillRequest().debitAccount())); 
-   //    allotment.setAmount(detail.paymentAmount()); 
-   //    allotment.setCurrencyCode(detail.currency()); 
-   //    if ( (isScheduledPayment(detail) || isRecurringPayment(detail) ) && detail.paymentDate() != null) {
-   //       allotment.setEffectiveDate(toXmlDateTime(detail.paymentDate())); 
-   //    }
-   //    if ( isRecurringPayment(detail) && detail.paymentEndDate() != null) {
-   //       String newPlusOneEndDate = LocalDate.parse(detail.paymentEndDate()).plusDays(1).toString();
-   //       allotment.setEndDate(toXmlDateTime(newPlusOneEndDate));
-   //    }
-   //    if ( isRecurringPayment(detail) && detail.cbsFrequencyType() != null) {
-   //       allotment.setCallPeriodCode(detail.cbsFrequencyType()); 
-   //    }
-   //    allotment.setTransactionSourceCode("API");
-   //    allotment.setVendorAccountNumber(detail.vendorAccountNumber()); 
-   //    allotment.setVendorID(detail.vendorId()); 
+      AccountTransactionHistoryRequest accountTransactionHistoryRequest =
+          createAccountTransactionHistoryRequest(fiservRequest);
+      TransactionHistoryInquiryRequest transactionHistoryInquiryRequest =
+          createTransactionHistoryInquiryRequest(fiservRequest);
+      BillPayHistoryRequest billPayHistoryRequest =
+          createBillPayHistoryRequest(fiservRequest);
 
       var submitRequest = new SubmitRequest();
-   //    var transactionInput = new TransactionInput();
-   //    var input = new Input();
-   //    var extensions = new ArrayOfanyType();
-   //    extensions.getAnyType().add(extRequest);
-      
-   //    input.setExtensionRequests(extensions);
+      var transactionInput = new TransactionInput();
+      var input = new Input();
 
-   //    input.setUserAuthentication(getUserAuthentication(fiservRequest));
-   //    transactionInput.setInput(input);
-   //    transactionInput.setShouldCommitOrRollback(true);
-   //    submitRequest.setInput(transactionInput);
+      var requests = new ArrayOfRequestBase();
+      requests.getRequestBase().add(accountTransactionHistoryRequest);
+      requests.getRequestBase().add(transactionHistoryInquiryRequest);
+      input.setRequests(requests);
+
+      var extensionRequests = new ArrayOfanyType();
+      extensionRequests.getAnyType().add(billPayHistoryRequest);
+      input.setExtensionRequests(extensionRequests);
+
+      input.setUserAuthentication(getUserAuthentication(fiservRequest));
+      transactionInput.setInput(input);
+      transactionInput.setShouldCommitOrRollback(true); // TODO: review 
+      submitRequest.setInput(transactionInput);
 
       Envelope envelope = new Envelope();
       Body body = new Body();
@@ -154,6 +144,114 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       body.setSubmitRequest(submitRequest);
 
       return envelope;
+   }
+
+   private AccountTransactionHistoryRequest createAccountTransactionHistoryRequest(FiservRequest fiservRequest) {
+      CriteriaDetails criteriaDetails = fiservRequest.criteriaDetails();
+      var request = new AccountTransactionHistoryRequest();
+      if (criteriaDetails == null) {
+         return request;
+      }
+
+      request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
+      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
+      request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
+      request.setSortBy("EFFDATE");
+      request.setSearchDateOption(3); // effectiveDate
+      
+
+      if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
+          criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
+         request.setDebitCreditOnly(criteriaDetails.filterType().value());
+      }
+
+      applySearchCriteria(request, criteriaDetails);
+      return request;
+   }
+
+   private TransactionHistoryInquiryRequest createTransactionHistoryInquiryRequest(FiservRequest fiservRequest) {
+      CriteriaDetails criteriaDetails = fiservRequest.criteriaDetails();
+      var request = new TransactionHistoryInquiryRequest();
+      if (criteriaDetails == null) {
+         return request;
+      }
+
+      request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
+      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
+      request.setThruDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      request.setSearchDateOption(3); // effectiveDate
+      return request;
+   }
+
+   private BillPayHistoryRequest createBillPayHistoryRequest(FiservRequest fiservRequest) {
+      CriteriaDetails criteriaDetails = fiservRequest.criteriaDetails();
+      var request = new BillPayHistoryRequest();
+      if (criteriaDetails == null) {
+         return request;
+      }
+
+      request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
+      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
+      request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      return request;
+   }
+
+   private void applySearchCriteria(
+       AccountTransactionHistoryRequest request,
+       CriteriaDetails criteriaDetails
+   ) {
+      if (criteriaDetails.searchType() == null || criteriaDetails.searchValue() == null ||
+          criteriaDetails.searchValue().isBlank()) {
+         return;
+      }
+
+      String searchValue = criteriaDetails.searchValue();
+      switch (criteriaDetails.searchType()) {
+         case DESCRIPTION -> {
+            request.setExternalRtxnDescription(searchValue);
+            request.setInternalRtxnDescription(searchValue);
+         }
+         case CONFIRMATION_NUMBER -> request.setTransactionReferenceNumber(searchValue); // TODO review
+         case CHEQUE_NUMBER -> {
+            Long chequeNumber = toLong(searchValue);
+            request.setFromCheckNumber(chequeNumber);
+            request.setThroughCheckNumber(chequeNumber);
+         }
+         case AMOUNT -> {
+            Double amount = toDouble(searchValue);
+            request.setFromAmount(amount);
+            request.setThroughAmount(amount);
+         }
+      }
+   }
+
+   private static XMLGregorianCalendar toXmlDateTimeOrNull(String date) {
+      if (date == null || date.isBlank()) {
+         return null;
+      }
+      return toXmlDateTime(date);
+   }
+
+   private static Long toLong(String value) {
+      if (value == null || value.isBlank()) {
+         return null;
+      }
+      return Long.parseLong(value);
+   }
+
+   private static Double toDouble(String value) {
+      if (value == null || value.isBlank()) {
+         return null;
+      }
+      return Double.parseDouble(value);
+   }
+
+   private static String toFiservSortOrder(CriteriaDetails.SortingOrder sortingOrder) {
+      if (sortingOrder == null) {
+         return null;
+      }
+      return sortingOrder == CriteriaDetails.SortingOrder.DESC ? "D" : "A";
    }
 
    private static XMLGregorianCalendar toXmlDateTime(String date) {
@@ -231,7 +329,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             Response response = new Response(casaTransactionDtlsResponse, imageCachesResponse, null);
 
             return serializeResponse(response);
-            
+
         } catch (Exception e) {
             Error error = apiErrorResponseJson(e);
             return serializeResponse(new Response(null, null, error));

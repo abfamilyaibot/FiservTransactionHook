@@ -331,11 +331,51 @@
             &lt;/summary></xs:documentation>
             </xs:annotation>
           </xs:element>
+          <xs:element minOccurs="0" name="IsCustomerView" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Filter transactions on basis of CustView flag in the RTXNTYP table.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsIncludeFunds" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Indicates either to diplay Funds in respose or not. Default is FALSE(N).
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="IsOnlyComplete" nillable="true" type="xs:boolean">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Display only completed transactions, which includes the transaction’s previous status history.  
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="SearchDateOption" nillable="true" type="xs:int">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Indicates the date to use to search the transaction history response. (1 = Activity Date, 2 = Post Date, 3 = Effective Date) Default is 1
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
           <xs:element minOccurs="0" name="ThruDate" nillable="true" type="xs:dateTime">
             <xs:annotation>
               <xs:appinfo/>
               <xs:documentation>&lt;summary>
             End date for which history should be returned.
+            &lt;/summary></xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="TransactionSourceCodes" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo/>
+              <xs:documentation>&lt;summary>
+            Search by transaction source code from the Rtxn table. Supports multiple comma separated transaction source codes values.
             &lt;/summary></xs:documentation>
             </xs:annotation>
           </xs:element>

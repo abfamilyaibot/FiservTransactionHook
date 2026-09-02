@@ -184,12 +184,10 @@ public class FiservApiClient {
     }
 
     private FiservResponse createFiservResponse(Envelope responseEnvelope, String responseBody) throws CbsApiException{
-        // if ( !Boolean.TRUE.equals(responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getUserAuthentication().isWasSuccessful())) {
-        //     throwCBS_ERROR_AUTH(responseBody);
-        // }
+        if ( !Boolean.TRUE.equals(responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getUserAuthentication().isWasSuccessful())) {
+            throwCBS_ERROR_AUTH(responseBody);
+        }
 
-        // Object anyType = responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getExtensionResponses().getAnyType().get(0);
-        // return createMultiBillResponseDetailFromAnyType(anyType, responseBody);
         return null; // TODO
     }
 
