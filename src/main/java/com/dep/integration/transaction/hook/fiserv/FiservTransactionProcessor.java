@@ -510,6 +510,47 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    }
 
    private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction transaction, FiservRequest depRequest) {
-      return null; // TODO
+      // CasaTransactionDtl.tenantId: depRequest.depTenantId
+
+      // CasaTransactionDtl.TransactionDescription: Rtxn.RtxnTypeDescription
+      // if Rtxn.InternalRtxnDescription not empty: ' ' + Rtxn.InternalRtxnDescription
+      // if BillPayment.VendorName not empty: + ' ' + BillPayment.VendorName
+      // if Rtxn.ExchTxnGrp.ExchTxn.OtherAmount not empty: +  ' Exchange Amount: $' + absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
+      // if Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate not empty: +  ' Exchange Rate: ' + Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
+      
+      // CasaTransactionDtl.transactionReference: BillPayment.BillPayTransactionNumber if not empty, else Rtxn.TransactionReferenceNumber
+      
+      // CasaTransactionDtl.confirmationNumber: BillPayment.BillPayTransactionNumber if not empty
+      // CasaTransactionDtl.merchantId: BillPayment.VendorID if not empty
+
+      // CasaTransactionDtl.transactionDate: Rtxn.EffectiveDate in yyyy-MM-dd format
+      // CasaTransactionDtl.valueDate: Rtxn.EffectiveDate in yyyy-MM-dd format
+      
+      // CasaTransactionDtl.balance: Rtxn.RunningBalance 
+
+      // CasaTransactionDtl.transactionAmount = absolute value of Rtxn.TransactionAmount
+      // CasaTransactionDtl.principalAmount = absoulte value of Rtxn.principalAmount
+      // CasaTransactionDtl.interestChargeAmount = absoulte value of Rtxn.interestChargeAmount
+      
+      // CasaTransactionDtl.transactionCurrency = Rtxn.TransactionCurrency
+
+      // CasaTransactionDtl.debitCreditFlag = Rtxn.DebitCredit
+      // CasaTransactionDtl.transactionType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
+      // CasaTransactionDtl.transType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
+     
+      // CasaTransactionDtl.transactionCategoryId: Rtxn.RtxnTypeCode: 'CWTH' -> 4, 'BPMT' -> 5; else Rtxn.DebitCredit 'Credit' -> 2, 'Debit' -> 3; else -> 1
+      // CasaTransactionDtl.transactionCategory = Rtxn.RtxnTypeCode
+
+      // CasaTransactionDtl.instrumentId = Rtxn.CheckNumber
+      // CasaTransactionDtl.chequeNumber = Rtxn.CheckNumber
+      
+      // CasaTransactionDtl.accountHolderName = Rtxn.AccountHolderName
+
+      // CasaTransactionDtl.exchangeAmount =  absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
+      // CasaTransactionDtl.exchangeRate = Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
+
+      // CasaTransactionDtl.accountNumber = Rtxn.AccountNumber  
+
+            return null; // TODO
    }
 }
