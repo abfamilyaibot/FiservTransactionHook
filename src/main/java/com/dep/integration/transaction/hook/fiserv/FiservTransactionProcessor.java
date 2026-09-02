@@ -1,9 +1,12 @@
 package com.dep.integration.transaction.hook.fiserv;
 
 import java.net.http.HttpClient;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
@@ -20,6 +23,7 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservImageCachesResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservTransaction;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.billpayhistory.BillPayment;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.arrays.ArrayOfanyType;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.Input;
@@ -32,6 +36,7 @@ import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.UAInput;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Body;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Envelope;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Rtxn;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Transaction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -135,11 +140,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
       request.setSortBy("EFFDATE");
       request.setSearchDateOption(3); // effectiveDate
+      // TODO: confirm RtxnTypeCodes filtering is working 
       request.setRtxnTypeCodes(getRTxnTypeCodes(criteriaDetails.filterType()));
       
 
       if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
           criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
+            // TODO: confirm debitCreditOnly filtering is working
          request.setDebitCreditOnly(criteriaDetails.filterType().value());
       }
 
@@ -171,6 +178,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       request.setThruDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      // TODO: confirm date option is effectiveDate to align
       request.setSearchDateOption(3); // effectiveDate
       return request;
    }
@@ -185,6 +193,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      // TODO: confirm the date search is for effectiveDate to align with the other requests
       return request;
    }
 
@@ -200,11 +209,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       String searchValue = criteriaDetails.searchValue();
       switch (criteriaDetails.searchType()) {
          case CHEQUE_NUMBER -> {
+            // TODO: confirm AccountTransactionHistoryRequest working with fromCheckNumber and throughCheckNumber
             Long chequeNumber = toLong(searchValue);
             request.setFromCheckNumber(chequeNumber);
             request.setThroughCheckNumber(chequeNumber);
          }
          case AMOUNT -> {
+            // TODO: confirm AccountTransactionHistoryRequest working with FromAmount and throughAmount
             Double amount = toDouble(searchValue);
             request.setFromAmount(amount);
             request.setThroughAmount(amount);
@@ -331,7 +342,57 @@ public class FiservTransactionProcessor extends TransactionProcessor {
     }
 
     private List<FiservTransaction> convertFiservTransactions(FiservResponse fiservResponse) {
-      return null; // TODO
+      if (fiservResponse == null ||
+          fiservResponse.accountTransactionHistoryResponse() == null ||
+          fiservResponse.accountTransactionHistoryResponse().getTransactions() == null) {
+         return List.of();
+      }
+
+      Map<Long, BillPayment> billPaymentsByTransactionNumber = new HashMap<>();
+      if (fiservResponse.billPayHistoryResponse() != null &&
+          fiservResponse.billPayHistoryResponse().getBillPaymentList() != null) {
+         for (BillPayment billPayment : fiservResponse.billPayHistoryResponse().getBillPaymentList().getBillPayment()) {
+            Long transactionNumber = getBillPaymentTransactionNumber(billPayment);
+            if (transactionNumber != null) {
+               billPaymentsByTransactionNumber.put(transactionNumber, billPayment);
+            }
+         }
+      }
+
+      Map<Long, Transaction> transactionsByTransactionNumber = new HashMap<>();
+      if (fiservResponse.transactionHistoryInquiryResponse() != null &&
+          fiservResponse.transactionHistoryInquiryResponse().getTransactions() != null) {
+         for (Transaction transaction : fiservResponse.transactionHistoryInquiryResponse().getTransactions().getTransaction()) {
+            if (transaction != null && transaction.getTransactionNumber() != null) {
+               transactionsByTransactionNumber.put(transaction.getTransactionNumber(), transaction);
+            }
+         }
+      }
+
+      List<FiservTransaction> fiservTransactions = new ArrayList<>();
+      for (Rtxn rtxn : fiservResponse.accountTransactionHistoryResponse().getTransactions().getRtxn()) {
+         if (rtxn == null) {
+            continue;
+         }
+         Long transactionNumber = rtxn.getRtxnNumber();
+         fiservTransactions.add(new FiservTransaction(
+             rtxn,
+             billPaymentsByTransactionNumber.get(transactionNumber),
+             transactionsByTransactionNumber.get(transactionNumber)
+         ));
+      }
+      return fiservTransactions;
+    }
+
+    private Long getBillPaymentTransactionNumber(BillPayment billPayment) {
+      if (billPayment == null ||
+          billPayment.getTransactionList() == null ||
+          billPayment.getTransactionList().getTransaction().isEmpty() ||
+          billPayment.getTransactionList().getTransaction().get(0) == null) {
+         return null;
+      }
+      // note: billPayment.getBillPayTransactionNumber() is different and should not be used for RtxnNumber lookup
+      return billPayment.getTransactionList().getTransaction().get(0).getTransactionNumber();
     }
     
 
