@@ -209,7 +209,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    }
 
    @Override
-   protected String process(String depRequestJson, EndpointAttributes endpointAttributes) {
+   public String process(String depRequestJson, EndpointAttributes endpointAttributes) {
         FiservRequest depRequest =  deserializeRequest(depRequestJson);
 
         FiservApiClient api = createApiClient(endpointAttributes);
@@ -220,19 +220,18 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             List<FiservTransaction> filteredTransactions = filterTransactions(transactions, depRequest.criteriaDetails());
 
             List<Rtxn> chequeTransactions = getChequeFiservTransactions(transactions);
+            FiservImageCachesResponse imageCachesResponse = new FiservImageCachesResponse(chequeTransactions);
 
             List<CasaTransactionDtl> casatransactiondtls = filteredTransactions.stream()
                     .map(t -> mapToCasaTransactionDtl(t, depRequest))
                     .toList();
-
-            FiservImageCachesResponse imageCachesResponse = new FiservImageCachesResponse(chequeTransactions);
-
             CasaTransactionDtlsResponse casaTransactionDtlsResponse =
                     new CasaTransactionDtlsResponse(casatransactiondtls, casatransactiondtls.size());
 
             Response response = new Response(casaTransactionDtlsResponse, imageCachesResponse, null);
 
             return serializeResponse(response);
+            
         } catch (Exception e) {
             Error error = apiErrorResponseJson(e);
             return serializeResponse(new Response(null, null, error));

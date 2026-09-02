@@ -80,7 +80,7 @@ public class FiservApiClient {
         this.jaxbContext = initJAXBContext();
     }
 
-    protected JAXBContext initJAXBContext() {
+    private JAXBContext initJAXBContext() {
         try {
             return JAXBContext.newInstance(
                     JAXB_CONTEXT_PATH,
