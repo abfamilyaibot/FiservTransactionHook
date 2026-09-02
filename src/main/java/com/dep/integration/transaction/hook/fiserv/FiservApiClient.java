@@ -10,13 +10,17 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.xml.transform.stream.StreamSource;
 
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
-import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryResponse;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.BillPayHistoryResponse;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.ExtensionResponseBase;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.Output;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.ResponseBase;
+import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.TransactionHistoryInquiryResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.ObjectFactory;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.envelope.Envelope;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -184,54 +188,53 @@ public class FiservApiClient {
     }
 
     private FiservResponse createFiservResponse(Envelope responseEnvelope, String responseBody) throws CbsApiException{
-        if ( !Boolean.TRUE.equals(responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput().getUserAuthentication().isWasSuccessful())) {
+        Output output = responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput();
+        if (output == null || output.getUserAuthentication() == null) {
+            throw new IllegalStateException("Unexpected response from banking host.");
+        }
+        if ( !Boolean.TRUE.equals(output.getUserAuthentication().isWasSuccessful())) {
             throwCBS_ERROR_AUTH(responseBody);
         }
 
-        return null; // TODO
+        AccountTransactionHistoryResponse accountTransactionHistoryResponse = null;
+        TransactionHistoryInquiryResponse transactionHistoryInquiryResponse = null;
+        BillPayHistoryResponse billPayHistoryResponse = null;
+
+        if (output.getResponses() != null) {
+            for (ResponseBase response : output.getResponses().getResponseBase()) {
+                if (response == null) {
+                    continue;
+                }
+                if (!Boolean.TRUE.equals(response.isWasSuccessful())) {
+                    throwCBS_ERROR(responseBody);
+                }
+                if (response instanceof AccountTransactionHistoryResponse typedResponse) {
+                    accountTransactionHistoryResponse = typedResponse;
+                }
+                else if (response instanceof TransactionHistoryInquiryResponse typedResponse) {
+                    transactionHistoryInquiryResponse = typedResponse;
+                }
+            }
+        }
+
+        if (output.getExtensionResponses() != null) {
+            for (Object anyType : output.getExtensionResponses().getAnyType()) {
+                Object value = unwrapJaxbElement(anyType);
+                if (value instanceof ExtensionResponseBase response && !Boolean.TRUE.equals(response.isWasSuccessful())) {
+                    throwCBS_ERROR_EXT(responseBody);
+                }
+                if (value instanceof BillPayHistoryResponse typedResponse) {
+                    billPayHistoryResponse = typedResponse;
+                }
+            }
+        }
+
+        return new FiservResponse(
+                accountTransactionHistoryResponse,
+                billPayHistoryResponse,
+                transactionHistoryInquiryResponse
+        );
     }
-
-    // private MultiBillResponseDetail createMultiBillResponseDetailFromAnyType(Object anyType, String responseBody) throws CbsApiException{
-    //     Object value = unwrapJaxbElement(anyType);
-    //     return createMultiBillResponseDetail((BillPayMaintenanceResponse)value, responseBody);
-    // }
-
-    // private MultiBillResponseDetail createMultiBillResponseDetail  (
-    //         BillPayMaintenanceResponse billPayMaintenanceResponse, String responseBody) throws CbsApiException {
-
-    //     if (!Boolean.TRUE.equals(billPayMaintenanceResponse.isWasSuccessful())) {
-
-    //         // if duplicate bill payment
-    //         if ( billPayMaintenanceResponse.getErrors() != null &&
-    //                 billPayMaintenanceResponse.getErrors().getExtensionError() != null &&
-    //                 !billPayMaintenanceResponse.getErrors().getExtensionError().isEmpty() &&
-    //                 billPayMaintenanceResponse.getErrors().getExtensionError().get(0).getErrorMessage() != null &&
-    //                 billPayMaintenanceResponse.getErrors().getExtensionError().get(0).getErrorMessage().contains("Duplicate Bill Payment")) {
-    //             return new MultiBillResponseDetail(
-    //                     null,
-    //                     null,
-    //                     new Error("DuplicateBillPayment", "Duplicate Bill Payment")
-    //             );
-    //         }
-    //         else {
-    //             throwCBS_ERROR_EXT(responseBody);
-    //         }
-    //     }
-
-    //     return billPayMaintenanceResponse.getBillPaymentResponseAllotments()
-    //             .getBillPaymentResponseAllotments()
-    //             .stream()
-    //             .map(BillPaymentResponseAllotments::getTransactionNumber)
-    //             .filter(Objects::nonNull)
-    //             .findFirst()
-    //             .map(transactionNumber -> new MultiBillResponseDetail(
-    //                     null,
-    //                     String.valueOf(transactionNumber),
-    //                     null
-    //             ))
-    //             .orElseThrow(() -> new IllegalStateException("No transaction number found in the success response"));
-    // }
-
 
     private Object unwrapJaxbElement(Object value) {
         if (value instanceof JAXBElement<?> element) {
@@ -283,6 +286,37 @@ public class FiservApiClient {
             if (extensionResponsesNode != null && !extensionResponsesNode.isNull()) {
                 String responseBodyJson = JSON_OBJECT_MAPPER.writeValueAsString(extensionResponsesNode);
                 throw new CbsApiException("Passing ExtensionResponses to iTurmeric flow", responseBodyJson, "CBS_ERROR_EXT");
+            }
+            else {
+                throw new IllegalStateException("Unexpected response from banking host.");
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void throwCBS_ERROR(String responseBody) throws CbsApiException {
+        if (responseBody == null || responseBody.isBlank()) {
+            throw new IllegalStateException("responseBody is empty");
+        }
+        try {
+            JsonNode responseNode = XML_OBJECT_MAPPER.readTree(responseBody);
+            JsonNode responsesNode = childByLocalName(
+                    childByLocalName(
+                            childByLocalName(
+                                    childByLocalName(
+                                            childByLocalName(responseNode, "Body"),
+                                            "SubmitRequestResponse"
+                                    ),
+                                    "SubmitRequestResult"
+                            ),
+                            "Output"
+                    ),
+                    "Responses"
+            );
+            if (responsesNode != null && !responsesNode.isNull()) {
+                String responseBodyJson = JSON_OBJECT_MAPPER.writeValueAsString(responsesNode);
+                throw new CbsApiException("Passing Responses to iTurmeric flow", responseBodyJson, "CBS_ERROR");
             }
             else {
                 throw new IllegalStateException("Unexpected response from banking host.");

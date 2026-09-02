@@ -86,30 +86,6 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return new Error("OF5005", e.getMessage());
    }
 
-   // @Override
-   // protected MultiBillResponseDetail processDetail(
-   //     ApiClient apiClient,
-   //     Request depRequest,
-   //     MultiBillRequestDetail detail
-   // ) {
-   //    FiservRequest fiservRequest = (FiservRequest) depRequest;
-   //    Envelope envelope = generateEnvelope(fiservRequest, detail);
-
-   //    try {
-   //       return apiClient.payBill(
-   //           "/bill-payment/payment/immediate",
-   //           depRequest,
-   //           envelope
-   //       );
-   //    } catch (Exception e) {
-   //       return new MultiBillResponseDetail(
-   //           null,
-   //           null,
-   //           apiErrorResponseJson(e)
-   //       );
-   //    }
-   // }
-
    private Envelope generateEnvelope(
        FiservRequest fiservRequest
    ) {
@@ -135,7 +111,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       input.setUserAuthentication(getUserAuthentication(fiservRequest));
       transactionInput.setInput(input);
-      transactionInput.setShouldCommitOrRollback(true); // TODO: review 
+      transactionInput.setShouldCommitOrRollback(true); 
       submitRequest.setInput(transactionInput);
 
       Envelope envelope = new Envelope();
@@ -159,6 +135,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
       request.setSortBy("EFFDATE");
       request.setSearchDateOption(3); // effectiveDate
+      request.setRtxnTypeCodes(getRTxnTypeCodes(criteriaDetails.filterType()));
       
 
       if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
@@ -168,6 +145,20 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       applySearchCriteria(request, criteriaDetails);
       return request;
+   }
+
+   private String getRTxnTypeCodes(CriteriaDetails.FilterType filterType) {
+      if (filterType == null) {
+         return null;
+      }
+      switch (filterType) {
+         case BILL:
+            return "BPMT";
+         case CHEQUE:
+            return "CWTH";
+         default:
+            return null;
+      }
    }
 
    private TransactionHistoryInquiryRequest createTransactionHistoryInquiryRequest(FiservRequest fiservRequest) {
@@ -208,11 +199,6 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       String searchValue = criteriaDetails.searchValue();
       switch (criteriaDetails.searchType()) {
-         case DESCRIPTION -> {
-            request.setExternalRtxnDescription(searchValue);
-            request.setInternalRtxnDescription(searchValue);
-         }
-         case CONFIRMATION_NUMBER -> request.setTransactionReferenceNumber(searchValue); // TODO review
          case CHEQUE_NUMBER -> {
             Long chequeNumber = toLong(searchValue);
             request.setFromCheckNumber(chequeNumber);
@@ -222,6 +208,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             Double amount = toDouble(searchValue);
             request.setFromAmount(amount);
             request.setThroughAmount(amount);
+         }
+         default -> {
          }
       }
    }
@@ -336,13 +324,20 @@ public class FiservTransactionProcessor extends TransactionProcessor {
         }
     }
 
-    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) {
-      return null; // TODO
-      // FiservResponse getTransactions
+    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
+      Envelope envelope = generateEnvelope(depRequest);
+      FiservResponse fiservResponse = api.getTransactions(depRequest, envelope);
+      return convertFiservTransactions(fiservResponse);
     }
 
-    private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
+    private List<FiservTransaction> convertFiservTransactions(FiservResponse fiservResponse) {
       return null; // TODO
+    }
+    
+
+    private List<FiservTransaction> filterTransactions(List<FiservTransaction> transactions, CriteriaDetails criteriaDetails) {
+      return null; // TODO: search: DESCRIPTION, CONFIRMATION_NUMBER 
+      // 
     }
 
    private List<Rtxn> getChequeFiservTransactions(List<FiservTransaction> transactions) {
