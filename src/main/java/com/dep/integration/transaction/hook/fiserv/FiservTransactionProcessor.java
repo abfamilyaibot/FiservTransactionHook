@@ -94,7 +94,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
        FiservRequest fiservRequest
    ) {
       AccountTransactionHistoryRequest accountTransactionHistoryRequest =
-          createAccountTransactionHistoryRequest(fiservRequest);
+          createAccountTransactionHistoryRequest(fiservRequest);    
       TransactionHistoryInquiryRequest transactionHistoryInquiryRequest =
           createTransactionHistoryInquiryRequest(fiservRequest);
       BillPayHistoryRequest billPayHistoryRequest =
@@ -106,6 +106,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       var requests = new ArrayOfRequestBase();
       requests.getRequestBase().add(accountTransactionHistoryRequest);
+      // TODO: add transactionHistoryInquiryRequest only if isLoanAccount = true
       requests.getRequestBase().add(transactionHistoryInquiryRequest);
       input.setRequests(requests);
 
@@ -380,6 +381,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          Long transactionNumber = rtxn.getRtxnNumber();
          fiservTransactions.add(new FiservTransaction(
              rtxn,
+             // TODO: only if rtxn.getRtxnTypeCode() == 'BPMT' (bill payment)
              billPaymentsByTransactionNumber.get(transactionNumber),
              transactionsByTransactionNumber.get(transactionNumber)
          ));
@@ -529,8 +531,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       // CasaTransactionDtl.balance: Rtxn.RunningBalance 
 
       // CasaTransactionDtl.transactionAmount = absolute value of Rtxn.TransactionAmount
-      // CasaTransactionDtl.principalAmount = absoulte value of Rtxn.principalAmount
-      // CasaTransactionDtl.interestChargeAmount = absoulte value of Rtxn.interestChargeAmount
+
+      // CasaTransactionDtl.principalAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescrption contains 'Note Balance'
+      // CasaTransactionDtl.interestChargeAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescrption contains 'Note Interest'
       
       // CasaTransactionDtl.transactionCurrency = Rtxn.TransactionCurrency
 
