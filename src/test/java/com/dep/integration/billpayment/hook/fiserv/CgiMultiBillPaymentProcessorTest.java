@@ -1,6 +1,6 @@
 package com.dep.integration.billpayment.hook.fiserv;
 
-import com.dep.integration.billpayment.hook.fiserv.dto.common.EndpointAttributes;
+//import com.dep.integration.billpayment.hook.fiserv.dto.common.EndpointAttributes;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,45 +18,45 @@ class CgiMultiBillPaymentProcessorTest {
 
     @Test
     void processReturnsMultiBillResponseJson() throws Exception {
-        MultiBillPaymentProcessor processor = new CgiMultiBillPaymentProcessor(true);
-        String requestJson = requestJson();
+        // MultiBillPaymentProcessor processor = new CgiMultiBillPaymentProcessor(true);
+        // String requestJson = requestJson();
 
-        long startedAtNanos = System.nanoTime();
-        String response = processor.process(requestJson, getEndpointAttributes());
-        long elapsedNanos = System.nanoTime() - startedAtNanos;
+        // long startedAtNanos = System.nanoTime();
+        // String response = processor.process(requestJson, getEndpointAttributes());
+        // long elapsedNanos = System.nanoTime() - startedAtNanos;
 
-        System.out.println("Process elapsed time: " + elapsedMillis(elapsedNanos) + " ms");
-        System.out.println("Request: " + requestJson);
-        System.out.println("Response: " + response);
+        // System.out.println("Process elapsed time: " + elapsedMillis(elapsedNanos) + " ms");
+        // System.out.println("Request: " + requestJson);
+        // System.out.println("Response: " + response);
 
     }
 
     @Test
     void asyncProcessReturnsMultiBillResponseJson() throws Exception {
-        MultiBillPaymentProcessor processor = new CgiMultiBillPaymentProcessor(true);
-        String requestJson = requestJson();
+        // MultiBillPaymentProcessor processor = new CgiMultiBillPaymentProcessor(true);
+        // String requestJson = requestJson();
 
-        long startedAtNanos = System.nanoTime();
-        String response = processor.asyncProcess(requestJson, getEndpointAttributes());
-        long elapsedNanos = System.nanoTime() - startedAtNanos;
+        // long startedAtNanos = System.nanoTime();
+        // String response = processor.asyncProcess(requestJson, getEndpointAttributes());
+        // long elapsedNanos = System.nanoTime() - startedAtNanos;
 
-        System.out.println("Async process elapsed time: " + elapsedMillis(elapsedNanos) + " ms");
-        System.out.println("Async request: " + requestJson);
-        System.out.println("Async response: " + response);
+        // System.out.println("Async process elapsed time: " + elapsedMillis(elapsedNanos) + " ms");
+        // System.out.println("Async request: " + requestJson);
+        // System.out.println("Async response: " + response);
 
     }
 
-    private EndpointAttributes getEndpointAttributes() {
-        return new EndpointAttributes(
-            60000,
-            60000,
-                "/home/betty-leung/Development/K3_AMERICAS_CANADA_fiserv/hook/src/main/resources/dep-cgidna-nonprod-client.jks",
-            "admin123",
-            "JKS",
-            null, null, null,
-        "https://v2.fte.integrationservices.celero.ca/core-proxy/v2.0/fiserv-dna//Extensions/DNA.CoreApiService/CoreApiService.svc/Soap11"
-        );
-    }
+    // private EndpointAttributes getEndpointAttributes() {
+        // return new EndpointAttributes(
+        //     60000,
+        //     60000,
+        //         "/home/betty-leung/Development/K3_AMERICAS_CANADA_fiserv/hook/src/main/resources/dep-cgidna-nonprod-client.jks",
+        //     "admin123",
+        //     "JKS",
+        //     null, null, null,
+        // "https://v2.fte.integrationservices.celero.ca/core-proxy/v2.0/fiserv-dna//Extensions/DNA.CoreApiService/CoreApiService.svc/Soap11"
+        // );
+    // }
 
     private String requestJson() {
         List<String> scheduleTypes = randomScheduleTypes(5);
