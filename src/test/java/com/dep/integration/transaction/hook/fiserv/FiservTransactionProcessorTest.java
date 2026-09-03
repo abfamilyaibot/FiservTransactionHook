@@ -442,8 +442,12 @@ class FiservTransactionProcessorTest {
                     "password": "&lt;WhoIsResponse xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; MessageDateTime=&quot;2026-08-25T13:48:44.2802527-07:00&quot; TrackingId=&quot;b44edc59-6b6f-421c-a582-434d9d033377&quot; Successful=&quot;true&quot; ExceptionCode=&quot;None&quot; Signature=&quot;Rqp4p+XnD7CRXYGgUPTncqv4UIG9T4gTPjhb8Ab1gL/LLjq+SFCGyYQyEPVOhkJ6co411mSMw0M25//MKDNxGtIjoR8q18XOmzO6kE6pfKX4nRgAets7Yasj1VCLkJzyZwbA4G2UNnCv/AoM8jz0BIINts0ZnQVgzuK0DEUvi+mYOHCnHG0SrAxsaTipJas3LQAWJBQ/rp6emmO0o4FWUgbLUXWmXt990cWbD2WiCFgFlfPY7jjVy31QK/c11AtPP+5lSovTEEEWPKvSxSMkDL1DmxV6l+RwpawrWkGHnKi7Ys6yRS9W400Jcc20n7qEOOw+fTjySX2WO1pLEf5TPa1TdxCBRLqkxL7pnv+SrLQSTP0Flp9PHnukqRGAWhdw0KBiGqHQGUEoDOlxzRHH+roHfZndleSWYkXqth/pi6wYuCY8J/fV/OWxbynn3yiTianZGlTwrvd9ZXg+2r7aOsffecaYZuYA9vZ0v8wacEfZFe3/QJ27/0izT4WqNGH0hE0IoWi4A2AihMbQ4JqB2OJYIXS/L0UNQ3FQXtAWSut6gtZmeoWRMIyGpJ7he04b5QmGAkV2FhKcmBD3Ywemdbum9+ol/tD9EMzH9zBLGSF5fXGAx6ToIRdRegEd7P4k3AIsOAIVputa2b2C4h4r8pYJdINoGPTBvZJKld4QvtA=&quot;&gt;&lt;SafUserNbr&gt;1674&lt;/SafUserNbr&gt;&lt;SafUserName&gt;INTELLECTDEP&lt;/SafUserName&gt;&lt;FirstName&gt;Intellect&lt;/FirstName&gt;&lt;LastName&gt;DEP&lt;/LastName&gt;&lt;ExpirationDate&gt;2026-08-26T13:48:33.2730922-07:00&lt;/ExpirationDate&gt;&lt;AuthenticatedProducts&gt;&lt;ProdNbr&gt;3&lt;/ProdNbr&gt;&lt;ProdPersId&gt;1532997&lt;/ProdPersId&gt;&lt;/AuthenticatedProducts&gt;&lt;AuthenticatedProducts&gt;&lt;ProdNbr&gt;1&lt;/ProdNbr&gt;&lt;ProdPersId&gt;1674&lt;/ProdPersId&gt;&lt;/AuthenticatedProducts&gt;&lt;/WhoIsResponse&gt;" 
                 },
                 "depTenantId": "CORE_FISERVDNA",
-                "isLoanAccount": "%s",
-                "accountHolderName": "Joel User",
+                "accountInfo": {
+                    "isLoanAccount": "%s",
+                    "accountHolderName": "Joel User",
+                    "routeNumber": "809",
+                    "transitNumber": "12345"
+                },
                 "criteriaDetails": {
                     "startDate": "%s",
                     "endDate": "%s",

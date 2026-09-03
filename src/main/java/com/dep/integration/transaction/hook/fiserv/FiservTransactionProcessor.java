@@ -21,6 +21,7 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails;
 import com.dep.integration.transaction.hook.fiserv.dto.common.EndpointAttributes;
 import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
+import com.dep.integration.transaction.hook.fiserv.dto.AccountInfo;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservApiResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservImageCachesResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
@@ -112,7 +113,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       var requests = new ArrayOfRequestBase();
       requests.getRequestBase().add(accountTransactionHistoryRequest);
-      if ("true".equals(fiservRequest.isLoanAccount())) {
+      if (isLoanAccount(fiservRequest)) {
          requests.getRequestBase().add(transactionHistoryInquiryRequest);
       }
       input.setRequests(requests);
@@ -324,7 +325,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             
             List<FiservTransaction> filteredTransactions = filterTransactions(transactions, depRequest.criteriaDetails());
 
-            List<Rtxn> chequeTransactions = getChequeFiservTransactions(transactions);
+            List<Rtxn> chequeTransactions = getChequeFiservTransactions(transactions, depRequest);
             FiservImageCachesResponse imageCachesResponse = new FiservImageCachesResponse(chequeTransactions);
 
             List<CasaTransactionDtl> casatransactiondtls = filteredTransactions.stream()
@@ -358,7 +359,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
       Envelope envelope = generateEnvelope(depRequest);
       FiservApiResponse fiservApiResponse = api.getTransactions(depRequest, envelope);
-      return convertFiservTransactions(fiservApiResponse, "true".equals(depRequest.isLoanAccount()));
+      return convertFiservTransactions(fiservApiResponse, isLoanAccount(depRequest));
    }
 
     private List<FiservTransaction> convertFiservTransactions(FiservApiResponse fiservApiResponse, boolean isLoanAccount) {
@@ -501,14 +502,24 @@ public class FiservTransactionProcessor extends TransactionProcessor {
           transaction.rtxn().getCheckNumber().equals(chequeNumber);
     }
 
-   private List<Rtxn> getChequeFiservTransactions(List<FiservTransaction> transactions) {
+   private List<Rtxn> getChequeFiservTransactions(List<FiservTransaction> transactions, FiservRequest depRequest) {
       if (transactions == null || transactions.isEmpty()) {
          return List.of();
       }
+      AccountInfo accountInfo = depRequest == null ? null : depRequest.accountInfo();
       return transactions.stream()
           .map(FiservTransaction::rtxn)
           .filter(rtxn -> rtxn != null && "CWTH".equals(rtxn.getRtxnTypeCode()))
+          .peek(rtxn -> populateChequeAccountInfo(rtxn, accountInfo))
           .toList();
+   }
+
+   private void populateChequeAccountInfo(Rtxn rtxn, AccountInfo accountInfo) {
+      if (rtxn == null || accountInfo == null) {
+         return;
+      }
+      rtxn.setRouteNumber(accountInfo.routeNumber());
+      rtxn.setTransitNumber(accountInfo.transitNumber());
    }
 
 
@@ -570,7 +581,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       // CasaTransactionDtl.instrumentId = Rtxn.CheckNumber
       // CasaTransactionDtl.chequeNumber = Rtxn.CheckNumber
 
-      // CasaTransactionDtl.accountHolderName = Rtxn.AccountHolderName
+      // CasaTransactionDtl.accountHolderName = DepRequest.AccountHolderName
 
       // CasaTransactionDtl.exchangeAmount =  absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
       // CasaTransactionDtl.exchangeRate = Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
@@ -725,7 +736,13 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    }
 
    private String getAccountHolderName(FiservRequest depRequest) {
-      return depRequest == null ? null : depRequest.accountHolderName();
+      return depRequest == null || depRequest.accountInfo() == null ? null : depRequest.accountInfo().accountHolderName();
+   }
+
+   private boolean isLoanAccount(FiservRequest depRequest) {
+      return depRequest != null &&
+          depRequest.accountInfo() != null &&
+          "true".equals(depRequest.accountInfo().isLoanAccount());
    }
 
    private BigDecimal getPrincipalAmount(Transaction loanTransaction) {

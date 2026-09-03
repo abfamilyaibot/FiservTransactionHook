@@ -6,8 +6,7 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.Request;
 public record FiservRequest  (
     FiservCbsContext cbsContext,
     String depTenantId,
-    String isLoanAccount,
-    String accountHolderName,
+    AccountInfo accountInfo,
     CriteriaDetails criteriaDetails,
     String accessToken 
 ) implements Request {
