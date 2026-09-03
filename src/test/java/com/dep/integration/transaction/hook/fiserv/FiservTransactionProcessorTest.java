@@ -42,7 +42,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void noFilteringASC() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "ASC", null, null, null));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "ASC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.ASC);
         assertTenantId(response, "CORE_FISERVDNA");
@@ -63,14 +63,14 @@ class FiservTransactionProcessorTest {
 
     @Test
     void noFilteringDESC() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, null, null));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
     }
 
     @Test
     void filterByCreditFlag() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", null, null));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertDebitCreditFlag(response, Arrays.asList("C"));
@@ -83,7 +83,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void filterByDebitFlag() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "D", null, null));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "D", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertDebitCreditFlag(response, Arrays.asList("D"));
@@ -95,7 +95,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void filterByBill() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "Bill", null, null));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "Bill", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionCategory(response, "BILL_PAYMENT");
@@ -107,7 +107,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void filterByCheque() throws Exception {
-        String responseJson = processAndPrint(requestJson( TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", "Cheque", null, null));
+        String responseJson = processAndPrint(requestJson(false, TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", "Cheque", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertChequeNumberExists(response);
@@ -119,7 +119,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void searchByAmount() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "AMOUNT", "105"));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "AMOUNT", "105"));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionAmount(response, "1");
@@ -127,7 +127,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void searchByDescription() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "DESCRIPTION", "memo"));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "DESCRIPTION", "memo"));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionDescriptionContains(response, "Stop Payment");
@@ -135,7 +135,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void searchByConfirmationNumber() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "CONFIRMATION_NUMBER", "1740662070"));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "CONFIRMATION_NUMBER", "1740662070"));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertConfirmationNumber(response, "8053275");
@@ -146,7 +146,7 @@ class FiservTransactionProcessorTest {
 
   @Test
     void searchByChequeNumber() throws Exception {
-        String responseJson = processAndPrint(requestJson( TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", null, "CHEQUE_NUMBER", "123"));
+        String responseJson = processAndPrint(requestJson(false, TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", null, "CHEQUE_NUMBER", "123"));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertChequeNumber(response, "100");
@@ -157,7 +157,7 @@ class FiservTransactionProcessorTest {
 
     @Test
     void searchByAmountAndFilterByCreditFlag() throws Exception {
-        String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", "AMOUNT", "105"));
+        String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", "AMOUNT", "105"));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionAmount(response, "1");
@@ -166,14 +166,14 @@ class FiservTransactionProcessorTest {
 
     @Test
     void loanAccount() throws Exception {
-        String responseJson = processAndPrint(requestJson( TEST2_START_DATE, TEST2_END_DATE, TEST2_ACCOUNT_NUMBER, "ASC", null, null, null));
+        String responseJson = processAndPrint(requestJson(true, TEST2_START_DATE, TEST2_END_DATE, TEST2_ACCOUNT_NUMBER, "ASC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertContainsPrincipalAmountOrInterestChargeAmount(response);
     }
 
     @Test
     void exchangeRate() throws Exception {
-        String responseJson = processAndPrint(requestJson( TEST4_START_DATE, TEST4_END_DATE, TEST4_ACCOUNT_NUMBER, "ASC", null, null, null));
+        String responseJson = processAndPrint(requestJson(false, TEST4_START_DATE, TEST4_END_DATE, TEST4_ACCOUNT_NUMBER, "ASC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertExchangeRateExists(response);
         assertExchangeAmountExists(response);
@@ -414,6 +414,7 @@ class FiservTransactionProcessorTest {
 
 
     private String requestJson(
+        boolean isLoanAccount,
         String startDate,
         String endDate,
         String accountNumber,
@@ -440,7 +441,7 @@ class FiservTransactionProcessorTest {
                     "password": "&lt;WhoIsResponse xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; MessageDateTime=&quot;2026-08-25T13:48:44.2802527-07:00&quot; TrackingId=&quot;b44edc59-6b6f-421c-a582-434d9d033377&quot; Successful=&quot;true&quot; ExceptionCode=&quot;None&quot; Signature=&quot;Rqp4p+XnD7CRXYGgUPTncqv4UIG9T4gTPjhb8Ab1gL/LLjq+SFCGyYQyEPVOhkJ6co411mSMw0M25//MKDNxGtIjoR8q18XOmzO6kE6pfKX4nRgAets7Yasj1VCLkJzyZwbA4G2UNnCv/AoM8jz0BIINts0ZnQVgzuK0DEUvi+mYOHCnHG0SrAxsaTipJas3LQAWJBQ/rp6emmO0o4FWUgbLUXWmXt990cWbD2WiCFgFlfPY7jjVy31QK/c11AtPP+5lSovTEEEWPKvSxSMkDL1DmxV6l+RwpawrWkGHnKi7Ys6yRS9W400Jcc20n7qEOOw+fTjySX2WO1pLEf5TPa1TdxCBRLqkxL7pnv+SrLQSTP0Flp9PHnukqRGAWhdw0KBiGqHQGUEoDOlxzRHH+roHfZndleSWYkXqth/pi6wYuCY8J/fV/OWxbynn3yiTianZGlTwrvd9ZXg+2r7aOsffecaYZuYA9vZ0v8wacEfZFe3/QJ27/0izT4WqNGH0hE0IoWi4A2AihMbQ4JqB2OJYIXS/L0UNQ3FQXtAWSut6gtZmeoWRMIyGpJ7he04b5QmGAkV2FhKcmBD3Ywemdbum9+ol/tD9EMzH9zBLGSF5fXGAx6ToIRdRegEd7P4k3AIsOAIVputa2b2C4h4r8pYJdINoGPTBvZJKld4QvtA=&quot;&gt;&lt;SafUserNbr&gt;1674&lt;/SafUserNbr&gt;&lt;SafUserName&gt;INTELLECTDEP&lt;/SafUserName&gt;&lt;FirstName&gt;Intellect&lt;/FirstName&gt;&lt;LastName&gt;DEP&lt;/LastName&gt;&lt;ExpirationDate&gt;2026-08-26T13:48:33.2730922-07:00&lt;/ExpirationDate&gt;&lt;AuthenticatedProducts&gt;&lt;ProdNbr&gt;3&lt;/ProdNbr&gt;&lt;ProdPersId&gt;1532997&lt;/ProdPersId&gt;&lt;/AuthenticatedProducts&gt;&lt;AuthenticatedProducts&gt;&lt;ProdNbr&gt;1&lt;/ProdNbr&gt;&lt;ProdPersId&gt;1674&lt;/ProdPersId&gt;&lt;/AuthenticatedProducts&gt;&lt;/WhoIsResponse&gt;" 
                 },
                 "depTenantId": "CORE_FISERVDNA",
-                "isLoanAccount": "false",
+                "isLoanAccount": "%s",
                 "accountHolderName": "Joel User",
                 "criteriaDetails": {
                     "startDate": "%s",
@@ -450,6 +451,7 @@ class FiservTransactionProcessorTest {
                 }
             }
         """.formatted(
+            isLoanAccount,
             startDate,
             endDate,
             accountNumber,
