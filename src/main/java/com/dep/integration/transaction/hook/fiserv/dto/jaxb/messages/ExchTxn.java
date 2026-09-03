@@ -9,6 +9,7 @@
 package com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages;
 
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -50,10 +51,13 @@ import jakarta.xml.bind.annotation.XmlType;
 public class ExchTxn {
 
     @XmlElement(name = "ExchangeRate", nillable = true)
+    @JsonProperty("ExchangeRate")
     protected BigDecimal exchangeRate;
     @XmlElement(name = "OtherAmount", nillable = true)
+    @JsonProperty("OtherAmount")
     protected Double otherAmount;
     @XmlElement(name = "OtherCCY", nillable = true)
+    @JsonProperty("OtherCCY")
     protected String otherCCY;
 
     /**

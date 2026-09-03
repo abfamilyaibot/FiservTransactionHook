@@ -10,6 +10,7 @@ package com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -42,6 +43,7 @@ import jakarta.xml.bind.annotation.XmlType;
 public class ArrayOfExchTxn {
 
     @XmlElement(name = "ExchTxn", nillable = true)
+    @JsonProperty("ExchTxn")
     protected List<ExchTxn> exchTxn;
 
     /**
