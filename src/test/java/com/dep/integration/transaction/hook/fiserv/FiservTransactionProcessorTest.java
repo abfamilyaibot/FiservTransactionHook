@@ -34,6 +34,10 @@ class FiservTransactionProcessorTest {
     private static final String TEST3_END_DATE = "2026-03-30";
     private static final String TEST3_ACCOUNT_NUMBER = "100000269944";
 
+    // wih exchange rate 5818090505689457 RETAILDEPSAAS3
+    private static final String TEST4_START_DATE = "2026-08-28";
+    private static final String TEST4_END_DATE = "2026-08-28";
+    private static final String TEST4_ACCOUNT_NUMBER = "660500581009";
 
     @Test
     void noFilteringASC() throws Exception {
@@ -46,6 +50,14 @@ class FiservTransactionProcessorTest {
         assertDebitCreditFlag(response, Arrays.asList("C", "D"));
         assertTransactionCategoryId(response, Arrays.asList("4", "5", "2", "3"));
         assertAccountHolderName(response, "Joel User");
+        assertAccountNumber(response, DEFAULT_ACCOUNT_NUMBER);
+        assertTransactionCurrencyExists(response);
+        assertBalanceExists(response);
+        assertTransactionDateExists(response);
+        assertValueDateExists(response);
+        assertTransactionAmountExists(response);
+        assertTransactionDescriptionExists(response);
+        assertTransactionReferenceExists(response);
     }
 
     @Test
@@ -87,6 +99,7 @@ class FiservTransactionProcessorTest {
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionCategory(response, "BILL_PAYMENT");
         assertBillPaymentConfirmationNumberExists(response);
+        assertMerchantIdExists(response);
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
         assertTransactionCategoryId(response, Arrays.asList("5"));
     }
@@ -157,6 +170,15 @@ class FiservTransactionProcessorTest {
         assertContainsPrincipalAmountOrInterestChargeAmount(response);
     }
 
+    @Test
+    void exchangeRate() throws Exception {
+        String responseJson = processAndPrint(requestJson( TEST4_START_DATE, TEST4_END_DATE, TEST4_ACCOUNT_NUMBER, "ASC", null, null, null));
+        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        assertExchangeRateExists(response);
+        assertExchangeAmountExists(response);
+        assertTransactionDescriptionContainsExchangeInfo(response);
+    }
+
     private String processAndPrint(String requestJson) {
         TransactionProcessor processor = new FiservTransactionProcessor(true);
 
@@ -194,21 +216,18 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertContainsPrincipalAmountOrInterestChargeAmount(FiservResponse response)   {
-assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+    private void assertContainsPrincipalAmountOrInterestChargeAmount(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
         List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
         assertNotNull(transactions, "casatransactiondtls should be present");
         assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
 
         for (CasaTransactionDtl transaction : transactions) {
-            // assert either principalAmount or interestChargeAmount is present
-            if (transaction.principalAmount() == null) {
-                assertNotNull(transaction.interestChargeAmount(), "interestChargeAmount or principalAmount should be present");
-            }
-            if (transaction.interestChargeAmount() == null) {
-                assertNotNull(transaction.principalAmount(), "interestChargeAmount or principalAmount should be present");
-            }
+            assertTrue(
+                transaction.principalAmount() != null || transaction.interestChargeAmount() != null,
+                "interestChargeAmount or principalAmount should be present"
+            );
         }
     }
 
@@ -255,6 +274,22 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
                 expectedAccountHolderName,
                 transaction.accountHolderName(),
                 "casatransactiondtls should only contain accountHolderName " + expectedAccountHolderName
+            );
+        }
+    }
+
+    private void assertAccountNumber(FiservResponse response, String expectedAccountNumber) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertEquals(
+                expectedAccountNumber,
+                transaction.accountNumber(),
+                "casatransactiondtls should only contain accountNumber " + expectedAccountNumber
             );
         }
     }
@@ -335,6 +370,21 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
         }
     }
 
+    private void assertMerchantIdExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.merchantId(),
+                "casatransactiondtls should contain merchantId for bill payment transactions"
+            );
+        }
+    }
+
     private void assertTransactionAmount(FiservResponse response, String expectedTransactionAmount) {
         assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
@@ -348,6 +398,21 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
                 0,
                 expectedAmount.compareTo(transaction.transactionAmount()),
                 "casatransactiondtls should only contain transactionAmount " + expectedTransactionAmount
+            );
+        }
+    }
+
+    private void assertTransactionAmountExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.transactionAmount(),
+                "casatransactiondtls should contain transactionAmount"
             );
         }
     }
@@ -427,6 +492,146 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
             assertNotNull(
                 transaction.instrumentId(),
                 "casatransactiondtls should contain instrumentId for cheque transactions"
+            );
+        }
+    }
+
+    private void assertTransactionCurrencyExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.transactionCurrency(),
+                "casatransactiondtls should contain transactionCurrency"
+            );
+        }
+    }
+
+    private void assertBalanceExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.balance(),
+                "casatransactiondtls should contain balance"
+            );
+        }
+    }
+
+    private void assertTransactionDateExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.transactionDate(),
+                "casatransactiondtls should contain transactionDate"
+            );
+        }
+    }
+
+    private void assertValueDateExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.valueDate(),
+                "casatransactiondtls should contain valueDate"
+            );
+        }
+    }
+
+    private void assertExchangeRateExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.exchangeRate(),
+                "casatransactiondtls should contain exchangeRate"
+            );
+        }
+    }
+
+    private void assertExchangeAmountExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.exchangeAmount(),
+                "casatransactiondtls should contain exchangeAmount"
+            );
+        }
+    }
+
+    private void assertTransactionDescriptionContainsExchangeInfo(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(transaction.transactionDescription(), "transactionDescription should be present");
+            assertTrue(
+                transaction.transactionDescription().contains(" Exchange Amount: $"),
+                "transactionDescription should contain exchange amount"
+            );
+            assertTrue(
+                transaction.transactionDescription().contains(" Exchange Rate: "),
+                "transactionDescription should contain exchange rate"
+            );
+        }
+    }
+
+    private void assertTransactionDescriptionExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.transactionDescription(),
+                "casatransactiondtls should contain transactionDescription"
+            );
+        }
+    }
+
+    private void assertTransactionReferenceExists(FiservResponse response) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertNotNull(
+                transaction.transactionReference(),
+                "casatransactiondtls should contain transactionReference"
             );
         }
     }
