@@ -138,7 +138,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       //     criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
       //       // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
       //    request.setDebitCreditOnly(criteriaDetails.filterType().value());
-      // }      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
+      // }     
+      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       
       request.setIsResultingBalance(true);
       
