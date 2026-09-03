@@ -125,8 +125,6 @@ class FiservTransactionProcessorTest {
         String responseJson = processAndPrint(requestJson( TEST2_START_DATE, TEST2_END_DATE, TEST2_ACCOUNT_NUMBER, "ASC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertContainsPrincipalAmountOrInterestChargeAmount(response);
-        
-        
     }
 
     private String processAndPrint(String requestJson) {
