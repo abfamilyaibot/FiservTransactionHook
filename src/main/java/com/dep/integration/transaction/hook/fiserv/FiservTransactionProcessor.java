@@ -134,17 +134,16 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
 
-      // if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
-      //     criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
-      //       // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
-      //    request.setDebitCreditOnly(criteriaDetails.filterType().value());
-      // }     
+      if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
+          criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
+            // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
+         request.setDebitCreditOnly(criteriaDetails.filterType().value());
+      }     
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
       
       request.setIsResultingBalance(true);
       
-      // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
-      // request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
+      request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
       
       request.setSearchDateOption(3); // effectiveDate
       request.setSortBy("EFFDATE");
@@ -152,7 +151,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       
       request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
       
-      // applySearchCriteria(request, criteriaDetails);
+      applySearchCriteria(request, criteriaDetails);
       
       return request;
    }
@@ -200,33 +199,33 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return request;
    }
 
-   // private void applySearchCriteria(
-   //     AccountTransactionHistoryRequest request,
-   //     CriteriaDetails criteriaDetails
-   // ) {
-   //    if (criteriaDetails.searchType() == null || criteriaDetails.searchValue() == null ||
-   //        criteriaDetails.searchValue().isBlank()) {
-   //       return;
-   //    }
+   private void applySearchCriteria(
+       AccountTransactionHistoryRequest request,
+       CriteriaDetails criteriaDetails
+   ) {
+      if (criteriaDetails.searchType() == null || criteriaDetails.searchValue() == null ||
+          criteriaDetails.searchValue().isBlank()) {
+         return;
+      }
 
-   //    String searchValue = criteriaDetails.searchValue();
-   //    switch (criteriaDetails.searchType()) {
-         // case CHEQUE_NUMBER -> {
-         //    // FromCheckNumber, ThroughtCheckNumber Not working, need to do manual filtering on AccountTransactionHistoryResponse
-         //    Long chequeNumber = toLong(searchValue);
-         //    request.setFromCheckNumber(chequeNumber);
-         //    request.setThroughCheckNumber(chequeNumber);
-         // }
-         // case AMOUNT -> {
-         //    // FromAmount, ThroughAmount Not working, need to do manual filtering on AccountTransactionHistoryResponse
-         //    Double amount = toDouble(searchValue);
-         //    request.setFromAmount(amount);
-         //    request.setThroughAmount(amount);
-         // }
-         // default -> {
-   //       }
-   //    }
-   // }
+      String searchValue = criteriaDetails.searchValue();
+      switch (criteriaDetails.searchType()) {
+         case CHEQUE_NUMBER -> {
+            // FromCheckNumber, ThroughtCheckNumber Not working, need to do manual filtering on AccountTransactionHistoryResponse
+            Long chequeNumber = toLong(searchValue);
+            request.setFromCheckNumber(chequeNumber);
+            request.setThroughCheckNumber(chequeNumber);
+         }
+         case AMOUNT -> {
+            // FromAmount, ThroughAmount Not working, need to do manual filtering on AccountTransactionHistoryResponse
+            Double amount = toDouble(searchValue);
+            request.setFromAmount(amount);
+            request.setThroughAmount(amount);
+         }
+         default -> {
+         }
+      }
+   }
 
    private static XMLGregorianCalendar toXmlDateTimeOrNull(String date) {
       if (date == null || date.isBlank()) {
@@ -444,6 +443,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          case C, D -> filterType.value().equals(rtxn.getDebitCredit());
          // filter: BILL -> RtxnTypeCode = BPMT; CHEQUE -> RtxnTypeCode = CWTH
          case BILL, CHEQUE -> getRTxnTypeCode(filterType).equals(rtxn.getRtxnTypeCode());
+         default -> true;
       };
     }
 
@@ -462,6 +462,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          case AMOUNT -> matchesAmount(transaction, toDouble(criteriaDetails.searchValue()));
          // search CHEQUE -> CheckNumber matches
          case CHEQUE_NUMBER -> matchesChequeNumber(transaction, toLong(criteriaDetails.searchValue()));
+         default -> true;
       };
     }
 
@@ -502,6 +503,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
    private ChequeImageTransaction mapToChequeImageTransaction(Rtxn rtxn, AccountInfo accountInfo) {
       return new ChequeImageTransaction(
+          accountInfo == null ? null : accountInfo.accountNumber(),
           getChequeNumber(rtxn),
           getTransactionDate(rtxn),
           getTransactionAmount(rtxn),
@@ -760,10 +762,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return exchangeTransaction == null ? null : toAbsBigDecimal(exchangeTransaction.getOtherAmount());
    }
 
-   private String getExchangeRate(ExchTxn exchangeTransaction) {
-      return exchangeTransaction == null || exchangeTransaction.getExchangeRate() == null
-          ? null
-          : exchangeTransaction.getExchangeRate().toPlainString();
+   private BigDecimal getExchangeRate(ExchTxn exchangeTransaction) {
+      return exchangeTransaction == null ? null : exchangeTransaction.getExchangeRate();
    }
 
    private String getAccountNumber(Rtxn rtxn) {
@@ -809,7 +809,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
        ExchTxn exchangeTransaction
    ) {
       BigDecimal exchangeAmount = getExchangeAmount(exchangeTransaction);
-      String exchangeRate = getExchangeRate(exchangeTransaction);
+      BigDecimal exchangeRate = getExchangeRate(exchangeTransaction);
       StringBuilder description = new StringBuilder();
       if (rtxn != null && isNotBlank(rtxn.getRtxnTypeDescription())) {
          description.append(rtxn.getRtxnTypeDescription());
@@ -819,8 +819,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       if (exchangeAmount != null) {
          appendDescriptionPart(description, "Exchange Amount: $" + exchangeAmount.toPlainString());
       }
-      if (isNotBlank(exchangeRate)) {
-         appendDescriptionPart(description, "Exchange Rate: " + exchangeRate);
+      if (exchangeRate != null) {
+         appendDescriptionPart(description, "Exchange Rate: " + exchangeRate.toPlainString());
       }
       return description.isEmpty() ? null : description.toString();
    }

@@ -17,7 +17,7 @@ public record CasaTransactionDtl(
     String instrumentId,
     String transactionType, 
     String chequeNumber,
-    String exchangeRate,
+    BigDecimal exchangeRate,
     BigDecimal exchangeAmount,
     String accountNumber,
     String transactionCurrency,

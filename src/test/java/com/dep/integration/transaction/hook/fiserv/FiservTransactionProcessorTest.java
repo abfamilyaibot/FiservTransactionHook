@@ -443,6 +443,7 @@ class FiservTransactionProcessorTest {
                 },
                 "depTenantId": "CORE_FISERVDNA",
                 "accountInfo": {
+                    "accountNumber": "%s",
                     "isLoanAccount": "%s",
                     "accountHolderName": "Joel User",
                     "routeNumber": "809",
@@ -457,6 +458,7 @@ class FiservTransactionProcessorTest {
                 }
             }
         """.formatted(
+            accountNumber,
             isLoanAccount,
             startDate,
             endDate,
