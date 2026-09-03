@@ -49,13 +49,13 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class UAInput {
 
-    @XmlElement(name = "ApplID", nillable = true)
+    @XmlElement(name = "ApplID")
     protected String applID;
     @XmlElement(name = "AuthorizationType")
     protected String authorizationType;
-    @XmlElement(name = "NetworkNodeName", nillable = true)
+    @XmlElement(name = "NetworkNodeName")
     protected String networkNodeName;
-    @XmlElement(name = "Password", nillable = true)
+    @XmlElement(name = "Password")
     protected String password;
 
     /**

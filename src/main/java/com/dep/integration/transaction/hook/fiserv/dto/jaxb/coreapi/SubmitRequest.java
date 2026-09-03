@@ -41,7 +41,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "SubmitRequest")
 public class SubmitRequest {
 
-    @XmlElement(nillable = true)
+    @XmlElement
     protected TransactionInput input;
 
     /**

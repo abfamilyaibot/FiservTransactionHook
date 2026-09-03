@@ -41,7 +41,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ArrayOfanyType {
 
-    @XmlElement(nillable = true)
+    @XmlElement
     protected List<Object> anyType;
 
     /**

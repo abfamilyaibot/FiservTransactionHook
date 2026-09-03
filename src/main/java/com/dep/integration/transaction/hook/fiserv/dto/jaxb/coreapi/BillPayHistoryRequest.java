@@ -58,19 +58,19 @@ public class BillPayHistoryRequest
 
     @XmlElement(name = "AccountNumber")
     protected Long accountNumber;
-    @XmlElement(name = "BillPayTransactionNumbers", nillable = true)
+    @XmlElement(name = "BillPayTransactionNumbers")
     protected ArrayOflong billPayTransactionNumbers;
-    @XmlElement(name = "FromDate", nillable = true)
+    @XmlElement(name = "FromDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar fromDate;
-    @XmlElement(name = "MaxRows", nillable = true)
+    @XmlElement(name = "MaxRows")
     protected Integer maxRows;
-    @XmlElement(name = "SequenceNumber", nillable = true)
+    @XmlElement(name = "SequenceNumber")
     protected Integer sequenceNumber;
-    @XmlElement(name = "ThroughDate", nillable = true)
+    @XmlElement(name = "ThroughDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar throughDate;
-    @XmlElement(name = "TransactionNumbers", nillable = true)
+    @XmlElement(name = "TransactionNumbers")
     protected ArrayOflong transactionNumbers;
 
     /**

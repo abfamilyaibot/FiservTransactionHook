@@ -48,11 +48,11 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Input {
 
-    @XmlElement(name = "ExtensionRequests", nillable = true)
+    @XmlElement(name = "ExtensionRequests")
     protected ArrayOfanyType extensionRequests;
-    @XmlElement(name = "Requests", nillable = true)
+    @XmlElement(name = "Requests")
     protected ArrayOfRequestBase requests;
-    @XmlElement(name = "UserAuthentication", nillable = true)
+    @XmlElement(name = "UserAuthentication")
     protected UAInput userAuthentication;
 
     /**

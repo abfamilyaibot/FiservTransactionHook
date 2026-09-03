@@ -95,57 +95,57 @@ public class AccountTransactionHistoryRequest
     extends RequestBase
 {
 
-    @XmlElement(name = "AccountNumber", nillable = true)
+    @XmlElement(name = "AccountNumber")
     protected Long accountNumber;
-    @XmlElement(name = "DebitCreditOnly", nillable = true)
+    @XmlElement(name = "DebitCreditOnly")
     protected String debitCreditOnly;
-    @XmlElement(name = "ExternalRtxnDescription", nillable = true)
+    @XmlElement(name = "ExternalRtxnDescription")
     protected String externalRtxnDescription;
-    @XmlElement(name = "FromAmount", nillable = true)
+    @XmlElement(name = "FromAmount")
     protected Double fromAmount;
-    @XmlElement(name = "FromCheckNumber", nillable = true)
+    @XmlElement(name = "FromCheckNumber")
     protected Long fromCheckNumber;
-    @XmlElement(name = "FromDate", nillable = true)
+    @XmlElement(name = "FromDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar fromDate;
-    @XmlElement(name = "InternalRtxnDescription", nillable = true)
+    @XmlElement(name = "InternalRtxnDescription")
     protected String internalRtxnDescription;
-    @XmlElement(name = "IsCustomerView", nillable = true)
+    @XmlElement(name = "IsCustomerView")
     protected Boolean isCustomerView;
-    @XmlElement(name = "IsErrorCorrect", nillable = true)
+    @XmlElement(name = "IsErrorCorrect")
     protected Boolean isErrorCorrect;
-    @XmlElement(name = "IsIncludeBalanceDetail", nillable = true)
+    @XmlElement(name = "IsIncludeBalanceDetail")
     protected Boolean isIncludeBalanceDetail;
-    @XmlElement(name = "IsRejected", nillable = true)
+    @XmlElement(name = "IsRejected")
     protected Boolean isRejected;
-    @XmlElement(name = "IsResultingBalance", nillable = true)
+    @XmlElement(name = "IsResultingBalance")
     protected Boolean isResultingBalance;
-    @XmlElement(name = "IsReversed", nillable = true)
+    @XmlElement(name = "IsReversed")
     protected Boolean isReversed;
-    @XmlElement(name = "MaximumRows", nillable = true)
+    @XmlElement(name = "MaximumRows")
     protected Long maximumRows;
-    @XmlElement(name = "PreviousRunningBalance", nillable = true)
+    @XmlElement(name = "PreviousRunningBalance")
     protected Double previousRunningBalance;
-    @XmlElement(name = "RtxnReportGroupCodes", nillable = true)
+    @XmlElement(name = "RtxnReportGroupCodes")
     protected String rtxnReportGroupCodes;
-    @XmlElement(name = "RtxnTypeCodes", nillable = true)
+    @XmlElement(name = "RtxnTypeCodes")
     protected String rtxnTypeCodes;
-    @XmlElement(name = "SearchDateOption", nillable = true)
+    @XmlElement(name = "SearchDateOption")
     protected Integer searchDateOption;
-    @XmlElement(name = "SortBy", nillable = true)
+    @XmlElement(name = "SortBy")
     protected String sortBy;
-    @XmlElement(name = "SortOrder", nillable = true)
+    @XmlElement(name = "SortOrder")
     protected String sortOrder;
-    @XmlElement(name = "ThroughAmount", nillable = true)
+    @XmlElement(name = "ThroughAmount")
     protected Double throughAmount;
-    @XmlElement(name = "ThroughCheckNumber", nillable = true)
+    @XmlElement(name = "ThroughCheckNumber")
     protected Long throughCheckNumber;
-    @XmlElement(name = "ThroughDate", nillable = true)
+    @XmlElement(name = "ThroughDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar throughDate;
-    @XmlElement(name = "TimeUniqueExtension", nillable = true)
+    @XmlElement(name = "TimeUniqueExtension")
     protected Long timeUniqueExtension;
-    @XmlElement(name = "TransactionReferenceNumber", nillable = true)
+    @XmlElement(name = "TransactionReferenceNumber")
     protected String transactionReferenceNumber;
 
     /**

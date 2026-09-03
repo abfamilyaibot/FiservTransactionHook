@@ -12,7 +12,7 @@
         <ra.version>24.2.2.16</ra.version>
         <!-- <jaxb2.maven.plugin.version>3.2.0</jaxb2.maven.plugin.version> -->
         <maven.assembly.version>3.7.1</maven.assembly.version>
-        <skipTests>true</skipTests>
+        <!-- <skipTests>true</skipTests> -->
     </properties>
     <dependencies>
 

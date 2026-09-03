@@ -61,23 +61,23 @@ public class TransactionHistoryInquiryRequest
     extends RequestBase
 {
 
-    @XmlElement(name = "AccountNumber", nillable = true)
+    @XmlElement(name = "AccountNumber")
     protected Long accountNumber;
-    @XmlElement(name = "FromDate", nillable = true)
+    @XmlElement(name = "FromDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar fromDate;
-    @XmlElement(name = "IsCustomerView", nillable = true)
+    @XmlElement(name = "IsCustomerView")
     protected Boolean isCustomerView;
-    @XmlElement(name = "IsIncludeFunds", nillable = true)
+    @XmlElement(name = "IsIncludeFunds")
     protected Boolean isIncludeFunds;
-    @XmlElement(name = "IsOnlyComplete", nillable = true)
+    @XmlElement(name = "IsOnlyComplete")
     protected Boolean isOnlyComplete;
-    @XmlElement(name = "SearchDateOption", nillable = true)
+    @XmlElement(name = "SearchDateOption")
     protected Integer searchDateOption;
-    @XmlElement(name = "ThruDate", nillable = true)
+    @XmlElement(name = "ThruDate")
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar thruDate;
-    @XmlElement(name = "TransactionSourceCodes", nillable = true)
+    @XmlElement(name = "TransactionSourceCodes")
     protected String transactionSourceCodes;
 
     /**

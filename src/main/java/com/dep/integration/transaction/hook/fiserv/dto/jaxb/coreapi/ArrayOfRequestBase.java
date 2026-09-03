@@ -41,7 +41,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ArrayOfRequestBase {
 
-    @XmlElement(name = "RequestBase", nillable = true)
+    @XmlElement(name = "RequestBase")
     protected List<RequestBase> requestBase;
 
     /**

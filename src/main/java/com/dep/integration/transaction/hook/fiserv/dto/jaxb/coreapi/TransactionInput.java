@@ -45,7 +45,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class TransactionInput {
 
-    @XmlElement(name = "Input", nillable = true)
+    @XmlElement(name = "Input")
     protected Input input;
     @XmlElement(name = "ShouldCommitOrRollback")
     protected Boolean shouldCommitOrRollback;

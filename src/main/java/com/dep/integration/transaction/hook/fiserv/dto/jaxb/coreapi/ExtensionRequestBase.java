@@ -45,9 +45,9 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class ExtensionRequestBase {
 
-    @XmlElement(name = "ParentRequestNumber", nillable = true)
+    @XmlElement(name = "ParentRequestNumber")
     protected String parentRequestNumber;
-    @XmlElement(name = "RequestNumber", nillable = true)
+    @XmlElement(name = "RequestNumber")
     protected String requestNumber;
 
     /**
