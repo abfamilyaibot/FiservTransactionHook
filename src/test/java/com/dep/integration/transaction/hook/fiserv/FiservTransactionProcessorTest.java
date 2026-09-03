@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import com.dep.integration.transaction.hook.fiserv.dto.FiservResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtl;
@@ -192,12 +193,59 @@ class FiservTransactionProcessorTest {
         return response;
     }
 
-    private void assertTransactionDateOrder(FiservResponse response, SortingOrder sortingOrder) {
+    private List<CasaTransactionDtl> assertTransactions(FiservResponse response) {
         assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
         List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
         assertNotNull(transactions, "casatransactiondtls should be present");
         assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+        return transactions;
+    }
+
+    private <T> void assertEveryEquals(
+        FiservResponse response,
+        Function<CasaTransactionDtl, T> valueExtractor,
+        T expectedValue,
+        String fieldName
+    ) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
+            assertEquals(
+                expectedValue,
+                valueExtractor.apply(transaction),
+                "casatransactiondtls should only contain " + fieldName + " " + expectedValue
+            );
+        }
+    }
+
+    private <T> void assertEveryIn(
+        FiservResponse response,
+        Function<CasaTransactionDtl, T> valueExtractor,
+        List<T> expectedValues,
+        String fieldName
+    ) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
+            assertTrue(
+                expectedValues.contains(valueExtractor.apply(transaction)),
+                "casatransactiondtls should only contain " + fieldName + " in " + expectedValues
+            );
+        }
+    }
+
+    private void assertEveryExists(
+        FiservResponse response,
+        Function<CasaTransactionDtl, ?> valueExtractor,
+        String fieldName
+    ) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
+            assertNotNull(
+                valueExtractor.apply(transaction),
+                "casatransactiondtls should contain " + fieldName
+            );
+        }
+    }
+
+    private void assertTransactionDateOrder(FiservResponse response, SortingOrder sortingOrder) {
+        List<CasaTransactionDtl> transactions = assertTransactions(response);
 
         for (int i = 1; i < transactions.size(); i++) {
             LocalDate previousDate = LocalDate.parse(transactions.get(i - 1).transactionDate());
@@ -217,13 +265,7 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertContainsPrincipalAmountOrInterestChargeAmount(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertTrue(
                 transaction.principalAmount() != null || transaction.interestChargeAmount() != null,
                 "interestChargeAmount or principalAmount should be present"
@@ -232,168 +274,48 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertDebitCreditFlag(FiservResponse response, List<String> expectedDebitCreditFlags) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertTrue(
-                expectedDebitCreditFlags.contains(transaction.debitCreditFlag()),
-                "casatransactiondtls should only contain debitCreditFlag in " + expectedDebitCreditFlags
-            );
-        }
+        assertEveryIn(response, CasaTransactionDtl::debitCreditFlag, expectedDebitCreditFlags, "debitCreditFlag");
     }
 
     private void assertTenantId(FiservResponse response, String expectedTenantId) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedTenantId,
-                transaction.tenantId(),
-                "casatransactiondtls should only contain tenantId " + expectedTenantId
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::tenantId, expectedTenantId, "tenantId");
     }
 
     private void assertAccountHolderName(FiservResponse response, String expectedAccountHolderName) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedAccountHolderName,
-                transaction.accountHolderName(),
-                "casatransactiondtls should only contain accountHolderName " + expectedAccountHolderName
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::accountHolderName, expectedAccountHolderName, "accountHolderName");
     }
 
     private void assertAccountNumber(FiservResponse response, String expectedAccountNumber) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedAccountNumber,
-                transaction.accountNumber(),
-                "casatransactiondtls should only contain accountNumber " + expectedAccountNumber
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::accountNumber, expectedAccountNumber, "accountNumber");
     }
 
     private void assertTransactionCategory(FiservResponse response, String expectedTransactionCategory) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedTransactionCategory,
-                transaction.transactionCategory(),
-                "casatransactiondtls should only contain transactionCategory " + expectedTransactionCategory
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::transactionCategory, expectedTransactionCategory, "transactionCategory");
     }
 
     private void assertTransactionCategoryId(FiservResponse response, List<String> expectedTranactionCategoryIds) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertTrue(
-                expectedTranactionCategoryIds.contains(transaction.transactionCategoryId()),
-                "casatransactiondtls should only contain transactionCategoryId in " + expectedTranactionCategoryIds
-            );
-        }
+        assertEveryIn(response, CasaTransactionDtl::transactionCategoryId, expectedTranactionCategoryIds, "transactionCategoryId");
     }
 
     private void assertTransactionType(FiservResponse response, List<String> expectedTransactionTypes) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertTrue(
-                expectedTransactionTypes.contains(transaction.transactionType()),
-                "casatransactiondtls should only contain transactionType in " + expectedTransactionTypes
-            );
-        }
+        assertEveryIn(response, CasaTransactionDtl::transactionType, expectedTransactionTypes, "transactionType");
     }
 
     private void assertTransType(FiservResponse response, List<String> expectedTransTypes) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertTrue(
-                expectedTransTypes.contains(transaction.transType()),
-                "casatransactiondtls should only contain transType in " + expectedTransTypes
-            );
-        }
+        assertEveryIn(response, CasaTransactionDtl::transType, expectedTransTypes, "transType");
     }
 
     private void assertBillPaymentConfirmationNumberExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.confirmationNumber(),
-                "casatransactiondtls should contain confirmationNumber for bill payment transactions"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::confirmationNumber, "confirmationNumber for bill payment transactions");
     }
 
     private void assertMerchantIdExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.merchantId(),
-                "casatransactiondtls should contain merchantId for bill payment transactions"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::merchantId, "merchantId for bill payment transactions");
     }
 
     private void assertTransactionAmount(FiservResponse response, String expectedTransactionAmount) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
         BigDecimal expectedAmount = new BigDecimal(expectedTransactionAmount);
-        for (CasaTransactionDtl transaction : transactions) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertEquals(
                 0,
                 expectedAmount.compareTo(transaction.transactionAmount()),
@@ -403,29 +325,12 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertTransactionAmountExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.transactionAmount(),
-                "casatransactiondtls should contain transactionAmount"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::transactionAmount, "transactionAmount");
     }
 
     private void assertTransactionDescriptionContains(FiservResponse response, String expectedDescription) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
         String normalizedExpectedDescription = expectedDescription.toLowerCase();
-        for (CasaTransactionDtl transaction : transactions) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertNotNull(transaction.transactionDescription(), "transactionDescription should be present");
             assertFalse(
                 !transaction.transactionDescription().toLowerCase().contains(normalizedExpectedDescription),
@@ -435,165 +340,47 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertConfirmationNumber(FiservResponse response, String expectedConfirmationNumber) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedConfirmationNumber,
-                transaction.confirmationNumber(),
-                "casatransactiondtls should only contain confirmationNumber " + expectedConfirmationNumber
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::confirmationNumber, expectedConfirmationNumber, "confirmationNumber");
     }
 
     private void assertChequeNumber(FiservResponse response, String expectedChequeNumber) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertEquals(
-                expectedChequeNumber,
-                transaction.chequeNumber(),
-                "casatransactiondtls should only contain chequeNumber " + expectedChequeNumber
-            );
-        }
+        assertEveryEquals(response, CasaTransactionDtl::chequeNumber, expectedChequeNumber, "chequeNumber");
     }
 
     private void assertChequeNumberExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.chequeNumber(),
-                "casatransactiondtls should contain chequeNumber for cheque transactions"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::chequeNumber, "chequeNumber for cheque transactions");
     }
 
     private void assertInstrumentIdExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.instrumentId(),
-                "casatransactiondtls should contain instrumentId for cheque transactions"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::instrumentId, "instrumentId for cheque transactions");
     }
 
     private void assertTransactionCurrencyExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.transactionCurrency(),
-                "casatransactiondtls should contain transactionCurrency"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::transactionCurrency, "transactionCurrency");
     }
 
     private void assertBalanceExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.balance(),
-                "casatransactiondtls should contain balance"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::balance, "balance");
     }
 
     private void assertTransactionDateExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.transactionDate(),
-                "casatransactiondtls should contain transactionDate"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::transactionDate, "transactionDate");
     }
 
     private void assertValueDateExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.valueDate(),
-                "casatransactiondtls should contain valueDate"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::valueDate, "valueDate");
     }
 
     private void assertExchangeRateExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.exchangeRate(),
-                "casatransactiondtls should contain exchangeRate"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::exchangeRate, "exchangeRate");
     }
 
     private void assertExchangeAmountExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.exchangeAmount(),
-                "casatransactiondtls should contain exchangeAmount"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::exchangeAmount, "exchangeAmount");
     }
 
     private void assertTransactionDescriptionContainsExchangeInfo(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
+        for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertNotNull(transaction.transactionDescription(), "transactionDescription should be present");
             assertTrue(
                 transaction.transactionDescription().contains(" Exchange Amount: $"),
@@ -607,33 +394,11 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertTransactionDescriptionExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.transactionDescription(),
-                "casatransactiondtls should contain transactionDescription"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::transactionDescription, "transactionDescription");
     }
 
     private void assertTransactionReferenceExists(FiservResponse response) {
-        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
-
-        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
-        assertNotNull(transactions, "casatransactiondtls should be present");
-        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
-
-        for (CasaTransactionDtl transaction : transactions) {
-            assertNotNull(
-                transaction.transactionReference(),
-                "casatransactiondtls should contain transactionReference"
-            );
-        }
+        assertEveryExists(response, CasaTransactionDtl::transactionReference, "transactionReference");
     }
 
     private EndpointAttributes getEndpointAttributes() {
