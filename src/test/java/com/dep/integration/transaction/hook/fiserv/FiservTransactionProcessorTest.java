@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-import com.dep.integration.transaction.hook.fiserv.dto.FiservResponse;
+import com.dep.integration.transaction.hook.fiserv.dto.common.Response;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtl;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails.SortingOrder;
 import com.dep.integration.transaction.hook.fiserv.dto.common.EndpointAttributes;
@@ -43,7 +43,7 @@ class FiservTransactionProcessorTest {
     @Test
     void noFilteringASC() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "ASC", null, null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.ASC);
         assertTenantId(response, "CORE_FISERVDNA");
         assertTransactionType(response, Arrays.asList("Credit", "Debit"));
@@ -64,14 +64,14 @@ class FiservTransactionProcessorTest {
     @Test
     void noFilteringDESC() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
     }
 
     @Test
     void filterByCreditFlag() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertDebitCreditFlag(response, Arrays.asList("C"));
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
@@ -84,7 +84,7 @@ class FiservTransactionProcessorTest {
     @Test
     void filterByDebitFlag() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "D", null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertDebitCreditFlag(response, Arrays.asList("D"));
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
@@ -96,7 +96,7 @@ class FiservTransactionProcessorTest {
     @Test
     void filterByBill() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "Bill", null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionCategory(response, "BPMT");
         assertBillPaymentConfirmationNumberExists(response);
@@ -108,7 +108,7 @@ class FiservTransactionProcessorTest {
     @Test
     void filterByCheque() throws Exception {
         String responseJson = processAndPrint(requestJson(false, TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", "Cheque", null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertChequeNumberExists(response);
         assertInstrumentIdExists(response);
@@ -121,7 +121,7 @@ class FiservTransactionProcessorTest {
     @Test
     void searchByAmount() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "AMOUNT", "1"));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionAmount(response, "1");
     }
@@ -129,7 +129,7 @@ class FiservTransactionProcessorTest {
     @Test
     void searchByDescription() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "DESCRIPTION", "Stop Payment"));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionDescriptionContains(response, "Stop Payment");
     }
@@ -137,7 +137,7 @@ class FiservTransactionProcessorTest {
     @Test
     void searchByConfirmationNumber() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", null, "CONFIRMATION_NUMBER", "8053275"));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertConfirmationNumber(response, "8053275");
         assertTransactionCategory(response, "BPMT");
@@ -148,7 +148,7 @@ class FiservTransactionProcessorTest {
   @Test
     void searchByChequeNumber() throws Exception {
         String responseJson = processAndPrint(requestJson(false, TEST3_START_DATE, TEST3_END_DATE, TEST3_ACCOUNT_NUMBER, "DESC", null, "CHEQUE_NUMBER", "100"));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertChequeNumber(response, "100");
         assertTransactionCategory(response, "CWTH");
@@ -159,7 +159,7 @@ class FiservTransactionProcessorTest {
     @Test
     void searchByAmountAndFilterByCreditFlag() throws Exception {
         String responseJson = processAndPrint(requestJson(false, DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", "AMOUNT", "1"));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionAmount(response, "1");
         assertDebitCreditFlag(response, Arrays.asList("C"));
@@ -168,14 +168,14 @@ class FiservTransactionProcessorTest {
     @Test
     void loanAccount() throws Exception {
         String responseJson = processAndPrint(requestJson(true, TEST2_START_DATE, TEST2_END_DATE, TEST2_ACCOUNT_NUMBER, "ASC", null, null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertContainsPrincipalAmountOrInterestChargeAmount(response);
     }
 
     @Test
     void exchangeRate() throws Exception {
         String responseJson = processAndPrint(requestJson(false, TEST4_START_DATE, TEST4_END_DATE, TEST4_ACCOUNT_NUMBER, "ASC", null, null, null));
-        FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
+        Response response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, Response.class);
         assertExchangeRateExists(response);
         assertExchangeAmountExists(response);
         assertTransactionDescriptionContainsExchangeInfo(response);
@@ -194,7 +194,7 @@ class FiservTransactionProcessorTest {
         return response;
     }
 
-    private List<CasaTransactionDtl> assertTransactions(FiservResponse response) {
+    private List<CasaTransactionDtl> assertTransactions(Response response) {
         assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
         List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
@@ -204,7 +204,7 @@ class FiservTransactionProcessorTest {
     }
 
     private <T> void assertEveryEquals(
-        FiservResponse response,
+        Response response,
         Function<CasaTransactionDtl, T> valueExtractor,
         T expectedValue,
         String fieldName
@@ -219,7 +219,7 @@ class FiservTransactionProcessorTest {
     }
 
     private <T> void assertEveryIn(
-        FiservResponse response,
+        Response response,
         Function<CasaTransactionDtl, T> valueExtractor,
         List<T> expectedValues,
         String fieldName
@@ -233,7 +233,7 @@ class FiservTransactionProcessorTest {
     }
 
     private void assertEveryExists(
-        FiservResponse response,
+        Response response,
         Function<CasaTransactionDtl, ?> valueExtractor,
         String fieldName
     ) {
@@ -245,7 +245,7 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertTransactionDateOrder(FiservResponse response, SortingOrder sortingOrder) {
+    private void assertTransactionDateOrder(Response response, SortingOrder sortingOrder) {
         List<CasaTransactionDtl> transactions = assertTransactions(response);
 
         for (int i = 1; i < transactions.size(); i++) {
@@ -265,7 +265,7 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertContainsPrincipalAmountOrInterestChargeAmount(FiservResponse response) {
+    private void assertContainsPrincipalAmountOrInterestChargeAmount(Response response) {
         for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertTrue(
                 transaction.principalAmount() != null || transaction.interestChargeAmount() != null,
@@ -274,47 +274,47 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertDebitCreditFlag(FiservResponse response, List<String> expectedDebitCreditFlags) {
+    private void assertDebitCreditFlag(Response response, List<String> expectedDebitCreditFlags) {
         assertEveryIn(response, CasaTransactionDtl::debitCreditFlag, expectedDebitCreditFlags, "debitCreditFlag");
     }
 
-    private void assertTenantId(FiservResponse response, String expectedTenantId) {
+    private void assertTenantId(Response response, String expectedTenantId) {
         assertEveryEquals(response, CasaTransactionDtl::tenantId, expectedTenantId, "tenantId");
     }
 
-    private void assertAccountHolderName(FiservResponse response, String expectedAccountHolderName) {
+    private void assertAccountHolderName(Response response, String expectedAccountHolderName) {
         assertEveryEquals(response, CasaTransactionDtl::accountHolderName, expectedAccountHolderName, "accountHolderName");
     }
 
-    private void assertAccountNumber(FiservResponse response, String expectedAccountNumber) {
+    private void assertAccountNumber(Response response, String expectedAccountNumber) {
         assertEveryEquals(response, CasaTransactionDtl::accountNumber, expectedAccountNumber, "accountNumber");
     }
 
-    private void assertTransactionCategory(FiservResponse response, String expectedTransactionCategory) {
+    private void assertTransactionCategory(Response response, String expectedTransactionCategory) {
         assertEveryEquals(response, CasaTransactionDtl::transactionCategory, expectedTransactionCategory, "transactionCategory");
     }
 
-    private void assertTransactionCategoryId(FiservResponse response, List<String> expectedTranactionCategoryIds) {
+    private void assertTransactionCategoryId(Response response, List<String> expectedTranactionCategoryIds) {
         assertEveryIn(response, CasaTransactionDtl::transactionCategoryId, expectedTranactionCategoryIds, "transactionCategoryId");
     }
 
-    private void assertTransactionType(FiservResponse response, List<String> expectedTransactionTypes) {
+    private void assertTransactionType(Response response, List<String> expectedTransactionTypes) {
         assertEveryIn(response, CasaTransactionDtl::transactionType, expectedTransactionTypes, "transactionType");
     }
 
-    private void assertTransType(FiservResponse response, List<String> expectedTransTypes) {
+    private void assertTransType(Response response, List<String> expectedTransTypes) {
         assertEveryIn(response, CasaTransactionDtl::transType, expectedTransTypes, "transType");
     }
 
-    private void assertBillPaymentConfirmationNumberExists(FiservResponse response) {
+    private void assertBillPaymentConfirmationNumberExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::confirmationNumber, "confirmationNumber for bill payment transactions");
     }
 
-    private void assertMerchantIdExists(FiservResponse response) {
+    private void assertMerchantIdExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::merchantId, "merchantId for bill payment transactions");
     }
 
-    private void assertTransactionAmount(FiservResponse response, String expectedTransactionAmount) {
+    private void assertTransactionAmount(Response response, String expectedTransactionAmount) {
         BigDecimal expectedAmount = new BigDecimal(expectedTransactionAmount);
         for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertEquals(
@@ -325,11 +325,11 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertTransactionAmountExists(FiservResponse response) {
+    private void assertTransactionAmountExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::transactionAmount, "transactionAmount");
     }
 
-    private void assertTransactionDescriptionContains(FiservResponse response, String expectedDescription) {
+    private void assertTransactionDescriptionContains(Response response, String expectedDescription) {
         String normalizedExpectedDescription = expectedDescription.toLowerCase();
         for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertNotNull(transaction.transactionDescription(), "transactionDescription should be present");
@@ -340,47 +340,47 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertConfirmationNumber(FiservResponse response, String expectedConfirmationNumber) {
+    private void assertConfirmationNumber(Response response, String expectedConfirmationNumber) {
         assertEveryEquals(response, CasaTransactionDtl::confirmationNumber, expectedConfirmationNumber, "confirmationNumber");
     }
 
-    private void assertChequeNumber(FiservResponse response, String expectedChequeNumber) {
+    private void assertChequeNumber(Response response, String expectedChequeNumber) {
         assertEveryEquals(response, CasaTransactionDtl::chequeNumber, expectedChequeNumber, "chequeNumber");
     }
 
-    private void assertChequeNumberExists(FiservResponse response) {
+    private void assertChequeNumberExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::chequeNumber, "chequeNumber for cheque transactions");
     }
 
-    private void assertInstrumentIdExists(FiservResponse response) {
+    private void assertInstrumentIdExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::instrumentId, "instrumentId for cheque transactions");
     }
 
-    private void assertTransactionCurrency(FiservResponse response, String expectedTransactionCurrency) {
+    private void assertTransactionCurrency(Response response, String expectedTransactionCurrency) {
         assertEveryEquals(response, CasaTransactionDtl::transactionCurrency, expectedTransactionCurrency, "transactionCurrency");
     }
 
-    private void assertBalanceExists(FiservResponse response) {
+    private void assertBalanceExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::balance, "balance");
     }
 
-    private void assertTransactionDateExists(FiservResponse response) {
+    private void assertTransactionDateExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::transactionDate, "transactionDate");
     }
 
-    private void assertValueDateExists(FiservResponse response) {
+    private void assertValueDateExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::valueDate, "valueDate");
     }
 
-    private void assertExchangeRateExists(FiservResponse response) {
+    private void assertExchangeRateExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::exchangeRate, "exchangeRate");
     }
 
-    private void assertExchangeAmountExists(FiservResponse response) {
+    private void assertExchangeAmountExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::exchangeAmount, "exchangeAmount");
     }
 
-    private void assertTransactionDescriptionContainsExchangeInfo(FiservResponse response) {
+    private void assertTransactionDescriptionContainsExchangeInfo(Response response) {
         for (CasaTransactionDtl transaction : assertTransactions(response)) {
             assertNotNull(transaction.transactionDescription(), "transactionDescription should be present");
             assertTrue(
@@ -394,11 +394,11 @@ class FiservTransactionProcessorTest {
         }
     }
 
-    private void assertTransactionDescriptionExists(FiservResponse response) {
+    private void assertTransactionDescriptionExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::transactionDescription, "transactionDescription");
     }
 
-    private void assertTransactionReferenceExists(FiservResponse response) {
+    private void assertTransactionReferenceExists(Response response) {
         assertEveryExists(response, CasaTransactionDtl::transactionReference, "transactionReference");
     }
 

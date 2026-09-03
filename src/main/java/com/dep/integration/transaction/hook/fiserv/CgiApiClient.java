@@ -1,6 +1,5 @@
 package com.dep.integration.transaction.hook.fiserv;
 
-import com.dep.integration.transaction.hook.fiserv.FiservApiClient;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 
 import java.net.URI;

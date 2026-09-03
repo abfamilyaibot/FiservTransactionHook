@@ -21,12 +21,13 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails;
 import com.dep.integration.transaction.hook.fiserv.dto.common.EndpointAttributes;
 import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
+import com.dep.integration.transaction.hook.fiserv.dto.common.ImageCachesResponse;
+import com.dep.integration.transaction.hook.fiserv.dto.common.ChequeImageTransaction;
 import com.dep.integration.transaction.hook.fiserv.dto.AccountInfo;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservApiResponse;
-import com.dep.integration.transaction.hook.fiserv.dto.FiservImageCachesResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservTransaction;
-import com.dep.integration.transaction.hook.fiserv.dto.FiservResponse;
+import com.dep.integration.transaction.hook.fiserv.dto.common.Response;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.billpayhistory.BillPayment;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.arrays.ArrayOfanyType;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryRequest;
@@ -43,20 +44,9 @@ import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.ExchTxn;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Rtxn;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.Transaction;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.messages.TransactionBalanceType;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class FiservTransactionProcessor extends TransactionProcessor {
-
-   protected static final ObjectMapper FISERV_OBJECT_MAPPER = new ObjectMapper()
-       .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-       .registerModule(new JavaTimeModule())
-       .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
    private static final DatatypeFactory XML_DATATYPE_FACTORY = createDatatypeFactory();
    
@@ -81,7 +71,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
    private FiservRequest deserializeRequest(String depRequestJson) {
       try {
-         return FISERV_OBJECT_MAPPER.readValue(depRequestJson, FiservRequest.class);
+         return OBJECT_MAPPER.readValue(depRequestJson, FiservRequest.class);
       } catch (JsonProcessingException e) {
          throw new IllegalArgumentException("Invalid request JSON", e);
       }
@@ -328,8 +318,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             
             List<FiservTransaction> filteredTransactions = filterTransactions(transactions, depRequest.criteriaDetails());
 
-            List<Rtxn> chequeTransactions = getChequeFiservTransactions(transactions, depRequest);
-            FiservImageCachesResponse imageCachesResponse = new FiservImageCachesResponse(chequeTransactions);
+            List<ChequeImageTransaction> chequeTransactions = getChequeImageTransactions(transactions, depRequest);
+            ImageCachesResponse imageCachesResponse = new ImageCachesResponse(chequeTransactions);
 
             List<CasaTransactionDtl> casatransactiondtls = filteredTransactions.stream()
                     .map(t -> mapToCasaTransactionDtl(t, depRequest))
@@ -341,23 +331,15 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             CasaTransactionDtlsResponse casaTransactionDtlsResponse =
                     new CasaTransactionDtlsResponse(casatransactiondtls, casatransactiondtls.size());
 
-            FiservResponse response = new FiservResponse(casaTransactionDtlsResponse, imageCachesResponse, null);
+            Response response = new Response(casaTransactionDtlsResponse, imageCachesResponse, null);
 
             return serializeResponse(response);
 
         } catch (Exception e) {
             Error error = apiErrorResponseJson(e);
-            return serializeResponse(new FiservResponse(null, null, error));
+            return serializeResponse(new Response(null, null, error));
         }
     }
-
-   private String serializeResponse(FiservResponse response) {
-      try {
-         return FISERV_OBJECT_MAPPER.writeValueAsString(response);
-      } catch (JsonProcessingException e) {
-         throw new IllegalStateException("Unable to serialize response", e);
-      }
-   }
 
    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
       Envelope envelope = generateEnvelope(depRequest);
@@ -505,7 +487,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
           transaction.rtxn().getCheckNumber().equals(chequeNumber);
     }
 
-   private List<Rtxn> getChequeFiservTransactions(List<FiservTransaction> transactions, FiservRequest depRequest) {
+   private List<ChequeImageTransaction> getChequeImageTransactions(List<FiservTransaction> transactions, FiservRequest depRequest) {
       if (transactions == null || transactions.isEmpty()) {
          return List.of();
       }
@@ -513,16 +495,19 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return transactions.stream()
           .map(FiservTransaction::rtxn)
           .filter(rtxn -> rtxn != null && "CWTH".equals(rtxn.getRtxnTypeCode()))
-          .peek(rtxn -> populateChequeAccountInfo(rtxn, accountInfo))
+          .map(rtxn -> mapToChequeImageTransaction(rtxn, accountInfo))
           .toList();
    }
 
-   private void populateChequeAccountInfo(Rtxn rtxn, AccountInfo accountInfo) {
-      if (rtxn == null || accountInfo == null) {
-         return;
-      }
-      rtxn.setRouteNumber(accountInfo.routeNumber());
-      rtxn.setTransitNumber(accountInfo.transitNumber());
+   private ChequeImageTransaction mapToChequeImageTransaction(Rtxn rtxn, AccountInfo accountInfo) {
+      return new ChequeImageTransaction(
+          getChequeNumber(rtxn),
+          getTransactionDate(rtxn),
+          getTransactionAmount(rtxn),
+          rtxn == null || rtxn.getTraceNumber() == null ? null : String.valueOf(rtxn.getTraceNumber()),
+          accountInfo == null ? null : accountInfo.routeNumber(),
+          accountInfo == null ? null : accountInfo.transitNumber()
+      );
    }
 
 
