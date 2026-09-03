@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.xml.transform.stream.StreamSource;
 
+import com.dep.integration.transaction.hook.fiserv.dto.FiservApiResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryResponse;
@@ -56,7 +57,7 @@ public class FiservApiClient {
     );
 
     private static final Logger LOG = LogManager.getLogger(FiservApiClient.class);
-    private static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    protected static final ObjectMapper JSON_OBJECT_MAPPER = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
     private static final XmlMapper XML_OBJECT_MAPPER = new XmlMapper();
 
     static {
@@ -115,7 +116,7 @@ public class FiservApiClient {
         return requestBuilder.build();
     }
 
-    public FiservResponse getTransactions(
+    public FiservApiResponse getTransactions(
             FiservRequest depRequest,
             Object cbsRequest
     ) throws CbsApiException {
@@ -147,7 +148,7 @@ public class FiservApiClient {
             }
 
             Envelope responseEnvelope = parseSoapEnvelope(responseBody);
-            return createFiservResponse(responseEnvelope, responseBody);
+            return createFiservApiResponse(responseEnvelope, responseBody);
 
         } catch (IOException e) {
             throw new RuntimeException("Unable to call Fiserv API", e);
@@ -187,7 +188,7 @@ public class FiservApiClient {
         return envelopeElement.getValue();
     }
 
-    private FiservResponse createFiservResponse(Envelope responseEnvelope, String responseBody) throws CbsApiException{
+    private FiservApiResponse createFiservApiResponse(Envelope responseEnvelope, String responseBody) throws CbsApiException{
         Output output = responseEnvelope.getBody().getSubmitRequestResponse().getSubmitRequestResult().getOutput();
         if (output == null || output.getUserAuthentication() == null) {
             throw new IllegalStateException("Unexpected response from banking host.");
@@ -229,7 +230,7 @@ public class FiservApiClient {
             }
         }
 
-        return new FiservResponse(
+        return new FiservApiResponse(
                 accountTransactionHistoryResponse,
                 billPayHistoryResponse,
                 transactionHistoryInquiryResponse

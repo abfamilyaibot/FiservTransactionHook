@@ -14,7 +14,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.dep.integration.transaction.hook.fiserv.dto.common.Response;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails.FilterType;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtl;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CasaTransactionDtlsResponse;
@@ -22,9 +21,11 @@ import com.dep.integration.transaction.hook.fiserv.dto.common.CbsApiException;
 import com.dep.integration.transaction.hook.fiserv.dto.common.CriteriaDetails;
 import com.dep.integration.transaction.hook.fiserv.dto.common.EndpointAttributes;
 import com.dep.integration.transaction.hook.fiserv.dto.common.Error;
+import com.dep.integration.transaction.hook.fiserv.dto.FiservApiResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservImageCachesResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservRequest;
 import com.dep.integration.transaction.hook.fiserv.dto.FiservTransaction;
+import com.dep.integration.transaction.hook.fiserv.dto.FiservResponse;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.billpayhistory.BillPayment;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.arrays.ArrayOfanyType;
 import com.dep.integration.transaction.hook.fiserv.dto.jaxb.coreapi.AccountTransactionHistoryRequest;
@@ -55,6 +56,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
        .registerModule(new JavaTimeModule())
        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
    private static final DatatypeFactory XML_DATATYPE_FACTORY = createDatatypeFactory();
    
    public FiservTransactionProcessor() {
@@ -110,7 +112,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       var requests = new ArrayOfRequestBase();
       requests.getRequestBase().add(accountTransactionHistoryRequest);
-      if (fiservRequest.isLoanAccount()) {
+      if ("true".equals(fiservRequest.isLoanAccount())) {
          requests.getRequestBase().add(transactionHistoryInquiryRequest);
       }
       input.setRequests(requests);
@@ -334,33 +336,41 @@ public class FiservTransactionProcessor extends TransactionProcessor {
             CasaTransactionDtlsResponse casaTransactionDtlsResponse =
                     new CasaTransactionDtlsResponse(casatransactiondtls, casatransactiondtls.size());
 
-            Response response = new Response(casaTransactionDtlsResponse, imageCachesResponse, null);
+            FiservResponse response = new FiservResponse(casaTransactionDtlsResponse, imageCachesResponse, null);
 
             return serializeResponse(response);
 
         } catch (Exception e) {
             Error error = apiErrorResponseJson(e);
-            return serializeResponse(new Response(null, null, error));
+            return serializeResponse(new FiservResponse(null, null, error));
         }
     }
 
-   private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
-      Envelope envelope = generateEnvelope(depRequest);
-      FiservResponse fiservResponse = api.getTransactions(depRequest, envelope);
-      return convertFiservTransactions(fiservResponse, depRequest.isLoanAccount());
+   private String serializeResponse(FiservResponse response) {
+      try {
+         return FISERV_OBJECT_MAPPER.writeValueAsString(response);
+      } catch (JsonProcessingException e) {
+         throw new IllegalStateException("Unable to serialize response", e);
+      }
    }
 
-    private List<FiservTransaction> convertFiservTransactions(FiservResponse fiservResponse, boolean isLoanAccount) {
-      if (fiservResponse == null ||
-          fiservResponse.accountTransactionHistoryResponse() == null ||
-          fiservResponse.accountTransactionHistoryResponse().getTransactions() == null) {
+   private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
+      Envelope envelope = generateEnvelope(depRequest);
+      FiservApiResponse fiservApiResponse = api.getTransactions(depRequest, envelope);
+      return convertFiservTransactions(fiservApiResponse, "true".equals(depRequest.isLoanAccount()));
+   }
+
+    private List<FiservTransaction> convertFiservTransactions(FiservApiResponse fiservApiResponse, boolean isLoanAccount) {
+      if (fiservApiResponse == null ||
+          fiservApiResponse.accountTransactionHistoryResponse() == null ||
+          fiservApiResponse.accountTransactionHistoryResponse().getTransactions() == null) {
          return List.of();
       }
 
       Map<Long, BillPayment> billPaymentsByTransactionNumber = new HashMap<>();
-      if (fiservResponse.billPayHistoryResponse() != null &&
-          fiservResponse.billPayHistoryResponse().getBillPaymentList() != null) {
-         for (BillPayment billPayment : fiservResponse.billPayHistoryResponse().getBillPaymentList().getBillPayment()) {
+      if (fiservApiResponse.billPayHistoryResponse() != null &&
+          fiservApiResponse.billPayHistoryResponse().getBillPaymentList() != null) {
+         for (BillPayment billPayment : fiservApiResponse.billPayHistoryResponse().getBillPaymentList().getBillPayment()) {
             Long transactionNumber = getBillPaymentTransactionNumber(billPayment);
             if (transactionNumber != null) {
                billPaymentsByTransactionNumber.put(transactionNumber, billPayment);
@@ -370,19 +380,19 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       Map<Long, Transaction> transactionsByTransactionNumber = new HashMap<>();
       if (isLoanAccount &&
-          fiservResponse.transactionHistoryInquiryResponse() != null &&
-          fiservResponse.transactionHistoryInquiryResponse().getTransactions() != null) {
-         for (Transaction transaction : fiservResponse.transactionHistoryInquiryResponse().getTransactions().getTransaction()) {
+          fiservApiResponse.transactionHistoryInquiryResponse() != null &&
+          fiservApiResponse.transactionHistoryInquiryResponse().getTransactions() != null) {
+         for (Transaction transaction : fiservApiResponse.transactionHistoryInquiryResponse().getTransactions().getTransaction()) {
             if (transaction != null && transaction.getTransactionNumber() != null) {
                transactionsByTransactionNumber.put(transaction.getTransactionNumber(), transaction);
             }
          }
       }
 
-      String accountCurrencyCode = fiservResponse.accountTransactionHistoryResponse().getAccountCurrencyCode();
+      String accountCurrencyCode = fiservApiResponse.accountTransactionHistoryResponse().getAccountCurrencyCode();
 
       List<FiservTransaction> fiservTransactions = new ArrayList<>();
-      for (Rtxn rtxn : fiservResponse.accountTransactionHistoryResponse().getTransactions().getRtxn()) {
+      for (Rtxn rtxn : fiservApiResponse.accountTransactionHistoryResponse().getTransactions().getRtxn()) {
          if (rtxn == null) {
             continue;
          }
@@ -544,8 +554,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       // CasaTransactionDtl.transactionAmount = absolute value of Rtxn.TransactionAmount
 
-      // CasaTransactionDtl.principalAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
-      // CasaTransactionDtl.interestChargeAmount = absolute value of Transaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
+      // CasaTransactionDtl.principalAmount = absolute value of LoanTransaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
+      // CasaTransactionDtl.interestChargeAmount = absolute value of LoanTransaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
 
       // CasaTransactionDtl.transactionCurrency = Rtxn.TransactionCurrency
 
@@ -571,96 +581,111 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       Transaction loanTransaction = fiservTransaction == null ? null : fiservTransaction.loanTransaction();
       ExchTxn exchangeTransaction = getExchangeTransaction(rtxn);
 
-      Long billPayTransactionNumber = billPayment == null ? null : billPayment.getBillPayTransactionNumber();
-      String effectiveDate = rtxn == null ? null : toDateString(rtxn.getEffectiveDate());
-      String debitCreditType = toDebitCreditType(rtxn == null ? null : rtxn.getDebitCredit());
-      String checkNumber = rtxn == null || rtxn.getCheckNumber() == null ? null : String.valueOf(rtxn.getCheckNumber());
-      BigDecimal exchangeAmount = exchangeTransaction == null ? null : toAbsBigDecimal(exchangeTransaction.getOtherAmount());
-      String exchangeRate = exchangeTransaction == null || exchangeTransaction.getExchangeRate() == null
-          ? null
-          : exchangeTransaction.getExchangeRate().toPlainString();
-
       return new CasaTransactionDtl(
-          depRequest == null ? null : depRequest.depTenantId(),
-          effectiveDate,
-          effectiveDate,
-          null, // // remarks not mapped as transfer memo is part of transactionDescription (from Rtxn.InternalRtxnDescription) and cannot extract the transfer memo portion
-          rtxn == null ? null : toAbsBigDecimal(rtxn.getTransactionAmount()),
-          billPayTransactionNumber == null ? (rtxn == null ? null : rtxn.getTransactionReferenceNumber()) : String.valueOf(billPayTransactionNumber),
-          getTransactionDescription(rtxn, billPayment, exchangeAmount, exchangeRate),
-          billPayment == null || billPayment.getVendorID() == null ? null : String.valueOf(billPayment.getVendorID()),
-          rtxn == null ? null : rtxn.getRtxnTypeCode(),
-          rtxn == null ? null : toBigDecimal(rtxn.getRunningBalance()),
-          rtxn == null ? null : rtxn.getDebitCredit(),
-          checkNumber,
-          debitCreditType,
-          checkNumber,
-          exchangeRate,
-          exchangeAmount,
-          rtxn == null || rtxn.getAccountNumber() == null ? null : String.valueOf(rtxn.getAccountNumber()),
-          fiservTransaction == null ? null : fiservTransaction.accountCurrencyCode(),
-          billPayTransactionNumber == null ? null : String.valueOf(billPayTransactionNumber),
-          depRequest == null ? null : depRequest.accountHolderName(),
-          getLoanBalanceAmount(loanTransaction, "Note Balance"),
-          getLoanBalanceAmount(loanTransaction, "Note Interest"),
-          getTransactionCategoryId(rtxn == null ? null : rtxn.getRtxnTypeCode(), debitCreditType),
-          debitCreditType
+          getTenantId(depRequest),
+          getTransactionDate(rtxn),
+          getValueDate(rtxn),
+          getRemarks(),
+          getTransactionAmount(rtxn),
+          getTransactionReference(rtxn, billPayment),
+          getTransactionDescription(rtxn, billPayment, exchangeTransaction),
+          getMerchantId(billPayment),
+          getTransactionCategory(rtxn),
+          getBalance(rtxn),
+          getDebitCreditFlag(rtxn),
+          getInstrumentId(rtxn),
+          getTransactionType(rtxn),
+          getChequeNumber(rtxn),
+          getExchangeRate(exchangeTransaction),
+          getExchangeAmount(exchangeTransaction),
+          getAccountNumber(rtxn),
+          getTransactionCurrency(fiservTransaction),
+          getConfirmationNumber(billPayment),
+          getAccountHolderName(depRequest),
+          getPrincipalAmount(loanTransaction),
+          getInterestChargeAmount(loanTransaction),
+          getTransactionCategoryId(rtxn),
+          getTransType(rtxn)
       );
    }
 
-   private static String getTransactionDescription(
-       Rtxn rtxn,
-       BillPayment billPayment,
-       BigDecimal exchangeAmount,
-       String exchangeRate
-   ) {
-      StringBuilder description = new StringBuilder();
-      if (rtxn != null && isNotBlank(rtxn.getRtxnTypeDescription())) {
-         description.append(rtxn.getRtxnTypeDescription());
-      }
-      appendDescriptionPart(description, rtxn == null ? null : rtxn.getInternalRtxnDescription());
-      appendDescriptionPart(description, billPayment == null ? null : billPayment.getVendorName());
-      if (exchangeAmount != null) {
-         appendDescriptionPart(description, "Exchange Amount: $" + exchangeAmount.toPlainString());
-      }
-      if (isNotBlank(exchangeRate)) {
-         appendDescriptionPart(description, "Exchange Rate: " + exchangeRate);
-      }
-      return description.isEmpty() ? null : description.toString();
+   private String getTenantId(FiservRequest depRequest) {
+      return depRequest == null ? null : depRequest.depTenantId();
    }
 
-   private static void appendDescriptionPart(StringBuilder description, String value) {
-      if (isNotBlank(value)) {
-         if (!description.isEmpty()) {
-            description.append(' ');
-         }
-         description.append(value);
-      }
+   private String getTransactionCurrency(FiservTransaction fiservTransaction) {
+      return fiservTransaction == null ? null : fiservTransaction.accountCurrencyCode();
    }
 
-   private static ExchTxn getExchangeTransaction(Rtxn rtxn) {
-      if (rtxn == null || rtxn.getExchTxnGrp() == null || rtxn.getExchTxnGrp().getExchTxn().isEmpty()) {
-         return null;
-      }
-      return rtxn.getExchTxnGrp().getExchTxn().get(0);
+   private String getTransactionDate(Rtxn rtxn) {
+      return rtxn == null ? null : toDateString(rtxn.getEffectiveDate());
    }
 
-   private static BigDecimal getLoanBalanceAmount(Transaction transaction, String balanceTypeDescription) {
-      if (transaction == null || transaction.getBalanceTypes() == null) {
-         return null;
+   private String getValueDate(Rtxn rtxn) {
+      return getTransactionDate(rtxn);
+   }
+
+   private String getRemarks() {
+      return null; // not mapped as transfer memo is part of transactionDescription (from Rtxn.InternalRtxnDescription) and cannot extract the transfer memo portion
+   }
+
+   private BigDecimal getTransactionAmount(Rtxn rtxn) {
+      return rtxn == null ? null : toAbsBigDecimal(rtxn.getTransactionAmount());
+   }
+
+   private BigDecimal getBalance(Rtxn rtxn) {
+      return rtxn == null ? null : toBigDecimal(rtxn.getRunningBalance());
+   }
+
+   private String getTransactionReference(Rtxn rtxn, BillPayment billPayment) {
+      String billPayTransactionNumber = getConfirmationNumber(billPayment);
+      return billPayTransactionNumber != null ? billPayTransactionNumber : (rtxn == null ? null : rtxn.getTransactionReferenceNumber());
+   }
+
+   private String getConfirmationNumber(BillPayment billPayment) {
+      Long billPayTransactionNumber = getBillPayTransactionNumberValue(billPayment);
+      return billPayTransactionNumber == null ? null : String.valueOf(billPayTransactionNumber);
+   }
+
+   private Long getBillPayTransactionNumberValue(BillPayment billPayment) {
+      return billPayment == null ? null : billPayment.getBillPayTransactionNumber();
+   }
+
+   private String getMerchantId(BillPayment billPayment) {
+      return billPayment == null || billPayment.getVendorID() == null ? null : String.valueOf(billPayment.getVendorID());
+   }
+
+   private String getTransactionCategory(Rtxn rtxn) {
+      return rtxn == null ? null : rtxn.getRtxnTypeCode();
+   }
+
+   private String getDebitCreditFlag(Rtxn rtxn) {
+      return rtxn == null ? null : rtxn.getDebitCredit();
+   }
+
+   private String getTransactionType(Rtxn rtxn) {
+      return toDebitCreditType( getDebitCreditFlag(rtxn) );
+   }
+
+   private String getTransType(Rtxn rtxn) {
+      return getTransactionType(rtxn);
+   }
+
+   private String toDebitCreditType(String debitCredit) {
+      if ("C".equals(debitCredit) ) {
+         return "Credit";
       }
-      for (TransactionBalanceType balanceType : transaction.getBalanceTypes().getTransactionBalanceType()) {
-         if (balanceType != null &&
-             balanceType.getAmount() != null &&
-             balanceType.getBalanceTypeDescription() != null &&
-             balanceType.getBalanceTypeDescription().contains(balanceTypeDescription)) {
-            return toAbsBigDecimal(balanceType.getAmount());
-         }
+      if ("D".equals(debitCredit)) {
+         return "Debit";
       }
       return null;
    }
 
-   private static String getTransactionCategoryId(String rtxnTypeCode, String debitCreditType) {
+   private String getTransactionCategoryId(Rtxn rtxn) {
+      return getTransactionCategoryId(getTransactionCategory(rtxn), getTransactionType(rtxn));
+   }
+
+   private String getTransactionCategoryId(String rtxnTypeCode, String debitCreditType) {
       if ("CWTH".equals(rtxnTypeCode)) {
          return "4";
       }
@@ -676,29 +701,106 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return "1";
    }
 
-   private static String toDebitCreditType(String debitCredit) {
-      if ("C".equals(debitCredit) || "Credit".equalsIgnoreCase(debitCredit)) {
-         return "Credit";
+   private String getChequeNumber(Rtxn rtxn) {
+      return rtxn == null || rtxn.getCheckNumber() == null ? null : String.valueOf(rtxn.getCheckNumber());
+   }
+
+   private String getInstrumentId(Rtxn rtxn) {
+      return getChequeNumber(rtxn);
+   }
+
+   private BigDecimal getExchangeAmount(ExchTxn exchangeTransaction) {
+      return exchangeTransaction == null ? null : toAbsBigDecimal(exchangeTransaction.getOtherAmount());
+   }
+
+   private String getExchangeRate(ExchTxn exchangeTransaction) {
+      return exchangeTransaction == null || exchangeTransaction.getExchangeRate() == null
+          ? null
+          : exchangeTransaction.getExchangeRate().toPlainString();
+   }
+
+   private String getAccountNumber(Rtxn rtxn) {
+      return rtxn == null || rtxn.getAccountNumber() == null ? null : String.valueOf(rtxn.getAccountNumber());
+   }
+
+   private String getAccountHolderName(FiservRequest depRequest) {
+      return depRequest == null ? null : depRequest.accountHolderName();
+   }
+
+   private BigDecimal getPrincipalAmount(Transaction loanTransaction) {
+      return getLoanBalanceAmount(loanTransaction, "Note Balance");
+   }
+
+   private BigDecimal getInterestChargeAmount(Transaction loanTransaction) {
+      return getLoanBalanceAmount(loanTransaction, "Note Interest");
+   }
+
+   private BigDecimal getLoanBalanceAmount(Transaction transaction, String balanceTypeDescription) {
+      if (transaction == null || transaction.getBalanceTypes() == null) {
+         return null;
       }
-      if ("D".equals(debitCredit) || "Debit".equalsIgnoreCase(debitCredit)) {
-         return "Debit";
+      for (TransactionBalanceType balanceType : transaction.getBalanceTypes().getTransactionBalanceType()) {
+         if (balanceType != null &&
+             balanceType.getAmount() != null &&
+             balanceType.getBalanceTypeDescription() != null &&
+             balanceType.getBalanceTypeDescription().contains(balanceTypeDescription)) {
+            return toAbsBigDecimal(balanceType.getAmount());
+         }
       }
       return null;
    }
 
-   private static BigDecimal toAbsBigDecimal(Double value) {
+   private String getTransactionDescription(
+       Rtxn rtxn,
+       BillPayment billPayment,
+       ExchTxn exchangeTransaction
+   ) {
+      BigDecimal exchangeAmount = getExchangeAmount(exchangeTransaction);
+      String exchangeRate = getExchangeRate(exchangeTransaction);
+      StringBuilder description = new StringBuilder();
+      if (rtxn != null && isNotBlank(rtxn.getRtxnTypeDescription())) {
+         description.append(rtxn.getRtxnTypeDescription());
+      }
+      appendDescriptionPart(description, rtxn == null ? null : rtxn.getInternalRtxnDescription());
+      appendDescriptionPart(description, billPayment == null ? null : billPayment.getVendorName());
+      if (exchangeAmount != null) {
+         appendDescriptionPart(description, "Exchange Amount: $" + exchangeAmount.toPlainString());
+      }
+      if (isNotBlank(exchangeRate)) {
+         appendDescriptionPart(description, "Exchange Rate: " + exchangeRate);
+      }
+      return description.isEmpty() ? null : description.toString();
+   }
+
+   private void appendDescriptionPart(StringBuilder description, String value) {
+      if (isNotBlank(value)) {
+         if (!description.isEmpty()) {
+            description.append(' ');
+         }
+         description.append(value);
+      }
+   }
+
+   private ExchTxn getExchangeTransaction(Rtxn rtxn) {
+      if (rtxn == null || rtxn.getExchTxnGrp() == null || rtxn.getExchTxnGrp().getExchTxn().isEmpty()) {
+         return null;
+      }
+      return rtxn.getExchTxnGrp().getExchTxn().get(0);
+   }
+
+   private BigDecimal toAbsBigDecimal(Double value) {
       return value == null ? null : BigDecimal.valueOf(Math.abs(value));
    }
 
-   private static BigDecimal toBigDecimal(Double value) {
+   private BigDecimal toBigDecimal(Double value) {
       return value == null ? null : BigDecimal.valueOf(value);
    }
 
-   private static String toDateString(XMLGregorianCalendar value) {
+   private String toDateString(XMLGregorianCalendar value) {
       return value == null ? null : value.toGregorianCalendar().toZonedDateTime().toLocalDate().toString();
    }
 
-   private static boolean isNotBlank(String value) {
+   private boolean isNotBlank(String value) {
       return value != null && !value.isBlank();
    }
 }

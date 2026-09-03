@@ -22,9 +22,10 @@ public class TransactionHook implements HookImpl {
         try {
             String requestJson = inData.get("requestJson");
             String endpointId = inData.get("endpointId");
+            String serverUri = inData.get("serverUri");
             String cbsSystem = inData.get("cbsSystem");
 
-            logger.logInfo("Initiating TransactionHook for endpointId: " + endpointId + " with requestJson: " + requestJson + " and with cbsSystem: " + cbsSystem);
+            logger.logInfo("Initiating TransactionHook for endpointId: " + endpointId + " with serverUri: " + serverUri + " and requestJson: " + requestJson + " and cbsSystem: " + cbsSystem);
 
             TransportCacheManager cacheManager = TransportCacheManager.getInstance();
             HashMap<String, String> attributes = cacheManager.getEndpointAttributeMap(endpointId);
@@ -33,9 +34,9 @@ public class TransactionHook implements HookImpl {
             throw new HooksException("HOOK_ERROR", "No endpoint attributes found for endpointId: " + endpointId);
             }
 
-            String targetUrl = attributes.get("SERVERURI");
+            String targetUrl = serverUri != null && serverUri.isBlank() ? serverUri : attributes.get("SERVERURI");
             if ( targetUrl == null || targetUrl.isEmpty()) {
-                throw new HooksException("HOOK_ERROR", "SERVERURI attribute is missing for endpointId: " + endpointId);
+                throw new HooksException("HOOK_ERROR", "serverUri is empty and SERVERURI attribute is missing for endpointId: " + endpointId);
             }
             
              EndpointAttributes endpointAttributes = new EndpointAttributes(
