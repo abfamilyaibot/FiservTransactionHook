@@ -146,6 +146,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
       request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
       request.setSortBy("EFFDATE");
+      request.setIsResultingBalance(true);
       request.setSearchDateOption(3); // effectiveDate
       // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
       // request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
