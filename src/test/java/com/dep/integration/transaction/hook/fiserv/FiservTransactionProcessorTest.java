@@ -40,6 +40,12 @@ class FiservTransactionProcessorTest {
         String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "ASC", null, null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.ASC);
+        assertTenantId(response, "CORE_FISERVDNA");
+        assertTransactionType(response, Arrays.asList("Credit", "Debit"));
+        assertTransType(response, Arrays.asList("Credit", "Debit"));
+        assertDebitCreditFlag(response, Arrays.asList("C", "D"));
+        assertTransactionCategoryId(response, Arrays.asList("4", "5", "2", "3"));
+        assertAccountHolderName(response, "Joel User");
     }
 
     @Test
@@ -54,9 +60,12 @@ class FiservTransactionProcessorTest {
         String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "C", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
-        assertDebitCreditFlag(response, "C");
+        assertDebitCreditFlag(response, Arrays.asList("C"));
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("4", "2")); // CHEQUE, C
+        assertTransactionType(response, Arrays.asList("Credit"));
+        assertTransType(response, Arrays.asList("Credit"));
+        assertTransactionCategoryId(response, Arrays.asList("4", "2")); // CHEQUE, C
+
     }
 
     @Test
@@ -64,9 +73,11 @@ class FiservTransactionProcessorTest {
         String responseJson = processAndPrint(requestJson( DEFAULT_START_DATE, DEFAULT_END_DATE, DEFAULT_ACCOUNT_NUMBER, "DESC", "D", null, null));
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
-        assertDebitCreditFlag(response, "D");
+        assertDebitCreditFlag(response, Arrays.asList("D"));
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("4", "5", "3")); // CHEQUE, BILL, D
+        assertTransactionType(response, Arrays.asList("Debit"));
+        assertTransType(response, Arrays.asList("Debit"));
+        assertTransactionCategoryId(response, Arrays.asList("4", "5", "3")); // CHEQUE, BILL, D
     }
 
     @Test
@@ -77,7 +88,7 @@ class FiservTransactionProcessorTest {
         assertTransactionCategory(response, "BILL_PAYMENT");
         assertBillPaymentConfirmationNumberExists(response);
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("5"));
+        assertTransactionCategoryId(response, Arrays.asList("5"));
     }
 
     @Test
@@ -87,10 +98,9 @@ class FiservTransactionProcessorTest {
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertChequeNumberExists(response);
         assertInstrumentIdExists(response);
-
         assertTransactionCategory(response, "CHEQUE");
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("4"));
+        assertTransactionCategoryId(response, Arrays.asList("4"));
     }
 
     @Test
@@ -117,7 +127,7 @@ class FiservTransactionProcessorTest {
         assertConfirmationNumber(response, "8053275");
         assertTransactionCategory(response, "BILL_PAYMENT");
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("5")); // BILL
+        assertTransactionCategoryId(response, Arrays.asList("5")); // BILL
     }
 
   @Test
@@ -128,7 +138,7 @@ class FiservTransactionProcessorTest {
         assertChequeNumber(response, "100");
         assertTransactionCategory(response, "CHEQUE");
         // 'CWTH' -> 4, 'BPMT' -> 5; else 'Credit' -> 2, 'Debit' -> 3
-        assertTransactionCategoryIds(response, Arrays.asList("4"));
+        assertTransactionCategoryId(response, Arrays.asList("4"));
     }
 
     @Test
@@ -137,7 +147,7 @@ class FiservTransactionProcessorTest {
         FiservResponse response = FiservApiClient.JSON_OBJECT_MAPPER.readValue(responseJson, FiservResponse.class);
         assertTransactionDateOrder(response, SortingOrder.DESC);
         assertTransactionAmount(response, "1");
-        assertDebitCreditFlag(response, "C");
+        assertDebitCreditFlag(response, Arrays.asList("C"));
     }
 
     @Test
@@ -202,7 +212,22 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
         }
     }
 
-    private void assertDebitCreditFlag(FiservResponse response, String expectedDebitCreditFlag) {
+    private void assertDebitCreditFlag(FiservResponse response, List<String> expectedDebitCreditFlags) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertTrue(
+                expectedDebitCreditFlags.contains(transaction.debitCreditFlag()),
+                "casatransactiondtls should only contain debitCreditFlag in " + expectedDebitCreditFlags
+            );
+        }
+    }
+
+    private void assertTenantId(FiservResponse response, String expectedTenantId) {
         assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
         List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
@@ -211,9 +236,25 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
 
         for (CasaTransactionDtl transaction : transactions) {
             assertEquals(
-                expectedDebitCreditFlag,
-                transaction.debitCreditFlag(),
-                "casatransactiondtls should only contain debitCreditFlag " + expectedDebitCreditFlag
+                expectedTenantId,
+                transaction.tenantId(),
+                "casatransactiondtls should only contain tenantId " + expectedTenantId
+            );
+        }
+    }
+
+    private void assertAccountHolderName(FiservResponse response, String expectedAccountHolderName) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertEquals(
+                expectedAccountHolderName,
+                transaction.accountHolderName(),
+                "casatransactiondtls should only contain accountHolderName " + expectedAccountHolderName
             );
         }
     }
@@ -234,7 +275,7 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
         }
     }
 
-    private void assertTransactionCategoryIds(FiservResponse response, List<String> expectedTranactionCategoryIds) {
+    private void assertTransactionCategoryId(FiservResponse response, List<String> expectedTranactionCategoryIds) {
         assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
 
         List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
@@ -245,6 +286,36 @@ assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsRespon
             assertTrue(
                 expectedTranactionCategoryIds.contains(transaction.transactionCategoryId()),
                 "casatransactiondtls should only contain transactionCategoryId in " + expectedTranactionCategoryIds
+            );
+        }
+    }
+
+    private void assertTransactionType(FiservResponse response, List<String> expectedTransactionTypes) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertTrue(
+                expectedTransactionTypes.contains(transaction.transactionType()),
+                "casatransactiondtls should only contain transactionType in " + expectedTransactionTypes
+            );
+        }
+    }
+
+    private void assertTransType(FiservResponse response, List<String> expectedTransTypes) {
+        assertNotNull(response.casaTransactionDtlsResponse(), "casaTransactionDtlsResponse should be present");
+
+        List<CasaTransactionDtl> transactions = response.casaTransactionDtlsResponse().casatransactiondtls();
+        assertNotNull(transactions, "casatransactiondtls should be present");
+        assertFalse(transactions.isEmpty(), "casatransactiondtls should not be empty");
+
+        for (CasaTransactionDtl transaction : transactions) {
+            assertTrue(
+                expectedTransTypes.contains(transaction.transType()),
+                "casatransactiondtls should only contain transType in " + expectedTransTypes
             );
         }
     }
