@@ -52,13 +52,13 @@ class FiservTransactionProcessorTest {
         assertTransactionCategoryId(response, Arrays.asList("4", "5", "2", "3"));
         assertAccountHolderName(response, "Joel User");
         assertAccountNumber(response, DEFAULT_ACCOUNT_NUMBER);
-        assertTransactionCurrencyExists(response);
         assertBalanceExists(response);
         assertTransactionDateExists(response);
         assertValueDateExists(response);
         assertTransactionAmountExists(response);
         assertTransactionDescriptionExists(response);
         assertTransactionReferenceExists(response);
+        assertTransactionCurrency(response, "CAD");
     }
 
     @Test
@@ -356,8 +356,8 @@ class FiservTransactionProcessorTest {
         assertEveryExists(response, CasaTransactionDtl::instrumentId, "instrumentId for cheque transactions");
     }
 
-    private void assertTransactionCurrencyExists(FiservResponse response) {
-        assertEveryExists(response, CasaTransactionDtl::transactionCurrency, "transactionCurrency");
+    private void assertTransactionCurrency(FiservResponse response, String expectedTransactionCurrency) {
+        assertEveryEquals(response, CasaTransactionDtl::transactionCurrency, expectedTransactionCurrency, "transactionCurrency");
     }
 
     private void assertBalanceExists(FiservResponse response) {
@@ -446,6 +446,7 @@ class FiservTransactionProcessorTest {
                     "isLoanAccount": "%s",
                     "accountHolderName": "Joel User",
                     "routeNumber": "809",
+                    "accountCurrencyCode": "CAD",
                     "transitNumber": "12345"
                 },
                 "criteriaDetails": {

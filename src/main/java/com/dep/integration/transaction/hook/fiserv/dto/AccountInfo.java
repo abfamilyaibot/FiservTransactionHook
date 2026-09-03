@@ -4,7 +4,8 @@ public record AccountInfo(
     String isLoanAccount,
     String accountHolderName,
     String transitNumber,
-    String routeNumber
+    String routeNumber,
+    String accountCurrencyCode
 ) {
 
 }

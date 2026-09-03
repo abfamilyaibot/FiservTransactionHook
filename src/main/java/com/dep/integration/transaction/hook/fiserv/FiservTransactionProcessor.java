@@ -143,23 +143,26 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       }
 
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
-      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
-      request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
-      request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
-      request.setSortBy("EFFDATE");
-      request.setIsResultingBalance(true);
-      request.setSearchDateOption(3); // effectiveDate
-      // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
-      // request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
-      
 
       // if (criteriaDetails.filterType() == CriteriaDetails.FilterType.D ||
       //     criteriaDetails.filterType() == CriteriaDetails.FilterType.C) {
       //       // filter by DebitCreditOnly not working, need to do manual filtering on AccountTransactionHistoryResponse
       //    request.setDebitCreditOnly(criteriaDetails.filterType().value());
-      // }
-
-      applySearchCriteria(request, criteriaDetails);
+      // }      request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
+      
+      request.setIsResultingBalance(true);
+      
+      // filter by  RtxnTypeCodes not working, need to do manual filtering on AccountTransactionHistoryResponse
+      // request.setRtxnTypeCodes(getRTxnTypeCode(criteriaDetails.filterType()));
+      
+      request.setSearchDateOption(3); // effectiveDate
+      request.setSortBy("EFFDATE");
+      request.setSortOrder(toFiservSortOrder(criteriaDetails.sortingOrder()));
+      
+      request.setThroughDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
+      
+      // applySearchCriteria(request, criteriaDetails);
+      
       return request;
    }
 
@@ -186,9 +189,9 @@ public class FiservTransactionProcessor extends TransactionProcessor {
 
       request.setAccountNumber(toLong(criteriaDetails.accountNumber()));
       request.setFromDate(toXmlDateTimeOrNull(criteriaDetails.startDate()));
-      request.setThruDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
       // note:  the date search is for effectiveDate to align with the other requests
       request.setSearchDateOption(3); // effectiveDate
+      request.setThruDate(toXmlDateTimeOrNull(criteriaDetails.endDate()));
       return request;
    }
 
@@ -206,33 +209,33 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return request;
    }
 
-   private void applySearchCriteria(
-       AccountTransactionHistoryRequest request,
-       CriteriaDetails criteriaDetails
-   ) {
-      if (criteriaDetails.searchType() == null || criteriaDetails.searchValue() == null ||
-          criteriaDetails.searchValue().isBlank()) {
-         return;
-      }
+   // private void applySearchCriteria(
+   //     AccountTransactionHistoryRequest request,
+   //     CriteriaDetails criteriaDetails
+   // ) {
+   //    if (criteriaDetails.searchType() == null || criteriaDetails.searchValue() == null ||
+   //        criteriaDetails.searchValue().isBlank()) {
+   //       return;
+   //    }
 
-      String searchValue = criteriaDetails.searchValue();
-      switch (criteriaDetails.searchType()) {
-         case CHEQUE_NUMBER -> {
-            // FromCheckNumber, ThroughtCheckNumber Not working, need to do manual filtering on AccountTransactionHistoryResponse
-            Long chequeNumber = toLong(searchValue);
-            request.setFromCheckNumber(chequeNumber);
-            request.setThroughCheckNumber(chequeNumber);
-         }
-         case AMOUNT -> {
-            // FromAmount, ThroughAmount Not working, need to do manual filtering on AccountTransactionHistoryResponse
-            Double amount = toDouble(searchValue);
-            request.setFromAmount(amount);
-            request.setThroughAmount(amount);
-         }
-         default -> {
-         }
-      }
-   }
+   //    String searchValue = criteriaDetails.searchValue();
+   //    switch (criteriaDetails.searchType()) {
+         // case CHEQUE_NUMBER -> {
+         //    // FromCheckNumber, ThroughtCheckNumber Not working, need to do manual filtering on AccountTransactionHistoryResponse
+         //    Long chequeNumber = toLong(searchValue);
+         //    request.setFromCheckNumber(chequeNumber);
+         //    request.setThroughCheckNumber(chequeNumber);
+         // }
+         // case AMOUNT -> {
+         //    // FromAmount, ThroughAmount Not working, need to do manual filtering on AccountTransactionHistoryResponse
+         //    Double amount = toDouble(searchValue);
+         //    request.setFromAmount(amount);
+         //    request.setThroughAmount(amount);
+         // }
+         // default -> {
+   //       }
+   //    }
+   // }
 
    private static XMLGregorianCalendar toXmlDateTimeOrNull(String date) {
       if (date == null || date.isBlank()) {
@@ -359,10 +362,10 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    private List<FiservTransaction> getFiservTransactions(FiservApiClient api, FiservRequest depRequest) throws CbsApiException {
       Envelope envelope = generateEnvelope(depRequest);
       FiservApiResponse fiservApiResponse = api.getTransactions(depRequest, envelope);
-      return convertFiservTransactions(fiservApiResponse, isLoanAccount(depRequest));
+      return convertFiservTransactions(fiservApiResponse, depRequest);
    }
 
-    private List<FiservTransaction> convertFiservTransactions(FiservApiResponse fiservApiResponse, boolean isLoanAccount) {
+    private List<FiservTransaction> convertFiservTransactions(FiservApiResponse fiservApiResponse, FiservRequest depRequest) {
       if (fiservApiResponse == null ||
           fiservApiResponse.accountTransactionHistoryResponse() == null ||
           fiservApiResponse.accountTransactionHistoryResponse().getTransactions() == null) {
@@ -381,7 +384,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       }
 
       Map<Long, Transaction> transactionsByTransactionNumber = new HashMap<>();
-      if (isLoanAccount &&
+      if (isLoanAccount(depRequest) &&
           fiservApiResponse.transactionHistoryInquiryResponse() != null &&
           fiservApiResponse.transactionHistoryInquiryResponse().getTransactions() != null) {
          for (Transaction transaction : fiservApiResponse.transactionHistoryInquiryResponse().getTransactions().getTransaction()) {
@@ -391,7 +394,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
          }
       }
 
-      String accountCurrencyCode = fiservApiResponse.accountTransactionHistoryResponse().getAccountCurrencyCode();
+      String accountCurrencyCode = depRequest.accountInfo() == null ? null : depRequest.accountInfo().accountCurrencyCode();
 
       List<FiservTransaction> fiservTransactions = new ArrayList<>();
       for (Rtxn rtxn : fiservApiResponse.accountTransactionHistoryResponse().getTransactions().getRtxn()) {
@@ -403,7 +406,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
              accountCurrencyCode,
              rtxn,
              getRTxnTypeCode(FilterType.BILL).equals(rtxn.getRtxnTypeCode()) ? billPaymentsByTransactionNumber.get(transactionNumber) : null,
-             isLoanAccount ? transactionsByTransactionNumber.get(transactionNumber) : null
+             isLoanAccount(depRequest) ? transactionsByTransactionNumber.get(transactionNumber) : null
          ));
       }
       return fiservTransactions;
@@ -546,47 +549,93 @@ public class FiservTransactionProcessor extends TransactionProcessor {
    }
 
    private CasaTransactionDtl mapToCasaTransactionDtl(FiservTransaction fiservTransaction, FiservRequest depRequest) {
+      // -------- option 1 : 7703 as main response --------------
       // CasaTransactionDtl.tenantId: depRequest.depTenantId
 
-      // CasaTransactionDtl.TransactionDescription: Rtxn.RtxnTypeDescription
-      // if Rtxn.InternalRtxnDescription not empty: ' ' + Rtxn.InternalRtxnDescription
-      // if BillPayment.VendorName not empty: + ' ' + BillPayment.VendorName
-      // if Rtxn.ExchTxnGrp.ExchTxn.OtherAmount not empty: +  ' Exchange Amount: $' + absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
-      // if Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate not empty: +  ' Exchange Rate: ' + Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
+      // CasaTransactionDtl.TransactionDescription: 7703.RtxnTypeDescription
+      // if 7703.InternalRtxnDescription not empty: ' ' + 7703.InternalRtxnDescription
+      // if 7939.VendorName not empty: + ' ' + 7939.VendorName
+      // if 7703.ExchTxnGrp.ExchTxn.OtherAmount not empty: +  ' Exchange Amount: $' + absolute value of 7703.ExchTxnGrp.ExchTxn.OtherAmount
+      // if 7703.ExchTxnGrp.ExchTxn.ExchangeRate not empty: +  ' Exchange Rate: ' + 7703.ExchTxnGrp.ExchTxn.ExchangeRate
 
-      // CasaTransactionDtl.transactionReference: BillPayment.BillPayTransactionNumber if not empty, else Rtxn.TransactionReferenceNumber
+      // CasaTransactionDtl.transactionReference: 7939.BillPayTransactionNumber if not empty, else 7703.TransactionReferenceNumber
 
-      // CasaTransactionDtl.confirmationNumber: BillPayment.BillPayTransactionNumber if not empty
-      // CasaTransactionDtl.merchantId: BillPayment.VendorID if not empty
+      // CasaTransactionDtl.confirmationNumber: 7939.BillPayTransactionNumber if not empty
+      // CasaTransactionDtl.merchantId: 7939.VendorID if not empty
 
-      // CasaTransactionDtl.transactionDate: Rtxn.EffectiveDate in yyyy-MM-dd format
-      // CasaTransactionDtl.valueDate: Rtxn.EffectiveDate in yyyy-MM-dd format
+      // CasaTransactionDtl.transactionDate: 7703.EffectiveDate in yyyy-MM-dd format
+      // CasaTransactionDtl.valueDate: 7703.EffectiveDate in yyyy-MM-dd format
 
-      // CasaTransactionDtl.balance: Rtxn.RunningBalance
+      // CasaTransactionDtl.balance: 7703.RunningBalance
 
-      // CasaTransactionDtl.transactionAmount = absolute value of Rtxn.TransactionAmount
+      // CasaTransactionDtl.transactionAmount = absolute value of 7703.TransactionAmount
 
-      // CasaTransactionDtl.principalAmount = absolute value of LoanTransaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
-      // CasaTransactionDtl.interestChargeAmount = absolute value of LoanTransaction.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
+      // CasaTransactionDtl.principalAmount = absolute value of 7929.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
+      // CasaTransactionDtl.interestChargeAmount = absolute value of 7929.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
 
-      // CasaTransactionDtl.transactionCurrency = Rtxn.TransactionCurrency
+      // CasaTransactionDtl.transactionCurrency = depRequest.AccountInfo.accountCurrencyCode
 
-      // CasaTransactionDtl.debitCreditFlag = Rtxn.DebitCredit
-      // CasaTransactionDtl.transactionType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
-      // CasaTransactionDtl.transType = 'Credit' or 'Debit' based on Rtxn.DebitCredit
+      // CasaTransactionDtl.debitCreditFlag = 7703.DebitCredit
+      // CasaTransactionDtl.transactionType = 'Credit' or 'Debit' based on 7703.DebitCredit
+      // CasaTransactionDtl.transType = 'Credit' or 'Debit' based on 7703.DebitCredit
 
-      // CasaTransactionDtl.transactionCategoryId: Rtxn.RtxnTypeCode: 'CWTH' -> 4, 'BPMT' -> 5; else Rtxn.DebitCredit 'Credit' -> 2, 'Debit' -> 3; else -> 1
-      // CasaTransactionDtl.transactionCategory = Rtxn.RtxnTypeCode
+      // CasaTransactionDtl.transactionCategoryId: 7703.RtxnTypeCode: 'CWTH' -> 4, 'BPMT' -> 5; else 7703.DebitCredit 'Credit' -> 2, 'Debit' -> 3; else -> 1
+      // CasaTransactionDtl.transactionCategory = 7703.RtxnTypeCode
 
-      // CasaTransactionDtl.instrumentId = Rtxn.CheckNumber
-      // CasaTransactionDtl.chequeNumber = Rtxn.CheckNumber
+      // CasaTransactionDtl.instrumentId = 7703.CheckNumber
+      // CasaTransactionDtl.chequeNumber = 7703.CheckNumber
 
       // CasaTransactionDtl.accountHolderName = DepRequest.AccountHolderName
 
-      // CasaTransactionDtl.exchangeAmount =  absolute value of Rtxn.ExchTxnGrp.ExchTxn.OtherAmount
-      // CasaTransactionDtl.exchangeRate = Rtxn.ExchTxnGrp.ExchTxn.ExchangeRate
+      // CasaTransactionDtl.exchangeAmount =  absolute value of 7703.ExchTxnGrp.ExchTxn.OtherAmount
+      // CasaTransactionDtl.exchangeRate = 7703.ExchTxnGrp.ExchTxn.ExchangeRate
 
-      // CasaTransactionDtl.accountNumber = Rtxn.AccountNumber
+      // CasaTransactionDtl.accountNumber = 7703.AccountNumber
+
+
+      // ---------------------option 2: 7729 as main response --------------
+      // CasaTransactionDtl.tenantId: depRequest.depTenantId
+
+      // CasaTransactionDtl.TransactionDescription: 7929.ExternalTransactionDescription
+      // if 7929.InternalTransactionDescription not empty: ' ' + 7929.InternalTransactionDescription
+      // if 7939.VendorName not empty: + ' ' + 7939.VendorName
+      // if 7703.ExchTxnGrp.ExchTxn.OtherAmount not empty: +  ' Exchange Amount: $' + absolute value of 7703.ExchTxnGrp.ExchTxn.OtherAmount
+      // if 7703.ExchTxnGrp.ExchTxn.ExchangeRate not empty: +  ' Exchange Rate: ' + 7703.ExchTxnGrp.ExchTxn.ExchangeRate
+
+      // CasaTransactionDtl.transactionReference: 7939.BillPayTransactionNumber if not empty, else 7729.TransactionReferenceNumber
+
+      // CasaTransactionDtl.confirmationNumber: 7939.BillPayTransactionNumber if not empty
+      // CasaTransactionDtl.merchantId: 7939.VendorID if not empty
+
+      // CasaTransactionDtl.transactionDate: 7729.EffectiveDate in yyyy-MM-dd format
+      // CasaTransactionDtl.valueDate: 7729.EffectiveDate in yyyy-MM-dd format
+
+      // CasaTransactionDtl.balance: 7729.RunningBalance
+
+
+      // CasaTransactionDtl.transactionAmount = absolute value of 7729.TransactionAmount
+
+      // CasaTransactionDtl.principalAmount = absolute value of 7929.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Balance'
+      // CasaTransactionDtl.interestChargeAmount = absolute value of 7929.BalanceTypes.TransactionBalanceType.Amount with Transaction.BalanceTypes.TransactionBalanceType.BalanceTypeDescription contains 'Note Interest'
+
+      // CasaTransactionDtl.transactionCurrency = depRequest.AccountInfo.accountCurrencyCode
+
+      // CasaTransactionDtl.debitCreditFlag = 7729.TransactionAmount +ve: C; -ve: D
+      // CasaTransactionDtl.transactionType = 'Credit' or 'Debit' based on 7729.TransactionAmount
+      // CasaTransactionDtl.transType = 'Credit' or 'Debit' based on 7729.TransactionAmount
+
+      // CasaTransactionDtl.transactionCategoryId: 7729.TransdactionTypeCode: 'CWTH' -> 4, 'BPMT' -> 5; else 7729.TransactionAmount +ve -> 2, -ve -> 3; else -> 1
+      // CasaTransactionDtl.transactionCategory = 7729.TransdactionTypeCode
+
+      // CasaTransactionDtl.instrumentId = 7729.CheckNumber
+      // CasaTransactionDtl.chequeNumber = 7729.CheckNumber
+
+      // CasaTransactionDtl.accountHolderName = DepRequest.AccountHolderName
+
+      // CasaTransactionDtl.exchangeAmount =  absolute value of 7703.ExchTxnGrp.ExchTxn.OtherAmount
+      // CasaTransactionDtl.exchangeRate = 7703.ExchTxnGrp.ExchTxn.ExchangeRate
+
+      // CasaTransactionDtl.accountNumber = 7729.AccountNumber
 
       Rtxn rtxn = fiservTransaction == null ? null : fiservTransaction.rtxn();
       BillPayment billPayment = fiservTransaction == null ? null : fiservTransaction.billPayment();
@@ -611,7 +660,7 @@ public class FiservTransactionProcessor extends TransactionProcessor {
           getExchangeRate(exchangeTransaction),
           getExchangeAmount(exchangeTransaction),
           getAccountNumber(rtxn),
-          getTransactionCurrency(fiservTransaction),
+          getTransactionCurrency(depRequest),
           getConfirmationNumber(billPayment),
           getAccountHolderName(depRequest),
           getPrincipalAmount(loanTransaction),
@@ -625,8 +674,8 @@ public class FiservTransactionProcessor extends TransactionProcessor {
       return depRequest == null ? null : depRequest.depTenantId();
    }
 
-   private String getTransactionCurrency(FiservTransaction fiservTransaction) {
-      return fiservTransaction == null ? null : fiservTransaction.accountCurrencyCode();
+   private String getTransactionCurrency(FiservRequest fiservRequest) {
+      return fiservRequest == null ? null : fiservRequest.accountInfo().accountCurrencyCode();
    }
 
    private String getTransactionDate(Rtxn rtxn) {
